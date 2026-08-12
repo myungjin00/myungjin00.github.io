@@ -74,7 +74,8 @@ export type Project = {
   role?: string
   status?: string // e.g. 'Under review', 'In preparation', 'Top 10%'
   desc?: string
-  abstract?: string // optional expandable abstract (e.g. for presentations)
+  abstract?: string // optional expandable long text (e.g. abstract / project details)
+  moreLabel?: string // button label for the expandable text (default: 'Abstract')
   tags?: string[]
   links?: { label: string; href: string }[]
 }
@@ -166,17 +167,19 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Mar 2025 – Feb 2026',
-        title:
-          'Multimodal AI-based Target Discovery and Drug Validation for Aging-related MASLD',
+        title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증',
         org: 'Individual Basic Research Program, NRF (MSIT)',
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
         status: 'Participating Researcher',
-        desc: 'Contributed the preliminary omics / bioinformatics analysis for target discovery: curated and analyzed bulk and single-cell RNA-seq from public repositories and from experimental in vitro senescence assays (Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) mainly in aging mouse liver, with a supporting cross-check in public human data. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.\nCollaborator: Dr. Gung Lee (Mayo Clinic, USA).',
+        desc: 'Preliminary omics / bioinformatics analysis for target discovery in aging-related MASLD.\nCollaborator: Dr. Gung Lee (Mayo Clinic, USA).',
+        abstract:
+          'Curated and analyzed bulk and single-cell RNA-seq from public repositories and from experimental in vitro senescence assays (Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) mainly in aging mouse liver, with a supporting cross-check in public human data. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.',
+        moreLabel: 'Details',
         tags: ['Single-cell RNA-seq', 'Bulk RNA-seq', 'Omics Analysis', 'Cellular Senescence'],
       },
       {
         period: 'Jul 2025 – Aug 2026',
-        title: 'Open AI Drug Discovery and Data Analysis Platform Center',
+        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터',
         org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
         pi: 'Dr. Minho Lee (Dongguk University, host)',
         status: 'Participating Researcher',
@@ -343,7 +346,8 @@ export const vitae: VitaeSection[] = [
       {
         period: '',
         title: 'Bioinformatics',
-        detail: 'Scanpy, differential expression analysis (PyDESeq2, MAST), GO / enrichment analysis',
+        detail:
+          'Scanpy, Seurat, bulk & single-cell RNA-seq analysis, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
       },
       { period: '', title: 'Databases', detail: 'MySQL' },
     ],
