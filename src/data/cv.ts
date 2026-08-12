@@ -120,7 +120,7 @@ export const projectGroups: ProjectGroup[] = [
         org: 'Ministry of Science and ICT (MSIT)',
         role: 'Principal Investigator',
         status: 'PI',
-        desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT. Advisor: Dr. Sangsoo Lim.',
+        desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT.\nAdvisor: Dr. Sangsoo Lim.',
         tags: ['Graph Representation Learning', 'Multi-task Learning'],
       },
     ],

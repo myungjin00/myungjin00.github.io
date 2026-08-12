@@ -92,7 +92,16 @@ function ProjectRow({ p }: { p: Project }) {
         <p className="pub-title">{p.title}</p>
         {p.org && <p className="pub-venue">{p.org}</p>}
         {p.pi && <p className="proj-pi">PI: {p.pi}</p>}
-        {p.desc && <p className="proj-desc">{renderRich(p.desc)}</p>}
+        {p.desc && (
+          <p className="proj-desc">
+            {p.desc.split('\n').map((line, i) => (
+              <span key={i}>
+                {i > 0 && <br />}
+                {renderRich(line)}
+              </span>
+            ))}
+          </p>
+        )}
         <div className="tagrow">
           {p.status && <span className="badge">{p.status}</span>}
           {p.tags?.map((t) => (
