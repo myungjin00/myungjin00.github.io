@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# uploaded original (optimized copy lives in public/assets)
+MJ_증명사진.jpg
