@@ -366,6 +366,8 @@ main {
   margin: 20px 0 0;
   font-size: 1rem;
   line-height: 1.7;
+  text-align: justify;
+  hyphens: auto;
 }
 .bio + .bio { margin-top: 16px; }
 
@@ -380,8 +382,8 @@ main {
 }
 .portrait:hover { filter: grayscale(0); }
 @media (min-width: 768px) {
-  /* Bigger photo, starting at the "M.S. @ PRISM Lab" line (below name + keywords). */
-  .portrait { order: 0; width: 240px; margin-top: 78px; }
+  /* Bigger photo, dropped ~one line below the "M.S. @ PRISM Lab" line. */
+  .portrait { order: 0; width: 240px; margin-top: 100px; }
 }
 .portrait-fallback {
   display: grid;
@@ -458,7 +460,7 @@ main {
   margin: 4px 0 0;
 }
 .proj-pi { font-size: 0.8rem; color: var(--muted); margin: 4px 0 0; font-family: var(--mono); }
-.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; }
+.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; text-align: justify; hyphens: auto; }
 .group-note { font-size: 0.75rem; color: var(--muted); margin: 10px 0 0; font-style: italic; }
 .tagrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
 .tag {
@@ -502,6 +504,8 @@ main {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
+  text-align: justify;
+  hyphens: auto;
 }
 .abstract > p { margin: 0; }
 .abstract > p + p { margin-top: 10px; }
