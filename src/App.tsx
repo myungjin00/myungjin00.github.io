@@ -118,7 +118,7 @@ function ProjectRow({ p }: { p: Project }) {
           ))}
           {p.abstract && (
             <button className="chip-btn" onClick={() => setOpen((o) => !o)}>
-              Abstract {open ? '▾' : '▸'}
+              {p.moreLabel ?? 'Abstract'} {open ? '▾' : '▸'}
             </button>
           )}
         </div>
