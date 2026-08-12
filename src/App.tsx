@@ -26,6 +26,30 @@ function initials(name: string) {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()
 }
 
+// Minimal inline markup for bio/detail text: **bold** and [label](url).
+function renderRich(text: string) {
+  const nodes: Array<string | JSX.Element> = []
+  const re = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g
+  let last = 0
+  let m: RegExpExecArray | null
+  let key = 0
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) nodes.push(text.slice(last, m.index))
+    if (m[1] !== undefined) {
+      nodes.push(<strong key={key++}>{m[1]}</strong>)
+    } else {
+      nodes.push(
+        <a key={key++} href={m[3]} target="_blank" rel="noreferrer">
+          {m[2]}
+        </a>,
+      )
+    }
+    last = m.index + m[0].length
+  }
+  if (last < text.length) nodes.push(text.slice(last))
+  return nodes
+}
+
 function renderNews(item: NewsItem) {
   if (!item.link) return item.text
   const idx = item.text.indexOf(item.link.label)
@@ -65,7 +89,8 @@ function ProjectRow({ p }: { p: Project }) {
         {p.authors && <Authors authors={p.authors} />}
         <p className="pub-title">{p.title}</p>
         {p.org && <p className="pub-venue">{p.org}</p>}
-        {p.desc && <p className="proj-desc">{p.desc}</p>}
+        {p.pi && <p className="proj-pi">PI: {p.pi}</p>}
+        {p.desc && <p className="proj-desc">{renderRich(p.desc)}</p>}
         <div className="tagrow">
           {p.status && <span className="badge">{p.status}</span>}
           {p.tags?.map((t) => (
@@ -154,11 +179,7 @@ function About({ go }: { go: (s: Section) => void }) {
                 </a>
               ))}
             </div>
-            {bio.map((p, i) => (
-              <p className="bio" key={i}>
-                {p}
-              </p>
-            ))}
+            {bio[0] && <p className="bio">{renderRich(bio[0])}</p>}
           </div>
 
           {profile.photo ? (
@@ -169,6 +190,11 @@ function About({ go }: { go: (s: Section) => void }) {
             </div>
           )}
         </div>
+        {bio.slice(1).map((p, i) => (
+          <p className="bio" key={i}>
+            {renderRich(p)}
+          </p>
+        ))}
         <p className="bio">
           {aboutClosing}{' '}
           <a href={`mailto:${profile.email}`}>e-mail</a>.
@@ -224,7 +250,7 @@ function Vitae() {
                         <span className="row-date">{it.period}</span>
                         <div>
                           <p className="row-title">{it.title}</p>
-                          {it.detail && <p className="row-detail">{it.detail}</p>}
+                          {it.detail && <p className="row-detail">{renderRich(it.detail)}</p>}
                         </div>
                       </div>
                     ))}
@@ -239,7 +265,7 @@ function Vitae() {
                   <span className="row-date">{it.period}</span>
                   <div>
                     <p className="row-title">{it.title}</p>
-                    {it.detail && <p className="row-detail">{it.detail}</p>}
+                    {it.detail && <p className="row-detail">{renderRich(it.detail)}</p>}
                   </div>
                 </div>
               ))}
