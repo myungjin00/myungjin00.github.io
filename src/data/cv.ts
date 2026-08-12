@@ -171,7 +171,7 @@ export const projectGroups: ProjectGroup[] = [
         org: 'Individual Basic Research Program, NRF (MSIT)',
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
         status: 'Participating Researcher',
-        desc: 'Contributed the preliminary omics / bioinformatics analysis for target discovery: curated and analyzed both public and in-house experimental bulk and single-cell RNA-seq data (including in vitro cellular-senescence RNA-seq from the Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) in aging liver. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.\nCollaborator: Dr. Gung Lee (Mayo Clinic, USA).',
+        desc: 'Contributed the preliminary omics / bioinformatics analysis for target discovery: curated and analyzed bulk and single-cell RNA-seq from public repositories and from experimental in vitro senescence assays (Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) in aging mouse and rat liver. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.\nCollaborator: Dr. Gung Lee (Mayo Clinic, USA).',
         tags: ['Single-cell RNA-seq', 'Bulk RNA-seq', 'Omics Analysis', 'Cellular Senescence'],
       },
       {
