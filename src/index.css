@@ -369,20 +369,45 @@ main {
 }
 .bio + .bio { margin-top: 16px; }
 
-.portrait {
+/* Intro paragraph + photo side by side; photo height matches the intro. */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 22px;
+}
+.intro-first { margin: 0; }
+.intro-photo {
   order: -1;
-  width: 168px;
-  max-width: 46vw;
+  width: 200px;
+  max-width: 52vw;
   border: 1px solid var(--border);
-  filter: grayscale(15%);
-  transition: filter 0.5s;
+  overflow: hidden;
   align-self: start;
 }
-.portrait:hover { filter: grayscale(0); }
+.intro-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center 28%;
+  filter: grayscale(15%);
+  transition: filter 0.5s;
+}
+.intro-photo img:hover { filter: grayscale(0); }
 @media (min-width: 768px) {
-  /* Start the photo at the headline line (skip the name) and size it to reach
-     roughly the end of the intro paragraph. */
-  .portrait { order: 0; width: 220px; margin-top: 52px; }
+  .intro-grid {
+    grid-template-columns: 1fr 190px;
+    gap: 34px;
+    align-items: stretch;
+  }
+  .intro-photo {
+    order: 0;
+    width: auto;
+    max-width: none;
+    align-self: stretch;
+  }
+  .intro-photo img { height: 100%; }
 }
 .portrait-fallback {
   display: grid;
