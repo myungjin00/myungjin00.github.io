@@ -85,6 +85,7 @@ function Authors({ authors }: { authors: string }) {
 }
 
 function ProjectRow({ p }: { p: Project }) {
+  const [open, setOpen] = useState(false)
   return (
     <div className="row proj">
       <span className="row-date">{p.period}</span>
@@ -115,7 +116,13 @@ function ProjectRow({ p }: { p: Project }) {
               {l.label}
             </a>
           ))}
+          {p.abstract && (
+            <button className="chip-btn" onClick={() => setOpen((o) => !o)}>
+              Abstract {open ? '▾' : '▸'}
+            </button>
+          )}
         </div>
+        {p.abstract && open && <p className="abstract">{p.abstract}</p>}
       </div>
     </div>
   )
