@@ -199,10 +199,14 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         period: '2024',
-        title: 'DREAM Challenge — Odor Similarity Prediction',
-        desc: 'Built a graph neural network that predicts olfactory (odor) similarity between molecular mixtures from their chemical structures.',
-        tags: ['Molecular ML', 'GNN'],
-        links: [{ label: 'GitHub', href: 'https://github.com/myungjin00/2024-DREAM-challenge' }],
+        title: 'DREAM Olfactory Mixtures Prediction Challenge',
+        org: 'International DREAM Challenge · Sage Bionetworks (Synapse)',
+        desc: 'Built a graph neural network to predict the olfactory similarity of molecular mixtures from their chemical structures, in a community-wide international benchmarking challenge.',
+        tags: ['Molecular ML', 'GNN', 'Olfaction'],
+        links: [
+          { label: 'Challenge', href: 'https://www.synapse.org/Synapse:syn53470621' },
+          { label: 'GitHub', href: 'https://github.com/myungjin00/2024-DREAM-challenge' },
+        ],
       },
     ],
   },
