@@ -237,7 +237,6 @@ export type VitaeSection =
 export const vitae: VitaeSection[] = [
   {
     heading: 'Research Interests',
-    // TODO — refine the exact sub-items with the user later.
     groups: [
       {
         title: 'AI for Drug Discovery',
@@ -245,7 +244,6 @@ export const vitae: VitaeSection[] = [
           'Molecular Graph Representation Learning',
           'ADMET Property Prediction',
           'Drug Response Prediction',
-          'Generative AI for Molecular Design',
           'Explainable AI (XAI)',
         ],
       },
