@@ -283,6 +283,21 @@ function Vitae() {
                 </span>
               ))}
             </div>
+          ) : 'groups' in sec ? (
+            <div className="stack-md">
+              {sec.groups.map((grp) => (
+                <div key={grp.title}>
+                  <p className="interest-cat">{grp.title}</p>
+                  <div className="kw-row">
+                    {grp.items.map((it) => (
+                      <span className="kw" key={it}>
+                        {it}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : 'subsections' in sec ? (
             <div className="stack-md">
               {sec.subsections.map((sub) => (
