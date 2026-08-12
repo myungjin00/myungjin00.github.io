@@ -26,10 +26,10 @@ function initials(name: string) {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()
 }
 
-// Minimal inline markup for bio/detail text: **bold** and [label](url).
+// Minimal inline markup for bio/detail text: **bold**, _italic_, and [label](url).
 function renderRich(text: string) {
   const nodes: Array<string | JSX.Element> = []
-  const re = /\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g
+  const re = /\*\*(.+?)\*\*|_(.+?)_|\[([^\]]+)\]\(([^)]+)\)/g
   let last = 0
   let m: RegExpExecArray | null
   let key = 0
@@ -37,10 +37,12 @@ function renderRich(text: string) {
     if (m.index > last) nodes.push(text.slice(last, m.index))
     if (m[1] !== undefined) {
       nodes.push(<strong key={key++}>{m[1]}</strong>)
+    } else if (m[2] !== undefined) {
+      nodes.push(<em key={key++}>{m[2]}</em>)
     } else {
       nodes.push(
-        <a key={key++} href={m[3]} target="_blank" rel="noreferrer">
-          {m[2]}
+        <a key={key++} href={m[4]} target="_blank" rel="noreferrer">
+          {m[3]}
         </a>,
       )
     }
