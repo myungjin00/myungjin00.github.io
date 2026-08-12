@@ -10,6 +10,7 @@ import {
   contact,
   type NewsItem,
   type Project,
+  type VitaeItem,
 } from './data/cv'
 
 type Section = 'about' | 'projects' | 'news' | 'vitae' | 'contact'
@@ -235,6 +236,30 @@ function About({ go }: { go: (s: Section) => void }) {
   )
 }
 
+function VitaeExtras({ it }: { it: VitaeItem }) {
+  const [open, setOpen] = useState(false)
+  const hasAbstract = !!it.abstract
+  const hasLinks = !!it.links && it.links.length > 0
+  if (!hasAbstract && !hasLinks) return null
+  return (
+    <>
+      <div className="tagrow" style={{ marginTop: 8 }}>
+        {it.links?.map((l) => (
+          <a key={l.label} className="chip-btn" href={l.href} target="_blank" rel="noreferrer">
+            {l.label}
+          </a>
+        ))}
+        {hasAbstract && (
+          <button className="chip-btn" onClick={() => setOpen((o) => !o)}>
+            Abstract {open ? '▾' : '▸'}
+          </button>
+        )}
+      </div>
+      {hasAbstract && open && <p className="abstract">{it.abstract}</p>}
+    </>
+  )
+}
+
 function Vitae() {
   return (
     <div className="stack-md">
@@ -277,6 +302,7 @@ function Vitae() {
                   <div>
                     <p className="row-title">{it.title}</p>
                     {it.detail && <p className="row-detail">{renderRich(it.detail)}</p>}
+                    <VitaeExtras it={it} />
                   </div>
                 </div>
               ))}
