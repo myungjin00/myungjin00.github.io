@@ -342,17 +342,19 @@ export const vitae: VitaeSection[] = [
       { period: '', title: 'Programming', detail: 'Python, R, Java, C#, JavaScript, SQL, HTML' },
       {
         period: '',
-        title: 'ML / Deep Learning',
-        detail: 'PyTorch, PyTorch Geometric, scikit-learn, Pandas, NumPy',
+        title: 'Deep Learning',
+        detail:
+          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, NumPy, Pandas',
       },
       { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
       {
         period: '',
         title: 'Bioinformatics',
+        // Non-breaking spaces keep each term intact; wraps only at the commas.
         detail:
-          'Scanpy, Seurat, bulk & single-cell RNA-seq analysis, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
+          'Scanpy, Seurat, bulk & single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
       },
-      { period: '', title: 'Databases', detail: 'MySQL' },
+      { period: '', title: 'Tools & Databases', detail: 'Git, Linux, MySQL' },
     ],
   },
   {
