@@ -1,27 +1,16 @@
-import { useState, useEffect } from 'react'
-import {
-  profile,
-  bio,
-  aboutClosing,
-  news,
-  projectGroups,
-  myAuthorTokens,
-  vitae,
-  contact,
-  type NewsItem,
-  type Project,
-  type VitaeItem,
-} from './data/cv'
+import { useState, useEffect, useMemo, useContext, createContext } from 'react'
+import * as EN from './data/cv'
+import * as KO from './data/cv.ko'
+import type { NewsItem, Project, VitaeItem } from './data/cv'
+
+// Language bundles share the same shape; the active one is provided via context.
+type Bundle = typeof EN
+const CVContext = createContext<Bundle>(EN)
+const useCV = () => useContext(CVContext)
+const myAuthorTokens = EN.myAuthorTokens
 
 type Section = 'about' | 'projects' | 'news' | 'vitae' | 'contact'
-
-const NAV: { id: Section; label: string }[] = [
-  { id: 'about', label: 'about' },
-  { id: 'projects', label: 'projects' },
-  { id: 'news', label: 'news' },
-  { id: 'vitae', label: 'vitae' },
-  { id: 'contact', label: 'contact' },
-]
+const SECTIONS: Section[] = ['about', 'projects', 'news', 'vitae', 'contact']
 
 function initials(name: string) {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()
@@ -31,66 +20,69 @@ function initials(name: string) {
 const slugId = (s: string) =>
   'x-' + s.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64)
 
-// ---- Search index (built once from the CV data) ----
+// ---- Search index (rebuilt per language) ----
 type Hit = { id: string; section: Section; title: string; where: string; text: string }
-const SEARCH: Hit[] = []
-projectGroups.forEach((g) =>
-  g.items.forEach((p) =>
-    SEARCH.push({
-      id: slugId(p.title),
-      section: 'projects',
-      title: p.title,
-      where: g.heading,
-      text: [p.title, p.org, p.desc, p.abstract, p.authors, p.pi, (p.tags || []).join(' ')]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase(),
-    }),
-  ),
-)
-vitae.forEach((sec) => {
-  if ('items' in sec)
-    sec.items.forEach((it) =>
-      SEARCH.push({
-        id: slugId(it.title),
-        section: 'vitae',
-        title: it.title,
-        where: sec.heading,
-        text: [it.title, it.detail].filter(Boolean).join(' ').toLowerCase(),
+function buildSearch(cv: Bundle): Hit[] {
+  const out: Hit[] = []
+  cv.projectGroups.forEach((g) =>
+    g.items.forEach((p) =>
+      out.push({
+        id: slugId(p.title),
+        section: 'projects',
+        title: p.title,
+        where: g.heading,
+        text: [p.title, p.org, p.desc, p.abstract, p.authors, p.pi, (p.tags || []).join(' ')]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase(),
       }),
-    )
-  else if ('groups' in sec)
-    sec.groups.forEach((grp) =>
-      SEARCH.push({
-        id: slugId(grp.title),
-        section: 'vitae',
-        title: grp.title,
-        where: sec.heading,
-        text: [grp.title, ...grp.items].join(' ').toLowerCase(),
-      }),
-    )
-  else if ('subsections' in sec)
-    sec.subsections.forEach((sub) =>
-      sub.items.forEach((it) =>
-        SEARCH.push({
+    ),
+  )
+  cv.vitae.forEach((sec) => {
+    if ('items' in sec)
+      sec.items.forEach((it) =>
+        out.push({
           id: slugId(it.title),
           section: 'vitae',
           title: it.title,
           where: sec.heading,
           text: [it.title, it.detail].filter(Boolean).join(' ').toLowerCase(),
         }),
-      ),
-    )
-})
-news.forEach((n) =>
-  SEARCH.push({
-    id: slugId(n.text),
-    section: 'news',
-    title: n.text.replace(/^[^A-Za-z가-힣]+/, ''),
-    where: 'News',
-    text: n.text.toLowerCase(),
-  }),
-)
+      )
+    else if ('groups' in sec)
+      sec.groups.forEach((grp) =>
+        out.push({
+          id: slugId(grp.title),
+          section: 'vitae',
+          title: grp.title,
+          where: sec.heading,
+          text: [grp.title, ...grp.items].join(' ').toLowerCase(),
+        }),
+      )
+    else if ('subsections' in sec)
+      sec.subsections.forEach((sub) =>
+        sub.items.forEach((it) =>
+          out.push({
+            id: slugId(it.title),
+            section: 'vitae',
+            title: it.title,
+            where: sec.heading,
+            text: [it.title, it.detail].filter(Boolean).join(' ').toLowerCase(),
+          }),
+        ),
+      )
+  })
+  cv.news.forEach((n) =>
+    out.push({
+      id: slugId(n.text),
+      section: 'news',
+      title: n.text.replace(/^[^A-Za-z가-힣]+/, ''),
+      where: cv.ui.aboutNews,
+      text: n.text.toLowerCase(),
+    }),
+  )
+  return out
+}
 
 // Minimal inline markup for bio/detail text: **bold**, _italic_, and [label](url).
 function renderRich(text: string) {
@@ -150,6 +142,7 @@ function Authors({ authors }: { authors: string }) {
 }
 
 function ProjectRow({ p }: { p: Project }) {
+  const { ui } = useCV()
   const [open, setOpen] = useState(false)
   return (
     <div className="row proj" id={slugId(p.title)}>
@@ -158,7 +151,7 @@ function ProjectRow({ p }: { p: Project }) {
         {p.authors && <Authors authors={p.authors} />}
         <p className="pub-title">{p.title}</p>
         {p.org && <p className="pub-venue">{p.org}</p>}
-        {p.pi && <p className="proj-pi">PI: {p.pi}</p>}
+        {p.pi && <p className="proj-pi">{ui.piLabel} {p.pi}</p>}
         {p.desc && (
           <p className="proj-desc">
             {p.desc.split('\n').map((line, i) => (
@@ -183,7 +176,7 @@ function ProjectRow({ p }: { p: Project }) {
           ))}
           {p.abstract && (
             <button className="chip-btn" onClick={() => setOpen((o) => !o)}>
-              {p.moreLabel ?? 'Abstract'} {open ? '▾' : '▸'}
+              {p.moreLabel ?? ui.abstract} {open ? '▾' : '▸'}
             </button>
           )}
         </div>
@@ -200,6 +193,7 @@ function ProjectRow({ p }: { p: Project }) {
 }
 
 function ProjectGroups({ preview }: { preview?: boolean }) {
+  const { projectGroups } = useCV()
   const groups = preview
     ? projectGroups.filter((g) => g.items.length > 0).slice(0, 1)
     : projectGroups.filter((g) => g.items.length > 0)
@@ -234,6 +228,7 @@ function NewsList({ items }: { items: NewsItem[] }) {
 }
 
 function About({ go }: { go: (s: Section) => void }) {
+  const { profile, bio, aboutClosing, news, ui } = useCV()
   return (
     <div className="stack-lg">
       <div>
@@ -285,16 +280,17 @@ function About({ go }: { go: (s: Section) => void }) {
           </p>
         ))}
         <p className="bio">
-          {aboutClosing}{' '}
-          <a href={`mailto:${profile.email}`}>e-mail</a>.
+          {aboutClosing.before}{' '}
+          <a href={`mailto:${profile.email}`}>{ui.emailWord}</a>
+          {aboutClosing.after}
         </p>
       </div>
 
       <section>
         <div className="block-head">
-          <h2 className="block-title">News</h2>
+          <h2 className="block-title">{ui.aboutNews}</h2>
           <button className="more-link" onClick={() => go('news')}>
-            more →
+            {ui.more}
           </button>
         </div>
         <NewsList items={news.slice(0, 3)} />
@@ -302,9 +298,9 @@ function About({ go }: { go: (s: Section) => void }) {
 
       <section>
         <div className="block-head">
-          <h2 className="block-title">Projects</h2>
+          <h2 className="block-title">{ui.aboutProjects}</h2>
           <button className="more-link" onClick={() => go('projects')}>
-            more →
+            {ui.more}
           </button>
         </div>
         <ProjectGroups preview />
@@ -314,6 +310,7 @@ function About({ go }: { go: (s: Section) => void }) {
 }
 
 function VitaeExtras({ it }: { it: VitaeItem }) {
+  const { ui } = useCV()
   const [open, setOpen] = useState(false)
   const hasAbstract = !!it.abstract
   const hasLinks = !!it.links && it.links.length > 0
@@ -328,7 +325,7 @@ function VitaeExtras({ it }: { it: VitaeItem }) {
         ))}
         {hasAbstract && (
           <button className="chip-btn" onClick={() => setOpen((o) => !o)}>
-            Abstract {open ? '▾' : '▸'}
+            {ui.abstract} {open ? '▾' : '▸'}
           </button>
         )}
       </div>
@@ -338,9 +335,10 @@ function VitaeExtras({ it }: { it: VitaeItem }) {
 }
 
 function Vitae() {
+  const { vitae, ui } = useCV()
   return (
     <div className="stack-md">
-      <p className="vitae-note">Abbreviated curriculum vitae.</p>
+      <p className="vitae-note">{ui.vitaeNote}</p>
       {vitae.map((sec) => (
         <div key={sec.heading}>
           <h2 className="vitae-sec-title">{sec.heading}</h2>
@@ -407,6 +405,7 @@ function Vitae() {
 }
 
 function Contact() {
+  const { contact } = useCV()
   return (
     <div className="stack-md">
       <p className="row-text muted" style={{ maxWidth: '42rem' }}>
@@ -434,8 +433,11 @@ function Contact() {
 export default function App() {
   const [section, setSection] = useState<Section>(() => {
     const h = window.location.hash.slice(1) as Section
-    return NAV.some((n) => n.id === h) ? h : 'about'
+    return SECTIONS.includes(h) ? h : 'about'
   })
+  const [lang, setLang] = useState<'en' | 'ko'>(() =>
+    localStorage.getItem('lang') === 'ko' ? 'ko' : 'en',
+  )
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('theme')
     if (saved === 'light' || saved === 'dark') return saved
@@ -445,10 +447,19 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
 
+  const cv = (lang === 'ko' ? KO : EN) as Bundle
+  const ui = cv.ui
+  const search = useMemo(() => buildSearch(cv), [cv])
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    localStorage.setItem('lang', lang)
+    document.documentElement.setAttribute('lang', lang)
+  }, [lang])
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 500)
@@ -459,7 +470,7 @@ export default function App() {
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.slice(1) as Section
-      if (NAV.some((n) => n.id === h)) setSection(h)
+      if (SECTIONS.includes(h)) setSection(h)
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSearchOpen(false)
@@ -483,7 +494,7 @@ export default function App() {
   }
 
   const q = query.trim().toLowerCase()
-  const results = q ? SEARCH.filter((h) => h.text.includes(q)).slice(0, 8) : []
+  const results = q ? search.filter((h) => h.text.includes(q)).slice(0, 8) : []
 
   const goToHit = (h: Hit) => {
     setSearchOpen(false)
@@ -498,111 +509,121 @@ export default function App() {
   }
 
   return (
-    <div className="shell">
-      <header className="topbar">
-        <div className="wrap">
-          <nav className="nav">
-            {NAV.map((n) => (
-              <button
-                key={n.id}
-                className={section === n.id ? 'active' : ''}
-                onClick={() => go(n.id)}
-              >
-                {n.label}
-              </button>
-            ))}
-            {profile.notes && (
-              <a className="nav-ext" href={profile.notes.href} target="_blank" rel="noreferrer">
-                {profile.notes.label} ↗
-              </a>
-            )}
-            <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
-              ⌕
-            </button>
-            <button
-              className="nav-icon"
-              aria-label="Toggle dark mode"
-              title="Toggle theme"
-              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-            >
-              {theme === 'dark' ? '☀' : '☾'}
-            </button>
-          </nav>
-        </div>
-      </header>
-
-      <main>
-        <div className="wrap">
-          {section === 'about' && <About go={go} />}
-          {section === 'projects' && (
-            <>
-              <h1 className="page-title">Projects</h1>
-              <ProjectGroups />
-            </>
-          )}
-          {section === 'news' && (
-            <>
-              <h1 className="page-title">News</h1>
-              <NewsList items={news} />
-            </>
-          )}
-          {section === 'vitae' && (
-            <>
-              <h1 className="page-title">Curriculum Vitae</h1>
-              <Vitae />
-            </>
-          )}
-          {section === 'contact' && (
-            <>
-              <h1 className="page-title">Contact</h1>
-              <Contact />
-            </>
-          )}
-        </div>
-      </main>
-
-      <footer>
-        <div className="wrap">
-          <p className="cred">© 2026 {profile.name} · Dongguk University</p>
-        </div>
-      </footer>
-
-      {searchOpen && (
-        <div className="search-overlay" onClick={() => setSearchOpen(false)}>
-          <div className="search-box" onClick={(e) => e.stopPropagation()}>
-            <input
-              autoFocus
-              className="search-input"
-              placeholder="Search projects, skills, papers…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && results[0]) goToHit(results[0])
-              }}
-            />
-            <div className="search-results">
-              {q && results.length === 0 && <p className="search-empty">No matches.</p>}
-              {results.map((h) => (
-                <button key={h.id} className="search-hit" onClick={() => goToHit(h)}>
-                  <span className="search-hit-title">{h.title}</span>
-                  <span className="search-hit-where">{h.where}</span>
+    <CVContext.Provider value={cv}>
+      <div className="shell">
+        <header className="topbar">
+          <div className="wrap">
+            <nav className="nav">
+              {SECTIONS.map((id) => (
+                <button
+                  key={id}
+                  className={section === id ? 'active' : ''}
+                  onClick={() => go(id)}
+                >
+                  {ui.nav[id]}
                 </button>
               ))}
+              {cv.profile.notes && (
+                <a className="nav-ext" href={cv.profile.notes.href} target="_blank" rel="noreferrer">
+                  {cv.profile.notes.label} ↗
+                </a>
+              )}
+              <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
+                ⌕
+              </button>
+              <button
+                className="nav-icon nav-lang"
+                aria-label="Switch language"
+                title="Language"
+                onClick={() => setLang((l) => (l === 'en' ? 'ko' : 'en'))}
+              >
+                {lang === 'en' ? 'KOR' : 'ENG'}
+              </button>
+              <button
+                className="nav-icon"
+                aria-label="Toggle dark mode"
+                title="Toggle theme"
+                onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+              >
+                {theme === 'dark' ? '☀' : '☾'}
+              </button>
+            </nav>
+          </div>
+        </header>
+
+        <main>
+          <div className="wrap">
+            {section === 'about' && <About go={go} />}
+            {section === 'projects' && (
+              <>
+                <h1 className="page-title">{ui.page.projects}</h1>
+                <ProjectGroups />
+              </>
+            )}
+            {section === 'news' && (
+              <>
+                <h1 className="page-title">{ui.page.news}</h1>
+                <NewsList items={cv.news} />
+              </>
+            )}
+            {section === 'vitae' && (
+              <>
+                <h1 className="page-title">{ui.page.vitae}</h1>
+                <Vitae />
+              </>
+            )}
+            {section === 'contact' && (
+              <>
+                <h1 className="page-title">{ui.page.contact}</h1>
+                <Contact />
+              </>
+            )}
+          </div>
+        </main>
+
+        <footer>
+          <div className="wrap">
+            <p className="cred">{ui.footer}</p>
+          </div>
+        </footer>
+
+        {searchOpen && (
+          <div className="search-overlay" onClick={() => setSearchOpen(false)}>
+            <div className="search-box" onClick={(e) => e.stopPropagation()}>
+              <input
+                autoFocus
+                className="search-input"
+                placeholder={ui.searchPlaceholder}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && results[0]) goToHit(results[0])
+                }}
+              />
+              <div className="search-results">
+                {q && results.length === 0 && <p className="search-empty">{ui.noMatches}</p>}
+                {results.map((h) => (
+                  <button key={h.id} className="search-hit" onClick={() => goToHit(h)}>
+                    <span className="search-hit-title">{h.title}</span>
+                    <span className="search-hit-where">{h.where}</span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showTop && (
-        <button
-          className="to-top"
-          aria-label="Back to top"
-          title="Back to top"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          ↑
-        </button>
-      )}
-    </div>
+        {showTop && (
+          <button
+            className="to-top"
+            aria-label="Back to top"
+            title="Back to top"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            ↑
+          </button>
+        )}
+      </div>
+    </CVContext.Provider>
   )
 }

@@ -148,6 +148,14 @@ a:hover {
   transition: color 0.15s;
 }
 .nav-icon:hover { color: var(--accent); }
+.nav-lang {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+}
 
 /* ---------- Search overlay ---------- */
 .search-overlay {
