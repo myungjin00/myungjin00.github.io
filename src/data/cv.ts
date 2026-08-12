@@ -11,10 +11,9 @@ export const profile = {
   lastName: 'Lee',
   role: 'M.S. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
-  // Keyword line under the name — what I do, ending with current status.
-  // The lab (below) is appended as a link after this text.
-  headline:
-    'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI · M.S.',
+  // Keyword line under the name — what I do. Degree/lab shown on its own line below.
+  headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
+  degree: 'M.S.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
   // Place the image file at public/assets/profile.jpg (portrait works best).
@@ -30,9 +29,9 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'I hold an **M.S. in Computer Science and Artificial Intelligence** from **Dongguk University** _(major: AI in Healthcare and Medicine)_. I earned a **B.S. in Industrial & Management Engineering** from Induk University, where I graduated as **valedictorian**. I am now seeking **industry roles** where I can apply machine learning to **drug discovery** and molecular data.',
-  'My work focuses on **AI for drug discovery**, centered on **ADMET prediction** and **molecular graph learning**. I build **interpretable models** that use **attention** to reveal which molecular substructures drive each prediction, so the model’s reasoning stays **transparent and traceable** rather than opaque. Building on this, I have developed models that fuse **complementary molecular views and multiple modalities** for more reliable prediction — two of which are now being **finalized for submission** and are **under peer review**.',
-  'Looking ahead, I want to advance **drug discovery** through research centered on **interpretable AI** and **graph learning**. I am also comfortable working across **multiple modalities**, and I want to explore how combining these techniques can strengthen both the **capability and interpretability** of AI in real-world settings.',
+  'I hold an **M.S. in Computer Science and Artificial Intelligence** from Dongguk University _(major: AI in Healthcare and Medicine)_. I earned a B.S. in Industrial & Management Engineering from Induk University, where I graduated as **valedictorian**. I am now seeking industry roles where I can apply machine learning to **drug discovery** and molecular data.',
+  'My work focuses on **AI for drug discovery**, centered on ADMET prediction and molecular graph learning. I build **interpretable models** that use attention to reveal which molecular substructures drive each prediction, so the model’s reasoning stays transparent and traceable rather than opaque. Building on this, I have developed models that fuse complementary molecular views and multiple modalities for more reliable prediction — two of which are now being finalized for submission and are **under peer review**.',
+  'Looking ahead, I want to advance drug discovery through research centered on **interpretable AI** and **graph learning**. I am also comfortable working across multiple modalities, and I want to explore how combining these techniques can strengthen both the capability and interpretability of AI in real-world settings.',
 ]
 
 // Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.

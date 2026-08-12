@@ -215,6 +215,21 @@ main {
   font-weight: 500;
   color: var(--fg);
 }
+.standing {
+  margin: 4px 0 0;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+/* Projects group headings — same weight as Vitae section titles */
+.group-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin: 0 0 14px;
+  color: var(--fg);
+}
 .location {
   margin: 6px 0 0;
   font-size: 0.85rem;

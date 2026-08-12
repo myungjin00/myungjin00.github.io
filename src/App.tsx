@@ -136,7 +136,7 @@ function ProjectGroups({ preview }: { preview?: boolean }) {
     <div className="stack-md">
       {groups.map((g) => (
         <div key={g.heading}>
-          {!preview && <p className="subhead">{g.heading}</p>}
+          {!preview && <h3 className="group-title">{g.heading}</h3>}
           <div className="rows">
             {g.items.map((p, i) => (
               <ProjectRow key={i} p={p} />
@@ -172,9 +172,10 @@ function About({ go }: { go: (s: Section) => void }) {
               <b>{profile.firstName}</b> {profile.lastName}
               <span className="ko">{profile.nameKo}</span>
             </h1>
-            {profile.headline && (
-              <p className="headline">
-                {profile.headline}
+            {profile.headline && <p className="headline">{profile.headline}</p>}
+            {profile.degree && (
+              <p className="standing">
+                {profile.degree}
                 {profile.lab && (
                   <>
                     {' @ '}
