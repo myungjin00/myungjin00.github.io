@@ -230,6 +230,26 @@ export const vitae: VitaeSection[] = [
     ],
   },
   {
+    heading: 'Conference Presentations',
+    items: [
+      {
+        period: 'Jun 2026',
+        title: 'SJoINT — Poster Presentation',
+        detail: 'Korea Computer Congress (KCC) 2026, KIISE, Korea',
+      },
+      {
+        period: 'Oct 2025',
+        title: 'SJoINT — Poster Presentation',
+        detail: 'BIOINFO 2025, KSBI, Korea',
+      },
+      {
+        period: 'Jul 2025',
+        title: 'MAGNET — Poster Presentation',
+        detail: 'Korea Computer Congress (KCC) 2025, KIISE, Korea',
+      },
+    ],
+  },
+  {
     heading: 'Honors & Awards',
     items: [
       {
