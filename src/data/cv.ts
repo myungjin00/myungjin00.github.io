@@ -40,7 +40,10 @@ export const bio: string[] = [
 ]
 
 // Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.
-export const aboutClosing = 'If you’d like to connect, feel free to reach out anytime by'
+export const aboutClosing = {
+  before: 'If you’d like to connect, feel free to reach out anytime by',
+  after: '.',
+}
 
 // ---------------------------------------------------------------------------
 export type NewsItem = { date: string; text: string; link?: { label: string; href: string } }
@@ -184,15 +187,16 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         period: 'Jul 2025 – Aug 2026',
-        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터 (Bio-SYNAPSE)',
+        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터',
         org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
         pi: 'Dr. Minho Lee (Dongguk University, host)',
         status: 'Participating Researcher',
-        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform (Bio-SYNAPSE) on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
+        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
         abstract:
           'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked and developed AI models for absorption, distribution, metabolism, excretion, toxicity, and physicochemical properties, including an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the developed models as Docker images and deployed them to the national bio-data platform (KBDI).',
         moreLabel: 'Details',
         tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
+        links: [{ label: 'KBDI ↗', href: 'https://kbdi.re.kr/main/mainVw.do' }],
       },
     ],
   },
@@ -382,4 +386,21 @@ export const contact = {
     { label: 'CV (PDF)', value: 'View CV', href: '/assets/cv.pdf', desc: 'Full curriculum vitae' },
     // { label: 'LinkedIn', value: '', href: '', desc: 'Professional profile' }, // TODO
   ],
+}
+
+// ---------------------------------------------------------------------------
+// UI strings (nav labels, buttons, etc.). Mirrored in cv.ko.ts for Korean.
+export const ui = {
+  nav: { about: 'about', projects: 'projects', news: 'news', vitae: 'vitae', contact: 'contact' },
+  page: { projects: 'Projects', news: 'News', vitae: 'Curriculum Vitae', contact: 'Contact' },
+  aboutNews: 'News',
+  aboutProjects: 'Projects',
+  more: 'more →',
+  abstract: 'Abstract',
+  piLabel: 'PI:',
+  searchPlaceholder: 'Search projects, skills, papers…',
+  noMatches: 'No matches.',
+  emailWord: 'e-mail',
+  vitaeNote: 'Abbreviated curriculum vitae.',
+  footer: '© 2026 Myungjin Lee · Dongguk University',
 }
