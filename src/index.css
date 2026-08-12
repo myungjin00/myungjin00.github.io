@@ -399,6 +399,12 @@ main {
 }
 button.chip-btn { background: none; cursor: pointer; }
 .kw-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.interest-cat {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0 0 10px;
+}
 .kw {
   font-size: 0.85rem;
   color: var(--fg);

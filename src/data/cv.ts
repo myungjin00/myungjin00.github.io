@@ -180,7 +180,7 @@ export const projectGroups: ProjectGroup[] = [
         org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
         pi: 'Dr. Minho Lee (Dongguk University, host)',
         status: 'Participating Researcher',
-        desc: 'Development of an open platform for AI-driven drug discovery and biomedical data analysis; participated through PRISM Lab (Advisor: Dr. Sangsoo Lim).\nCollaborators: Dongguk University (Dr. Hyunwoo Kim), Gachon University (Dr. Sungwon Jung), Sookmyung Women’s University (Dr. Heejun Chae).',
+        desc: 'Development of an open platform for AI-driven drug discovery and biomedical data analysis; participated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
         tags: ['AI Drug Discovery', 'Data Analysis'],
       },
     ],
@@ -218,22 +218,42 @@ export type VitaeItem = {
 }
 export type VitaeSection =
   | { heading: string; keywords: string[] }
+  | { heading: string; groups: { title: string; items: string[] }[] }
   | { heading: string; items: VitaeItem[] }
   | { heading: string; subsections: { subheading: string; items: VitaeItem[] }[] }
 
 export const vitae: VitaeSection[] = [
   {
     heading: 'Research Interests',
-    keywords: [
-      'AI for Drug Discovery',
-      'Molecular Graph Representation Learning',
-      'Molecular Property Prediction (ADMET)',
-      'Cheminformatics',
-      'Bioinformatics',
-      'Graph Neural Networks',
-      'Deep Learning',
-      'Data Mining',
-      'Network Biology',
+    // TODO — refine the exact sub-items with the user later.
+    groups: [
+      {
+        title: 'AI for Drug Discovery',
+        items: [
+          'Molecular Graph Representation Learning',
+          'ADMET Property Prediction',
+          'Drug Response Prediction',
+          'Generative AI for Molecular Design',
+        ],
+      },
+      {
+        title: 'Machine Learning & Data Mining for Bioinformatics',
+        items: [
+          'Multi-omics Data Integration',
+          'Network Biology',
+          'Dimensionality Reduction',
+          'Virtual Cell Construction',
+        ],
+      },
+      {
+        title: 'Multimodal & Healthcare AI',
+        items: [
+          'Multimodal AI for Biomedical Problems',
+          'Spatial Transcriptomics',
+          'Biomedical Knowledge Graph Representation',
+          'Agentic AI for Biomedicine',
+        ],
+      },
     ],
   },
   {
