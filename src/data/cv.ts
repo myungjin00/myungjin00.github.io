@@ -245,8 +245,8 @@ export const vitae: VitaeSection[] = [
       // Merit scholarships — summarized as one line (do not list every semester).
       {
         period: '2020–2023',
-        title: 'Merit-based Academic Scholarship (every semester)',
-        detail: 'Induk University, Korea · awarded every semester · incl. GRAPE Talent Scholarship',
+        title: 'Merit-based Academic Scholarship — awarded every semester',
+        detail: 'Induk University, Korea · incl. GRAPE Talent Scholarship',
       },
     ],
   },
@@ -280,11 +280,11 @@ export const vitae: VitaeSection[] = [
         title: 'ML / Deep Learning',
         detail: 'PyTorch, PyTorch Geometric, scikit-learn, Pandas, NumPy',
       },
+      { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
       {
         period: '',
-        title: 'Cheminformatics / Bioinformatics',
-        detail:
-          'RDKit, Scanpy, differential expression analysis (PyDESeq2, MAST), GO / enrichment analysis',
+        title: 'Bioinformatics',
+        detail: 'Scanpy, differential expression analysis (PyDESeq2, MAST), GO / enrichment analysis',
       },
       { period: '', title: 'Databases', detail: 'MySQL' },
     ],
