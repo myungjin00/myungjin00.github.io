@@ -201,12 +201,15 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Aug 2024',
-        title: 'Samsung AI Challenge — ML Force Fields',
-        org: 'Samsung',
-        status: 'Top 10%',
-        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces for semiconductor-material simulation, replacing costly DFT calculations. Ranked top 10%.',
-        tags: ['MLFF', 'Simulation', 'Deep Learning'],
-        links: [{ label: 'GitHub', href: 'https://github.com/myungjin00/2024_Samsung-MLFF-Challenge' }],
+        title: '2024 Samsung AI Challenge — Machine Learning Force Fields',
+        org: 'Samsung Electronics SAIT · DACON',
+        status: 'Top 10% (11th)',
+        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces — with uncertainty quantification — for semiconductor-material simulation, replacing costly DFT calculations. Ranked 11th overall (top 10%) as team DAI.',
+        tags: ['MLFF', 'Uncertainty', 'Simulation'],
+        links: [
+          { label: 'Competition', href: 'https://dacon.io/competitions/official/236322/overview/description' },
+          { label: 'GitHub', href: 'https://github.com/myungjin00/2024_Samsung-MLFF-Challenge' },
+        ],
       },
       {
         period: '2024',
