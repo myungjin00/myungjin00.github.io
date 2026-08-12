@@ -370,19 +370,22 @@ main {
 }
 .bio + .bio { margin-top: 16px; }
 
+/* Header contains a floated photo so the name + keyword line span full width. */
+.about-head { display: flow-root; }
 .portrait {
-  order: -1;
-  width: 210px;
-  max-width: 56vw;
+  display: block;
+  width: 200px;
+  max-width: 60vw;
+  margin: 14px 0;
   border: 1px solid var(--border);
   filter: grayscale(15%);
   transition: filter 0.5s;
-  align-self: start;
 }
 .portrait:hover { filter: grayscale(0); }
 @media (min-width: 768px) {
-  /* Bigger photo, dropped ~one line below the "M.S. @ PRISM Lab" line. */
-  .portrait { order: 0; width: 240px; margin-top: 100px; }
+  /* Photo floats to the right, starting just under the keyword line;
+     standing / location / links / intro wrap beside it. */
+  .portrait { float: right; width: 240px; margin: 6px 0 14px 36px; }
 }
 .portrait-fallback {
   display: grid;
