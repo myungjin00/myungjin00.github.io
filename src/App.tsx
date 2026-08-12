@@ -128,11 +128,8 @@ function About({ go }: { go: (s: Section) => void }) {
               <b>{profile.firstName}</b> {profile.lastName}
               <span className="ko">{profile.nameKo}</span>
             </h1>
-            <p className="subrole">
-              {profile.role}
-              {profile.major && <> · {profile.major}</>}
-            </p>
             {profile.headline && <p className="headline">{profile.headline}</p>}
+            {profile.location && <p className="location">📍 {profile.location}</p>}
             <div className="linkrow">
               {profile.links.map((l) => (
                 <a
@@ -160,7 +157,10 @@ function About({ go }: { go: (s: Section) => void }) {
             </div>
           )}
         </div>
-        <p className="bio">{aboutClosing}</p>
+        <p className="bio">
+          {aboutClosing}{' '}
+          <a href={`mailto:${profile.email}`}>e-mail</a>.
+        </p>
       </div>
 
       <section>
