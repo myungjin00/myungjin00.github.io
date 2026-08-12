@@ -14,7 +14,7 @@ export const profile = {
   // Keyword line under the name — what I do, ending with current status.
   // The lab (below) is appended as a link after this text.
   headline:
-    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S. Candidate',
+    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
   // Place the image file at public/assets/profile.jpg (portrait works best).
@@ -30,9 +30,9 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'I am completing my M.S. in Computer Science and Artificial Intelligence at Dongguk University, with a major in AI in Healthcare and Medicine, graduating in August 2026. I previously earned a B.S. in Industrial & Management Engineering from Induk University, where I graduated as valedictorian. I am now seeking industry roles where I can apply machine learning to drug discovery and molecular data.',
-  'My work focuses on AI for drug discovery, centered on ADMET prediction and molecular graph learning. I build interpretable models that use attention to reveal which molecular substructures drive each prediction, so the model’s reasoning stays transparent rather than a black box. Building on this, I have also developed interpretable models that fuse complementary molecular views and modalities for more reliable property prediction — work that is currently in preparation and under review.',
-  'Looking ahead, I want to advance drug discovery through research centered on interpretable AI and graph learning. I am also comfortable working with multiple modalities, and I want to explore how combining these techniques can strengthen AI’s capabilities and interpretability in real-world settings.',
+  'I am completing my **M.S. in Computer Science and Artificial Intelligence** at **Dongguk University** (major: AI in Healthcare and Medicine), graduating in **August 2026**. I earned a **B.S. in Industrial & Management Engineering** from Induk University, where I graduated as **valedictorian**. I am now seeking **industry roles** where I can apply machine learning to **drug discovery** and molecular data.',
+  'My work focuses on **AI for drug discovery**, centered on **ADMET prediction** and **molecular graph learning**. I build **interpretable models** that use **attention** to reveal which molecular substructures drive each prediction, so the model’s reasoning stays **transparent and traceable** rather than opaque. Building on this, I have developed models that fuse **complementary molecular views and multiple modalities** for more reliable prediction — two of which are now being **finalized for submission** and are **under peer review**.',
+  'Looking ahead, I want to advance **drug discovery** through research centered on **interpretable AI** and **graph learning**. I am also comfortable working across **multiple modalities**, and I want to explore how combining these techniques can strengthen both the **capability and interpretability** of AI in real-world settings.',
 ]
 
 // Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.
@@ -71,6 +71,7 @@ export type Project = {
   title: string
   authors?: string // for research works; own name in `myAuthorTokens` is highlighted
   org?: string // funding agency / venue / competition host
+  pi?: string // Principal Investigator (for funded projects where I participate)
   role?: string
   status?: string // e.g. 'Under review', 'In preparation', 'Top 10%'
   desc?: string
@@ -101,7 +102,7 @@ export const projectGroups: ProjectGroup[] = [
         title: 'SJoINT: Substructure-Driven Junction Tree for Interpretable ADMET Prediction',
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
         org: 'Manuscript in preparation',
-        status: 'In preparation',
+        status: 'Preparing submission',
         desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250K; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
         tags: ['Junction tree', 'Cross-attention', 'ADMET', 'Contrastive'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
@@ -114,12 +115,12 @@ export const projectGroups: ProjectGroup[] = [
     heading: 'Grants',
     items: [
       {
-        period: '2024–2025', // Sep 2024 – Aug 2025
+        period: 'Sep 2024 – Aug 2025',
         title: 'Master’s Student Research Grant (석사과정생 연구장려금지원사업)',
         org: 'Ministry of Science and ICT (MSIT)',
         role: 'Principal Investigator',
         status: 'PI',
-        desc: 'Individual research grant awarded as PI. Topic: multi-task graph representation learning centered on functional-group junction trees. Advisor: Dr. Sangsoo Lim.',
+        desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT. Advisor: Dr. Sangsoo Lim.',
         tags: ['Graph Representation Learning', 'Multi-task Learning'],
       },
     ],
@@ -152,27 +153,20 @@ export const projectGroups: ProjectGroup[] = [
     heading: 'Competitions & Applied Projects',
     items: [
       {
-        period: '2024',
+        period: 'Aug 2024',
         title: 'Samsung AI Challenge — ML Force Fields',
         org: 'Samsung',
         status: 'Top 10%',
-        desc: 'Machine Learning Force Fields for semiconductor material simulation.',
-        tags: ['MLFF', 'Simulation'],
+        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces for semiconductor-material simulation, replacing costly DFT calculations. Ranked top 10%.',
+        tags: ['MLFF', 'Simulation', 'Deep Learning'],
         links: [{ label: 'GitHub', href: 'https://github.com/myungjin00/2024_Samsung-MLFF-Challenge' }],
       },
       {
         period: '2024',
         title: 'DREAM Challenge — Odor Similarity Prediction',
-        desc: 'Deep learning model for olfactory similarity between molecular mixtures.',
+        desc: 'Built a graph neural network that predicts olfactory (odor) similarity between molecular mixtures from their chemical structures.',
         tags: ['Molecular ML', 'GNN'],
         links: [{ label: 'GitHub', href: 'https://github.com/myungjin00/2024-DREAM-challenge' }],
-      },
-      {
-        period: '2025',
-        title: 'MASLD GO Enrichment Analysis',
-        desc: 'Gene Ontology enrichment analysis and visualization for MASLD studies.',
-        tags: ['Bioinformatics'],
-        links: [{ label: 'GitHub', href: 'https://github.com/myungjin00/MASLD_GO_enrichment_plots' }],
       },
     ],
   },
@@ -212,13 +206,13 @@ export const vitae: VitaeSection[] = [
       {
         period: 'Mar 2023 – Feb 2024',
         title: 'B.S. in Industrial & Management Engineering (Advanced Major Program)',
-        detail: 'Induk University, Seoul, Korea · GPA 4.43/4.5 · Valedictorian (1st in class)',
+        detail:
+          'Induk University, Seoul, Korea · Convergence Minor in Deep Learning · GPA 4.43/4.5 · Valedictorian',
       },
       {
         period: 'Mar 2020 – Feb 2023',
-        title: 'Associate Degree in Industrial & Management Engineering',
-        detail:
-          'Induk University, Seoul, Korea · GPA 4.41/4.5 (Major 4.42/4.5) · Valedictorian (1st in class)',
+        title: 'Associate of Engineering in Industrial & Management Engineering',
+        detail: 'Induk University, Seoul, Korea · GPA 4.41/4.5 (Major 4.42/4.5) · Valedictorian',
       },
     ],
   },
@@ -228,7 +222,8 @@ export const vitae: VitaeSection[] = [
       {
         period: 'Mar 2024 – Present',
         title: 'Graduate Researcher, PRISM Lab',
-        detail: 'Dongguk University, Seoul, Korea (Advisor: Dr. Sangsoo Lim)',
+        detail:
+          'Dongguk University, Seoul, Korea (Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ))',
       },
     ],
   },
@@ -241,16 +236,15 @@ export const vitae: VitaeSection[] = [
         detail: 'Korea Computer Congress (KCC), KIISE, Korea · MAGNET (co-author)',
       },
       {
-        period: 'Aug 2024',
-        title: 'Top 10% — Samsung AI Challenge (ML Force Fields)',
-        detail: 'Machine Learning Force Fields for semiconductor material simulation',
+        period: '2023',
+        title: 'Highest Academic Achievement Award',
+        detail: 'Induk University, Korea',
       },
       // Merit scholarships — summarized as one line (do not list every semester).
       {
         period: '2020–2023',
-        title: 'Merit-based Academic Scholarships (multiple semesters)',
-        detail:
-          'Induk University, Korea · incl. Highest Academic Excellence (2022) and GRAPE Talent Scholarship',
+        title: 'Merit-based Academic Scholarship (every semester)',
+        detail: 'Induk University, Korea · awarded every semester · incl. GRAPE Talent Scholarship',
       },
     ],
   },
@@ -278,12 +272,17 @@ export const vitae: VitaeSection[] = [
   {
     heading: 'Technical Skills',
     items: [
-      { period: '', title: 'Programming', detail: 'Python, Java, C#, JavaScript, SQL, HTML' },
-      { period: '', title: 'ML / Deep Learning', detail: 'PyTorch, PyTorch Geometric, scikit-learn, Pandas, NumPy' },
+      { period: '', title: 'Programming', detail: 'Python, R, Java, C#, JavaScript, SQL, HTML' },
+      {
+        period: '',
+        title: 'ML / Deep Learning',
+        detail: 'PyTorch, PyTorch Geometric, scikit-learn, Pandas, NumPy',
+      },
       {
         period: '',
         title: 'Cheminformatics / Bioinformatics',
-        detail: 'RDKit, Scanpy, PyDESeq2, GO / Enrichment Analysis',
+        detail:
+          'RDKit, Scanpy, differential expression analysis (PyDESeq2, MAST), GO / enrichment analysis',
       },
       { period: '', title: 'Databases', detail: 'MySQL' },
     ],
