@@ -12,7 +12,7 @@ export const profile = {
   role: 'M.S. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
-  headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
+  headline: 'AI for Drug Discovery · ADMET Prediction · Drug Repurposing · Graph Learning · XAI',
   degree: 'M.S.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
@@ -35,8 +35,8 @@ export const profile = {
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
   'I hold an **M.S. in Computer Science and Artificial Intelligence** from Dongguk University _(major: AI in Healthcare and Medicine)_. I earned a B.S. in Industrial & Management Engineering from Induk University, where I graduated as **valedictorian**. I am now seeking industry roles where I can apply machine learning to **drug discovery** and molecular data.',
-  'My work focuses on **AI for drug discovery**, centered on ADMET prediction and molecular graph learning. I build **interpretable models** that use attention to reveal which molecular substructures drive each prediction, so the model’s reasoning stays transparent and traceable rather than opaque. Building on this, I have developed models that fuse complementary molecular views and multiple modalities for more reliable prediction — two of which are now being finalized for submission and are **under peer review**.',
-  'Looking ahead, I want to advance drug discovery through research centered on **interpretable AI** and **graph learning**. I am also comfortable working across multiple modalities, and I want to explore how combining these techniques can strengthen both the capability and interpretability of AI in real-world settings.',
+  'My work centers on **AI for drug discovery**, spanning **drug repurposing** and **ADMET prediction**. Within a national open AI drug-discovery platform project, I built standardized benchmarks and developed graph-based models for both areas — including interpretable models that use attention to reveal which molecular substructures drive each prediction, so the model’s reasoning stays transparent rather than opaque. Two of my ADMET manuscripts are now being finalized for submission and are **under peer review**.',
+  'Looking ahead, I want to advance drug discovery through research centered on **interpretable AI** and **graph learning**. I am comfortable working across multiple modalities — from molecular graphs to single-cell omics — and I want to explore how combining these techniques can strengthen both the capability and interpretability of AI in real-world settings.',
 ]
 
 // Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.
@@ -184,12 +184,15 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         period: 'Jul 2025 – Aug 2026',
-        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터',
+        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터 (Bio-SYNAPSE)',
         org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
         pi: 'Dr. Minho Lee (Dongguk University, host)',
         status: 'Participating Researcher',
-        desc: 'Development of an open platform for AI-driven drug discovery and biomedical data analysis; participated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
-        tags: ['AI Drug Discovery', 'Data Analysis'],
+        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform (Bio-SYNAPSE) on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
+        abstract:
+          'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked and developed AI models for absorption, distribution, metabolism, excretion, toxicity, and physicochemical properties, including an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the developed models as Docker images and deployed them to the national bio-data platform (KBDI).',
+        moreLabel: 'Details',
+        tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
       },
     ],
   },
@@ -243,6 +246,8 @@ export const vitae: VitaeSection[] = [
         items: [
           'Molecular Graph Representation Learning',
           'ADMET Property Prediction',
+          'Drug Repurposing',
+          'Drug–Target Interaction (DTI)',
           'Drug Response Prediction',
           'Explainable AI (XAI)',
         ],
@@ -352,7 +357,7 @@ export const vitae: VitaeSection[] = [
         detail:
           'Scanpy, Seurat, bulk & single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
       },
-      { period: '', title: 'Tools & Databases', detail: 'Git, Linux, MySQL' },
+      { period: '', title: 'Tools & Databases', detail: 'Git, Linux, Docker, MySQL' },
     ],
   },
   {

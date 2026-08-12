@@ -404,6 +404,8 @@ main {
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+.abstract > p { margin: 0; }
+.abstract > p + p { margin-top: 10px; }
 button.chip-btn { background: none; cursor: pointer; }
 .kw-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .interest-cat {
