@@ -246,6 +246,7 @@ export const vitae: VitaeSection[] = [
           'ADMET Property Prediction',
           'Drug Response Prediction',
           'Generative AI for Molecular Design',
+          'Explainable AI (XAI)',
         ],
       },
       {
@@ -255,11 +256,8 @@ export const vitae: VitaeSection[] = [
           'Network Biology',
           'Differential Expression Analysis',
           'Dimensionality Reduction',
+          'Multimodal AI for Biomedical Problems',
         ],
-      },
-      {
-        title: 'Multimodal & Interpretable AI',
-        items: ['Multimodal AI for Biomedical Problems', 'Explainable AI (XAI)'],
       },
     ],
   },
