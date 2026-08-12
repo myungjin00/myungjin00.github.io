@@ -245,18 +245,13 @@ export const vitae: VitaeSection[] = [
         items: [
           'Multi-omics Data Integration',
           'Network Biology',
+          'Differential Expression Analysis',
           'Dimensionality Reduction',
-          'Virtual Cell Construction',
         ],
       },
       {
-        title: 'Multimodal & Healthcare AI',
-        items: [
-          'Multimodal AI for Biomedical Problems',
-          'Spatial Transcriptomics',
-          'Biomedical Knowledge Graph Representation',
-          'Agentic AI for Biomedicine',
-        ],
+        title: 'Multimodal & Interpretable AI',
+        items: ['Multimodal AI for Biomedical Problems', 'Explainable AI (XAI)'],
       },
     ],
   },
