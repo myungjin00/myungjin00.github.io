@@ -122,7 +122,13 @@ function ProjectRow({ p }: { p: Project }) {
             </button>
           )}
         </div>
-        {p.abstract && open && <p className="abstract">{p.abstract}</p>}
+        {p.abstract && open && (
+          <div className="abstract">
+            {p.abstract.split('\n').map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
