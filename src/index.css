@@ -385,7 +385,7 @@ main {
 @media (min-width: 768px) {
   /* Photo floats to the right, starting just under the keyword line;
      standing / location / links / intro wrap beside it. */
-  .portrait { float: right; width: 240px; margin: 6px 0 14px 36px; }
+  .portrait { float: right; width: 240px; margin: 30px 0 14px 36px; }
 }
 .portrait-fallback {
   display: grid;
