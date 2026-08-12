@@ -29,12 +29,12 @@ export const profile = {
 }
 
 export const bio: string[] = [
-  '안녕하세요, **신약개발 AI**를 연구하는 머신러닝 연구자 **이명진**입니다. 최근 동국대학교에서 컴퓨터·인공지능공학 석사 _(전공: AI in Healthcare and Medicine)_ 를 마쳤고, 인덕대학교 산업경영공학 학사를 수석으로 졸업했습니다. 현재 머신러닝을 신약개발과 분자 데이터에 적용할 수 있는 **기회를 찾고 있습니다**.',
-  '주 분야는 분자 표현을 위한 **그래프 학습**과 **ADMET 예측**이며, 약물 재창출부터 노화연관 MASLD 표적 발굴을 위한 전사체 분석에 이르기까지 더 광범위한 AI 기반 신약개발·생물정보학 문제도 **연구한 경험이 있습니다**. 저는 **어텐션 메커니즘**을 활용해 어떤 분자 하위구조가 예측을 이끄는지 드러내는 **해석 가능한 AI 모델**을 개발하여, 모델의 추론이 불투명하지 않고 투명하게 유지되도록 합니다. 두 편의 ADMET 논문 중 하나는 심사 중이며, 다른 하나는 투고를 마무리하고 있습니다.',
-  '앞으로는 해석 가능한 그래프 기반 AI로 **신약개발**을 발전시키고자 합니다. 분자 표현에서 **약물–타깃 상호작용(DTI)**과 **약물 반응 예측**까지 연결하여, 하나의 프레임워크가 분자 구조부터 세포에 미치는 효과까지 추론할 수 있도록 하는 것이 목표입니다. 장기적으로는 이를 **생성형 분자 설계**로 확장하여, 모델이 학습한 것을 새로운 약물 후보로 이어가고 싶습니다.',
+  '안녕하세요, **AI 기반 신약개발**을 연구하는 머신러닝 연구자 **이명진**입니다. 얼마 전 동국대학교에서 컴퓨터·인공지능공학 석사 _(전공: AI in Healthcare and Medicine)_ 과정을 마쳤고, 그 전에는 인덕대학교 산업경영공학과를 수석으로 졸업했습니다. 지금은 머신러닝을 신약개발과 분자 데이터에 접목할 수 있는 **기회를 찾고 있습니다**.',
+  '주 관심 분야는 분자 표현을 위한 **그래프 학습**과 **ADMET 예측**이고, 약물 재창출부터 노화 연관 MASLD 표적 발굴을 위한 전사체 분석까지 더 폭넓은 AI 신약개발·생물정보학 문제도 **다뤄 본 경험이 있습니다**. 특히 **해석 가능한 AI 모델**을 만드는 일을 좋아하는데요, 제 모델은 **attention 메커니즘**으로 어떤 분자 하위구조가 예측의 근거가 되는지 보여 주기 때문에 모델이 왜 그렇게 판단했는지 직접 확인할 수 있습니다. 현재 ADMET 관련 논문 두 편을 진행하고 있으며, 한 편은 심사 중이고 다른 한 편은 투고를 마무리하고 있습니다.',
+  '앞으로는 해석 가능한 그래프 기반 AI로 **신약개발**을 계속 발전시켜 나가고자 합니다. 분자 표현을 **약물–타깃 상호작용(DTI)**, **약물 반응 예측**과 연결해, 하나의 프레임워크로 분자 구조부터 그 분자가 세포에 미치는 영향까지 추론하는 것이 목표입니다. 장기적으로는 이를 **생성형 분자 설계**로 확장해, 모델이 학습한 내용을 완전히 새로운 약물 후보로 이어 가고 싶습니다.',
 ]
 
-export const aboutClosing = { before: '함께 이야기 나누고 싶으시면 언제든', after: '(으)로 연락 주세요.' }
+export const aboutClosing = { before: '함께 이야기 나누고 싶으시면 언제든', after: '로 편하게 연락 주세요.' }
 
 export const news: NewsItem[] = [
   {
@@ -70,7 +70,7 @@ export const projectGroups: ProjectGroup[] = [
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
         org: '논문 준비 중',
         status: '투고 준비 중',
-        desc: '원자 수준 분자 그래프와 부분구조 수준 정션 트리를 구조 제약 양방향 cross-attention으로 통합하는 이중 관점 분자 표현학습 모델입니다. 데이터 증강 없는 대조학습으로 사전학습(ZINC250K)하며, MoleculeNet ADMET 및 MoleculeACE activity-cliff 과제에서 평가했습니다.',
+        desc: '원자 수준 분자 그래프와 부분구조 수준 junction tree를 구조 제약 양방향 cross-attention으로 통합하는 이중 관점 분자 표현학습 모델입니다. 데이터 증강 없는 대조학습으로 사전학습(ZINC250K)하며, MoleculeNet ADMET 및 MoleculeACE activity-cliff 과제에서 평가했습니다.',
         tags: ['Junction tree', 'Cross-attention', 'ADMET', 'Contrastive'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
       },
@@ -80,7 +80,7 @@ export const projectGroups: ProjectGroup[] = [
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
         org: 'Bioinformatics (심사 중)',
         status: '심사 중',
-        desc: 'MAGNET(Multi-view Aggregation of Graphs for Neural Embedding of Topologies)은 BRICS·정션 트리·Murcko 분해를 cross-view 메타그래프로 통합하는 다중 관점 분자 그래프 프레임워크입니다. ZINC250K로 다목적 자기지도 사전학습을 수행하고 ChemBERTa로 파인튜닝하여 10개 MoleculeNet ADMET 벤치마크에서 평가했습니다.',
+        desc: 'MAGNET(Multi-view Aggregation of Graphs for Neural Embedding of Topologies)은 BRICS·junction tree·Murcko 분해를 cross-view 메타그래프로 통합하는 다중 관점 분자 그래프 프레임워크입니다. ZINC250K로 다목적 자기지도 사전학습을 수행하고 ChemBERTa로 파인튜닝하여 10개 MoleculeNet ADMET 벤치마크에서 평가했습니다.',
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
@@ -97,7 +97,7 @@ export const projectGroups: ProjectGroup[] = [
         org: '포스터 · KCC2026, 한국정보과학회',
         status: '포스터',
         abstract:
-          '분자를 정션 트리와 분자 그래프의 두 관점으로 표현하고 이를 구조 제약 양방향 cross-attention으로 통합하는 자기지도 분자 표현학습 프레임워크를 제안합니다. 원자–부분구조 대응 관계를 마스크로 반영해 대응 요소 간에만 정보를 교환하며, 데이터 증강 없이 동일 분자의 두 그래프 표현을 양성 쌍으로 사용한 대조학습을 수행합니다. MoleculeNet 9개 벤치마크에서 기존 GNN·사전학습 언어모델·자기지도 GNN 대비 경쟁력 있는 성능을 보였고, ablation을 통해 구조 제약 cross-attention과 이중 그래프 표현의 효과를 확인했습니다. 또한 attention 분석으로 예측 과제에 따라 원자–부분구조 관계가 선택적으로 반영됨을 보였습니다.',
+          '분자를 junction tree와 분자 그래프의 두 관점으로 표현하고 이를 구조 제약 양방향 cross-attention으로 통합하는 자기지도 분자 표현학습 프레임워크를 제안합니다. 원자–부분구조 대응 관계를 마스크로 반영해 대응 요소 간에만 정보를 교환하며, 데이터 증강 없이 동일 분자의 두 그래프 표현을 양성 쌍으로 사용한 대조학습을 수행합니다. MoleculeNet 9개 벤치마크에서 기존 GNN·사전학습 언어모델·자기지도 GNN 대비 경쟁력 있는 성능을 보였고, ablation을 통해 구조 제약 cross-attention과 이중 그래프 표현의 효과를 확인했습니다. 또한 attention 분석으로 예측 과제에 따라 원자–부분구조 관계가 선택적으로 반영됨을 보였습니다.',
         links: [{ label: 'Poster (PDF)', href: '/assets/kcc2026.pdf' }],
       },
       {
@@ -106,7 +106,7 @@ export const projectGroups: ProjectGroup[] = [
         org: '포스터 · BIOINFO2025, 한국생명정보학회',
         status: '포스터',
         abstract:
-          'ADMET(흡수·분포·대사·배설·독성) 등 분자 특성의 정확한 예측은 신약개발에서 매우 중요하지만, 예측 모델의 해석 가능성 확보는 여전히 과제입니다. 기존 GNN 기반 모델은 정확하나 어떤 하위구조가 특정 특성에 기여하는지 설명하지 못하는 “블랙박스” 한계가 있습니다. 본 연구는 분자 하위구조 정보를 명시적으로 활용해 정확성과 해석 가능성을 동시에 달성하는 이중 인코더 모델 SJoINT를 제안합니다. 원자 수준 분자 그래프와 정션 트리를 이중 입력으로 받아 반복적 cross-attention으로 두 표현의 관계를 학습하여 특정 ADMET 특성과 연관된 핵심 하위구조를 식별합니다. MoleculeNet 벤치마크의 독성 부작용 예측(SIDER) 과제에서 state-of-the-art 성능을 달성했습니다.',
+          'ADMET(흡수·분포·대사·배설·독성) 등 분자 특성의 정확한 예측은 신약개발에서 매우 중요하지만, 예측 모델의 해석 가능성 확보는 여전히 과제입니다. 기존 GNN 기반 모델은 정확하나 어떤 하위구조가 특정 특성에 기여하는지 설명하지 못하는 “블랙박스” 한계가 있습니다. 본 연구는 분자 하위구조 정보를 명시적으로 활용해 정확성과 해석 가능성을 동시에 달성하는 이중 인코더 모델 SJoINT를 제안합니다. 원자 수준 분자 그래프와 junction tree를 이중 입력으로 받아 반복적 cross-attention으로 두 표현의 관계를 학습하여 특정 ADMET 특성과 연관된 핵심 하위구조를 식별합니다. MoleculeNet 벤치마크의 독성 부작용 예측(SIDER) 과제에서 state-of-the-art 성능을 달성했습니다.',
         links: [{ label: 'Poster (PDF)', href: '/assets/bioinfo2025.pdf' }],
       },
       {
@@ -116,7 +116,7 @@ export const projectGroups: ProjectGroup[] = [
         org: '포스터 · KCC2025, 한국정보과학회',
         status: '포스터',
         abstract:
-          'SMILES 기반 분자 표현을 다양한 구조적 관점에서 해석하기 위해 세 가지 분해 기법(BRICS·Murcko scaffold·정션 트리)을 통합한 분자 구조 학습 프레임워크를 제안합니다. 각 분해 기법에서 추출한 하위구조를 triple-view 그래프로 구성하고 그래프 트랜스포머 기반 모델로 학습하여 복잡한 분자 구조 정보를 정밀하게 반영합니다. MoleculeNet 벤치마크에서 기존 모델 대비 우수한 성능을 보였고, ablation을 통해 세 분해 기법의 통합이 성능 향상에 핵심적으로 기여함을 확인했습니다.',
+          'SMILES 기반 분자 표현을 다양한 구조적 관점에서 해석하기 위해 세 가지 분해 기법(BRICS·Murcko scaffold·junction tree)을 통합한 분자 구조 학습 프레임워크를 제안합니다. 각 분해 기법에서 추출한 하위구조를 triple-view 그래프로 구성하고 그래프 트랜스포머 기반 모델로 학습하여 복잡한 분자 구조 정보를 정밀하게 반영합니다. MoleculeNet 벤치마크에서 기존 모델 대비 우수한 성능을 보였고, ablation을 통해 세 분해 기법의 통합이 성능 향상에 핵심적으로 기여함을 확인했습니다.',
         links: [{ label: 'Poster (PDF)', href: '/assets/kcc2025.pdf' }],
       },
     ],
@@ -130,7 +130,7 @@ export const projectGroups: ProjectGroup[] = [
         org: '과학기술정보통신부(MSIT)',
         role: 'Principal Investigator',
         status: '연구책임자',
-        desc: '연구책임자(PI)로 선정된 개인 연구과제로, 작용기 정션 트리 기반 멀티태스크 분자 그래프 표현학습을 연구했습니다(SJoINT로 발전).\n지도교수: 임상수 교수.',
+        desc: '연구책임자(PI)로 선정된 개인 연구과제로, functional-group junction tree 기반 멀티태스크 분자 그래프 표현학습을 연구했습니다(SJoINT로 발전).\n지도교수: 임상수 교수.',
         tags: ['Graph Representation Learning', 'Multi-task Learning'],
       },
     ],
@@ -158,7 +158,7 @@ export const projectGroups: ProjectGroup[] = [
         status: '참여연구원',
         desc: '개방형 AI 신약개발 플랫폼(KISTI HPC)의 약물 재창출·ADMET 예측 분야를 담당했습니다.\nPRISM Lab을 통해 참여 (지도교수: 임상수 교수).',
         abstract:
-          '약물 재창출: PrimeKG 기반 약물–질병–단백질 데이터를 정제하고, 5개 재창출 모델(TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA)을 190개 질환·3,379개 약물에 대해 동일 조건에서 평가하는 표준 벤치마크와 통합 실험 환경을 구축했습니다(사례: 고혈압). 질병 유사도와 임상적 약물–질병 관계를 반영한 DC-VGAE와 성능 기반 앙상블을 개발해 예측 정확도·안정성을 개선했습니다.\nADMET: 흡수·분포·대사·배설·독성 및 물리화학적 특성 예측 AI 모델을 벤치마킹·개발했으며, 분자를 하위구조(정션 트리·Murcko scaffold·BRICS)로 분해하고 cross-attention으로 통합하는 해석 가능한 ADMET 예측 모델을 포함합니다. MoleculeNet ADMET 및 MoleculeACE activity-cliff에서 원자·하위구조 수준 해석 가능성과 함께 검증했습니다.\n배포: 개발 모델을 Docker 이미지로 패키징하여 국가 바이오데이터 플랫폼(KBDI)에 배포했습니다.',
+          '약물 재창출: PrimeKG 기반 약물–질병–단백질 데이터를 정제하고, 5개 재창출 모델(TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA)을 190개 질환·3,379개 약물에 대해 동일 조건에서 평가하는 표준 벤치마크와 통합 실험 환경을 구축했습니다(사례: 고혈압). 질병 유사도와 임상적 약물–질병 관계를 반영한 DC-VGAE와 성능 기반 앙상블을 개발해 예측 정확도·안정성을 개선했습니다.\nADMET: 흡수·분포·대사·배설·독성 및 물리화학적 특성 예측 AI 모델을 벤치마킹·개발했으며, 분자를 하위구조(junction tree·Murcko scaffold·BRICS)로 분해하고 cross-attention으로 통합하는 해석 가능한 ADMET 예측 모델을 포함합니다. MoleculeNet ADMET 및 MoleculeACE activity-cliff에서 원자·하위구조 수준 해석 가능성과 함께 검증했습니다.\n배포: 개발 모델을 Docker 이미지로 패키징하여 국가 바이오데이터 플랫폼(KBDI)에 배포했습니다.',
         moreLabel: '상세',
         tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
         links: [{ label: 'KBDI ↗', href: 'https://kbdi.re.kr/main/mainVw.do' }],
