@@ -11,8 +11,10 @@ export const profile = {
   lastName: 'Lee',
   role: 'M.S. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
-  // Short "what I do" line shown under the name (replaces the lab tag).
-  headline: 'Machine Learning Researcher — Molecular AI for Drug Discovery',
+  // Keyword line under the name — what I do, ending with current status.
+  headline:
+    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S. Candidate @ PRISM Lab',
+  location: 'Seoul, South Korea',
   lab: { label: '@PRISM Lab', href: 'https://sangsoolim.notion.site' },
   // Place the image file at public/assets/profile.jpg (portrait works best).
   photo: '/assets/profile.jpg',
@@ -25,15 +27,15 @@ export const profile = {
   ],
 }
 
-// About-page bio paragraphs (rendered in order).
+// About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'I am a machine learning researcher focused on molecular graph representation learning for drug discovery. I design self-supervised pretraining and multi-view graph architectures that turn molecular structure into transferable, interpretable representations for ADMET and molecular property prediction. I am completing my M.S. in Computer Science and Artificial Intelligence (AI in Healthcare and Medicine) at Dongguk University.',
-  'As first author, I built SJoINT, a dual-view model that fuses atom-level molecular graphs with substructure-level junction trees through structure-constrained cross-attention and augmentation-free contrastive pretraining. I also co-authored MAGNET, a multi-view fragmentation framework with self-supervised pretraining on ZINC250K for interpretable ADMET prediction — recognized with an award at KCC 2025 and currently under journal review. I led an individual research grant as Principal Investigator and contributed to national AI drug-discovery research projects.',
+  'I am completing my M.S. in Computer Science and Artificial Intelligence at Dongguk University, with a major in AI in Healthcare and Medicine, graduating in August 2026. I previously earned a B.S. in Industrial & Management Engineering from Induk University, where I graduated as valedictorian. I am now seeking industry roles where I can apply machine learning to drug discovery and molecular data.',
+  'My work focuses on AI for drug discovery, centered on ADMET prediction and molecular graph learning. I build interpretable models that use attention to reveal which molecular substructures drive each prediction, so the model’s reasoning stays transparent rather than a black box. Building on this, I have also developed interpretable models that fuse complementary molecular views and modalities for more reliable property prediction — work that is currently in preparation and under review.',
+  'Looking ahead, I want to advance drug discovery through research centered on interpretable AI and graph learning. I am also comfortable working with multiple modalities, and I want to explore how combining these techniques can strengthen AI’s capabilities and interpretability in real-world settings.',
 ]
 
-// Closing paragraph on the About page (industry-oriented).
-export const aboutClosing =
-  'I work end-to-end — from data curation and pretraining to fine-tuning and model interpretation — primarily in PyTorch, PyTorch Geometric, and RDKit. I am now looking for industry roles in AI for drug discovery and molecular machine learning, where I can turn chemical and biomedical data into reliable, interpretable predictions.'
+// Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.
+export const aboutClosing = 'If you’d like to connect, feel free to reach out anytime by'
 
 // ---------------------------------------------------------------------------
 export type NewsItem = { date: string; text: string; link?: { label: string; href: string } }
