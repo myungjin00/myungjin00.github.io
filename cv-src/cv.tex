@@ -1,0 +1,126 @@
+\documentclass[10.5pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ebgaramond}
+\usepackage{fontspec}
+\newfontfamily\kr{Noto Serif CJK KR}
+\usepackage[margin=0.9in,top=0.8in,bottom=0.8in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{C0432A}
+\definecolor{muted}{HTML}{6B6560}
+\definecolor{ink}{HTML}{1A1916}
+
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent}
+\color{ink}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+% ---- Section styling ----
+\titleformat{\section}
+  {\normalfont\large\scshape\color{accent}}{}{0em}{}[\vspace{-0.6em}{\color{muted!40}\titlerule}\vspace{0.2em}]
+\titlespacing{\section}{0pt}{10pt}{4pt}
+
+% ---- Date / content row (minipages so \\ line-breaks inside the content) ----
+\newcommand{\entry}[2]{%
+  \noindent
+  \begin{minipage}[t]{0.16\linewidth}\raggedright{\small\color{muted}#1}\end{minipage}%
+  \hspace{0.02\linewidth}%
+  \begin{minipage}[t]{0.80\linewidth}\raggedright #2\end{minipage}%
+  \par\vspace{5pt}%
+}
+% ---- Skills row ----
+\newcommand{\skill}[2]{%
+  \noindent
+  \begin{minipage}[t]{0.22\linewidth}\raggedright{\color{muted}#1}\end{minipage}%
+  \hspace{0.01\linewidth}%
+  \begin{minipage}[t]{0.75\linewidth}\raggedright #2\end{minipage}%
+  \par\vspace{3pt}%
+}
+
+\newcommand{\me}[1]{\textbf{\underline{#1}}}
+
+\begin{document}
+
+% ======================= HEADER =======================
+{\LARGE\bfseries Myungjin Lee}\quad{\color{muted}\large \kr{이명진}}\\[2pt]
+{\color{muted} M.S. in Computer Science \& Artificial Intelligence \textbullet\ Dongguk University}\\[1pt]
+{\color{muted} AI for Drug Discovery \textbullet\ ADMET Prediction \textbullet\ Drug Repurposing \textbullet\ Graph Learning \textbullet\ XAI}\\[4pt]
+{\small
+\href{mailto:leemj637@gmail.com}{leemj637@gmail.com} \ \textbullet\ \
+\href{https://github.com/myungjin00}{github.com/myungjin00} \ \textbullet\ \
+\href{https://myungjin00.github.io}{myungjin00.github.io} \ \textbullet\ \
+Seoul, South Korea}
+
+% ======================= INTEREST =======================
+\section{Research Interests}
+\textbf{AI for Drug Discovery:} Molecular Graph Representation Learning, ADMET Property Prediction, Drug Repurposing, Drug--Target Interaction (DTI), Drug Response Prediction, Explainable AI (XAI).\\[2pt]
+\textbf{ML \& Data Mining for Bioinformatics:} Multi-omics Data Integration, Network Biology, Differential Expression Analysis, Dimensionality Reduction, Multimodal AI for Biomedical Problems.
+
+% ======================= EDUCATION =======================
+\section{Education}
+\entry{Mar 2024 -- Aug 2026}{\textbf{M.S. in Computer Science and Artificial Intelligence} \\ Dongguk University, Seoul, Korea \\ {\color{muted}Major: AI in Healthcare and Medicine \textbullet\ GPA 4.04/4.5}}
+\entry{Mar 2023 -- Feb 2024}{\textbf{B.S. in Industrial \& Management Engineering} (Advanced Major Program) \\ Induk University, Seoul, Korea \\ {\color{muted}Convergence Minor in Deep Learning \textbullet\ GPA 4.43/4.5 \textbullet\ Valedictorian}}
+\entry{Mar 2020 -- Feb 2023}{\textbf{Associate of Engineering in Industrial \& Management Engineering} \\ Induk University, Seoul, Korea \\ {\color{muted}GPA 4.41/4.5 (Major 4.42/4.5) \textbullet\ Valedictorian}}
+
+% ======================= RESEARCH EXPERIENCE =======================
+\section{Research Experience}
+\entry{Mar 2024 -- Present}{\textbf{Graduate Researcher}, PRISM Lab \\ Dongguk University, Seoul, Korea {\color{muted}(Advisor: \href{https://scholar.google.com/citations?user=d19A738AAAAJ}{Dr.\ Sangsoo Lim})}}
+
+% ======================= RESEARCH (MANUSCRIPTS) =======================
+\section{Research}
+{\small\color{muted}$^{*}$ Corresponding author; \underline{underlined} name is the CV owner.}\\[3pt]
+\entry{2026}{\me{Lee M.}, Mo J., Kang M., Lim S.$^{*}$ \\ \textbf{SJoINT: Substructure-Driven Junction Tree for Interpretable ADMET Prediction} \\ {\color{muted}\textit{Manuscript in preparation.} Dual-view learning of atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention with augmentation-free contrastive pretraining (ZINC250K); evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.}}
+\entry{2026}{Mo J., \me{Lee M.}, Lee S., Lim S.$^{*}$ \\ \textbf{MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction} \\ {\color{muted}\textit{Bioinformatics} (under review). Multi-view molecular graph framework integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.}}
+
+% ======================= PRESENTATIONS =======================
+\section{Conference Presentations}
+\entry{Jun 2026}{\textbf{Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning} \\ {\color{muted}Poster, Korea Computer Congress (KCC) 2026, KIISE, Korea.}}
+\entry{Oct 2025}{\textbf{Weighted Junction-Tree Nodes for Enhanced Interpretability in ADMET Tasks} \\ {\color{muted}Poster, BIOINFO 2025, KSBI, Korea.}}
+\entry{Jul 2025}{\textbf{Integrating Triple-View Chemical Graph Aggregation with Deep Topological Embedding for ADME Property Prediction} \\ {\color{muted}Poster, Korea Computer Congress (KCC) 2025, KIISE, Korea.}}
+
+% ======================= GRANTS =======================
+\section{Grants}
+\entry{2024 -- 2025}{\textbf{Master's Student Research Grant} (\kr{석사과정생 연구장려금지원사업}) --- \textbf{Principal Investigator} \\ {\color{muted}Ministry of Science and ICT (MSIT). Individual research grant on functional-group junction-tree-based multi-task molecular graph representation learning. Advisor: Dr.\ Sangsoo Lim.}}
+
+% ======================= RESEARCH PROJECTS =======================
+\section{Research Projects (Participating Researcher)}
+\entry{2025 -- 2026}{\textbf{Multimodal AI-based Target Discovery and Drug Validation for Aging-related MASLD} \\ {\color{muted}Individual Basic Research Program, NRF (MSIT). PI: Dr.\ Sangsoo Lim; Collaborator: Dr.\ Gung Lee (Mayo Clinic, USA).} \\ {\color{muted}Preliminary omics/bioinformatics for target discovery: curated public \& experimental bulk/single-cell RNA-seq; QC $\rightarrow$ DEG $\rightarrow$ GSEA/ssGSEA $\rightarrow$ module scoring; characterized lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) in aging mouse liver, with a supporting cross-check in public human data; prioritized candidate genes and Plin2-defined senescent-cell subsets.}}
+\entry{2025 -- 2026}{\textbf{Open AI Drug Discovery and Data Analysis Platform Center (Bio-SYNAPSE)} \\ {\color{muted}Bio \& Medical Technology Development Program, NRF (MSIT). PI: Dr.\ Minho Lee (host).} \\ {\color{muted}\textbf{Drug repurposing:} built a standardized PrimeKG-based benchmark to evaluate five models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) across 190 diseases / 3{,}379 drugs; developed DC-VGAE and a performance-based ensemble. \textbf{ADMET:} benchmarked and developed an interpretable ADMET model using junction-tree / Murcko / BRICS substructures with cross-attention. \textbf{Deployment:} packaged models as Docker images for the national bio-data platform (KBDI).}}
+
+% ======================= COMPETITIONS =======================
+\section{Competitions}
+\entry{Aug 2024}{\textbf{2024 Samsung AI Challenge --- Machine Learning Force Fields} \quad {\color{accent}Top 10\% (11th)} \\ {\color{muted}Samsung Electronics SAIT $\cdot$ DACON. Built MLFF models predicting atomic energies and forces with uncertainty quantification for semiconductor-material simulation (team DAI).}}
+\entry{2024}{\textbf{DREAM Olfactory Mixtures Prediction Challenge} \\ {\color{muted}International DREAM Challenge, Sage Bionetworks. Graph neural network predicting olfactory similarity of molecular mixtures.}}
+
+% ======================= HONORS =======================
+\section{Honors \& Awards}
+\entry{2025}{\textbf{Best Paper Award}, Undergraduate Paper Track --- KCC 2025 \\ {\color{muted}Korea Computer Congress (KCC), KIISE, Korea (MAGNET, co-author).}}
+\entry{2023}{\textbf{Highest Academic Achievement Award} \\ {\color{muted}Induk University, Korea.}}
+\entry{2020 -- 2023}{\textbf{Merit-based Academic Scholarship} --- awarded every semester \\ {\color{muted}Induk University, Korea (incl.\ GRAPE Talent Scholarship).}}
+
+% ======================= PATENTS =======================
+\section{Patents \& Software Registrations}
+\entry{Oct 2025}{An Embedding Method via Multi-view Graph Integration of Molecular Structures \\ {\color{muted}Software Registration, Korea Copyright Commission, No.\ C-2025-040207.}}
+\entry{2025}{System and Method for Predicting Olfactory Characteristics of Odor Mixture Data \\ {\color{muted}Korean Patent Application (pending), No.\ 10-2025-0003146.}}
+\entry{Nov 2024}{Deep Learning Model for Similarity Prediction of Graph-based Mixtures \\ {\color{muted}Software Registration, Korea Copyright Commission, No.\ C-2024-042597.}}
+
+% ======================= SKILLS =======================
+\section{Technical Skills}
+\skill{Programming}{Python, R, Java, C\#, JavaScript, SQL, HTML}
+\skill{Deep Learning}{PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, NumPy, Pandas}
+\skill{Cheminformatics}{RDKit, DeepChem, TorchDrug, ChemPy}
+\skill{Bioinformatics}{Scanpy, Seurat, bulk \& single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment}
+\skill{Tools \& Databases}{Git, Linux, Docker, MySQL}
+
+% ======================= LANGUAGES =======================
+\section{Languages}
+\skill{Korean}{Native}
+\skill{English}{TOEIC 860 (LC 440 / RC 420)}
+
+\end{document}
