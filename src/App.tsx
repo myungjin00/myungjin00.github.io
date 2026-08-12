@@ -205,7 +205,6 @@ function About({ go }: { go: (s: Section) => void }) {
                 </a>
               ))}
             </div>
-            {bio[0] && <p className="bio">{renderRich(bio[0])}</p>}
           </div>
 
           {profile.photo ? (
@@ -216,7 +215,7 @@ function About({ go }: { go: (s: Section) => void }) {
             </div>
           )}
         </div>
-        {bio.slice(1).map((p, i) => (
+        {bio.map((p, i) => (
           <p className="bio" key={i}>
             {renderRich(p)}
           </p>
