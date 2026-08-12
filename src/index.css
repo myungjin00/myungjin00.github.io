@@ -380,7 +380,9 @@ main {
 }
 .portrait:hover { filter: grayscale(0); }
 @media (min-width: 768px) {
-  .portrait { order: 0; width: 170px; margin-top: 6px; }
+  /* Start the photo at the headline line (skip the name) and size it to reach
+     roughly the end of the intro paragraph. */
+  .portrait { order: 0; width: 220px; margin-top: 52px; }
 }
 .portrait-fallback {
   display: grid;
