@@ -16,6 +16,11 @@ export const profile = {
   degree: 'M.S.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
+  // External nav link (e.g. Notion notes/blog). Opens in a new tab.
+  notes: {
+    label: 'Notes',
+    href: 'https://myungjinlee.notion.site/Myungjin-s-Notes-3baa81750c2e80388ed7e6e6676f308c',
+  },
   // Place the image file at public/assets/profile.jpg (portrait works best).
   photo: '/assets/profile.jpg',
   email: 'leemj637@gmail.com',

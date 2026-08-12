@@ -397,6 +397,11 @@ export default function App() {
                 {n.label}
               </button>
             ))}
+            {profile.notes && (
+              <a className="nav-ext" href={profile.notes.href} target="_blank" rel="noreferrer">
+                {profile.notes.label} ↗
+              </a>
+            )}
           </nav>
         </div>
       </header>

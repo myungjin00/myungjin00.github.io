@@ -124,6 +124,14 @@ a:hover {
 }
 .nav button:hover { color: var(--fg); }
 .nav button.active { color: var(--accent); }
+.nav-ext {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+.nav-ext:hover { color: var(--accent); text-decoration: none; }
 
 /* ---------- Main ---------- */
 main {
