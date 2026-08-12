@@ -91,7 +91,7 @@ export const projectGroups: ProjectGroup[] = [
         period: '2026',
         title: 'MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction',
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
-        org: 'Bioinformatics (under review) · Poster, KCC 2025',
+        org: 'Bioinformatics (under review)',
         status: 'Under review',
         desc: 'Multi-view molecular graph framework (MAGNET = Multi-view Aggregation of Graphs for Neural Embedding of Topologies) integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with multi-objective self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.',
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
@@ -117,7 +117,7 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Jun 2026',
         title:
           'Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning',
-        org: 'Poster · SJoINT · KCC2026, KIISE, Korea',
+        org: 'Poster · KCC2026, KIISE, Korea',
         status: 'Poster',
         abstract:
           'We propose a self-supervised molecular representation learning framework that represents each molecule from two perspectives — a junction tree and a molecular graph — and integrates them via structure-constrained bidirectional cross-attention. The method encodes atom–substructure correspondence as a mask so that information is exchanged only between corresponding elements, and it performs contrastive learning using the two graph representations of the same molecule as a positive pair, without any data augmentation. On nine MoleculeNet benchmarks, the method shows competitive performance against conventional GNNs, pretrained language models, and self-supervised GNNs, and ablation studies confirm the effect of the structure-constrained bidirectional cross-attention and the dual-graph representation. Attention analysis further shows that atom–substructure relationships are selectively reflected depending on the prediction task, suggesting that augmentation-free self-supervised learning reflecting structural correspondence can be effective for molecular property prediction.',
@@ -126,7 +126,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         period: 'Oct 2025',
         title: 'Weighted Junction-Tree Nodes for Enhanced Interpretability in ADMET Tasks',
-        org: 'Poster · SJoINT · BIOINFO2025, KSBI, Korea',
+        org: 'Poster · BIOINFO2025, KSBI, Korea',
         status: 'Poster',
         abstract:
           'Accurate prediction of molecular properties such as absorption, distribution, metabolism, excretion, and toxicity (ADMET) is crucial in the drug discovery process; however, ensuring the interpretability of prediction models remains a significant challenge. Although existing Graph Neural Network (GNN)-based models demonstrate high predictive accuracy, they often suffer from the “black box” limitation of failing to explain which molecular substructures contribute to specific properties. We propose SJoINT, a dual-encoder model that explicitly utilizes molecular substructure information to achieve both accuracy and interpretability. SJoINT takes an atom-level molecular graph and a corresponding junction tree — representing the molecular scaffold and functional groups — as dual inputs, and learns the relationship between the two representations through an iterative cross-attention mechanism, enabling it to identify the key substructures associated with particular ADMET properties. On the MoleculeNet benchmark, SJoINT achieves state-of-the-art performance on the SIDER task for predicting toxic side effects, demonstrating the effectiveness of integrating micro-level (atomic) and macro-level (substructure) information for complex drug toxicity profiles. Overall, SJoINT provides accurate predictions while offering interpretable insights into the relationship between molecular substructures and drug properties.',
@@ -136,7 +136,7 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Jul 2025',
         title:
           'Integrating Triple-View Chemical Graph Aggregation with Deep Topological Embedding for ADME Property Prediction',
-        org: 'Poster · MAGNET · KCC2025, KIISE, Korea',
+        org: 'Poster · KCC2025, KIISE, Korea',
         status: 'Poster',
         abstract:
           'We propose a molecular structure learning framework that integrates three fragmentation methods — BRICS, Murcko scaffold, and Junction Tree — to interpret SMILES-based molecular representations from multiple structural perspectives. Substructures extracted from each fragmentation method are organized into a triple-view graph and learned with a graph-transformer-based model, allowing the framework to precisely capture complex molecular structural information. On prediction tasks using the MoleculeNet benchmark, the proposed framework outperforms existing models, and ablation studies confirm that integrating the three fragmentation methods contributes crucially to the performance gains. This work demonstrates the potential for interpretable modeling of structural complexity and is expected to serve as a foundational technique for precise representation learning in drug design and molecular generation.',
