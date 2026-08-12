@@ -27,6 +27,71 @@ function initials(name: string) {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()
 }
 
+// Stable DOM id from a title, for search scroll-to.
+const slugId = (s: string) =>
+  'x-' + s.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64)
+
+// ---- Search index (built once from the CV data) ----
+type Hit = { id: string; section: Section; title: string; where: string; text: string }
+const SEARCH: Hit[] = []
+projectGroups.forEach((g) =>
+  g.items.forEach((p) =>
+    SEARCH.push({
+      id: slugId(p.title),
+      section: 'projects',
+      title: p.title,
+      where: g.heading,
+      text: [p.title, p.org, p.desc, p.abstract, p.authors, p.pi, (p.tags || []).join(' ')]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase(),
+    }),
+  ),
+)
+vitae.forEach((sec) => {
+  if ('items' in sec)
+    sec.items.forEach((it) =>
+      SEARCH.push({
+        id: slugId(it.title),
+        section: 'vitae',
+        title: it.title,
+        where: sec.heading,
+        text: [it.title, it.detail].filter(Boolean).join(' ').toLowerCase(),
+      }),
+    )
+  else if ('groups' in sec)
+    sec.groups.forEach((grp) =>
+      SEARCH.push({
+        id: slugId(grp.title),
+        section: 'vitae',
+        title: grp.title,
+        where: sec.heading,
+        text: [grp.title, ...grp.items].join(' ').toLowerCase(),
+      }),
+    )
+  else if ('subsections' in sec)
+    sec.subsections.forEach((sub) =>
+      sub.items.forEach((it) =>
+        SEARCH.push({
+          id: slugId(it.title),
+          section: 'vitae',
+          title: it.title,
+          where: sec.heading,
+          text: [it.title, it.detail].filter(Boolean).join(' ').toLowerCase(),
+        }),
+      ),
+    )
+})
+news.forEach((n) =>
+  SEARCH.push({
+    id: slugId(n.text),
+    section: 'news',
+    title: n.text.replace(/^[^A-Za-z가-힣]+/, ''),
+    where: 'News',
+    text: n.text.toLowerCase(),
+  }),
+)
+
 // Minimal inline markup for bio/detail text: **bold**, _italic_, and [label](url).
 function renderRich(text: string) {
   const nodes: Array<string | JSX.Element> = []
@@ -87,7 +152,7 @@ function Authors({ authors }: { authors: string }) {
 function ProjectRow({ p }: { p: Project }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="row proj">
+    <div className="row proj" id={slugId(p.title)}>
       <span className="row-date">{p.period}</span>
       <div className="pub">
         {p.authors && <Authors authors={p.authors} />}
@@ -159,7 +224,7 @@ function NewsList({ items }: { items: NewsItem[] }) {
   return (
     <div className="rows">
       {items.map((item, i) => (
-        <div className="row" key={i}>
+        <div className="row" key={i} id={slugId(item.text)}>
           <span className="row-date">{item.date}</span>
           <p className="row-text">{renderNews(item)}</p>
         </div>
@@ -291,7 +356,7 @@ function Vitae() {
           ) : 'groups' in sec ? (
             <div className="stack-md">
               {sec.groups.map((grp) => (
-                <div key={grp.title}>
+                <div key={grp.title} id={slugId(grp.title)}>
                   <p className="interest-cat">{grp.title}</p>
                   <div className="kw-row">
                     {grp.items.map((it) => (
@@ -310,7 +375,7 @@ function Vitae() {
                   <p className="subhead">{sub.subheading}</p>
                   <div className="rows">
                     {sub.items.map((it, i) => (
-                      <div className="row wide" key={i}>
+                      <div className="row wide" key={i} id={slugId(it.title)}>
                         <span className="row-date">{it.period}</span>
                         <div>
                           <p className="row-title">{it.title}</p>
@@ -325,7 +390,7 @@ function Vitae() {
           ) : (
             <div className="rows">
               {sec.items.map((it, i) => (
-                <div className="row wide" key={i}>
+                <div className="row wide" key={i} id={slugId(it.title)}>
                   <span className="row-date">{it.period}</span>
                   <div>
                     <p className="row-title">{it.title}</p>
@@ -372,20 +437,65 @@ export default function App() {
     const h = window.location.hash.slice(1) as Section
     return NAV.some((n) => n.id === h) ? h : 'about'
   })
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = localStorage.getItem('theme')
+    if (saved === 'light' || saved === 'dark') return saved
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
+  const [showTop, setShowTop] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 500)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.slice(1) as Section
       if (NAV.some((n) => n.id === h)) setSection(h)
     }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSearchOpen(false)
+      if ((e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) && !searchOpen) {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
     window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('hashchange', onHash)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [searchOpen])
 
   const go = (s: Section) => {
     setSection(s)
     window.location.hash = s
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const q = query.trim().toLowerCase()
+  const results = q ? SEARCH.filter((h) => h.text.includes(q)).slice(0, 8) : []
+
+  const goToHit = (h: Hit) => {
+    setSearchOpen(false)
+    setQuery('')
+    setSection(h.section)
+    window.location.hash = h.section
+    setTimeout(() => {
+      const el = document.getElementById(h.id)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      else window.scrollTo({ top: 0 })
+    }, 70)
   }
 
   return (
@@ -407,6 +517,17 @@ export default function App() {
                 {profile.notes.label} ↗
               </a>
             )}
+            <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
+              ⌕
+            </button>
+            <button
+              className="nav-icon"
+              aria-label="Toggle dark mode"
+              title="Toggle theme"
+              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+            >
+              {theme === 'dark' ? '☀' : '☾'}
+            </button>
           </nav>
         </div>
       </header>
@@ -446,6 +567,43 @@ export default function App() {
           <p className="cred">© 2026 {profile.name} · Dongguk University</p>
         </div>
       </footer>
+
+      {searchOpen && (
+        <div className="search-overlay" onClick={() => setSearchOpen(false)}>
+          <div className="search-box" onClick={(e) => e.stopPropagation()}>
+            <input
+              autoFocus
+              className="search-input"
+              placeholder="Search projects, skills, papers…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && results[0]) goToHit(results[0])
+              }}
+            />
+            <div className="search-results">
+              {q && results.length === 0 && <p className="search-empty">No matches.</p>}
+              {results.map((h) => (
+                <button key={h.id} className="search-hit" onClick={() => goToHit(h)}>
+                  <span className="search-hit-title">{h.title}</span>
+                  <span className="search-hit-where">{h.where}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showTop && (
+        <button
+          className="to-top"
+          aria-label="Back to top"
+          title="Back to top"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          ↑
+        </button>
+      )}
     </div>
   )
 }
