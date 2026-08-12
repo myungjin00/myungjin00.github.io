@@ -14,7 +14,7 @@ export const profile = {
   // Keyword line under the name — what I do, ending with current status.
   // The lab (below) is appended as a link after this text.
   headline:
-    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S.',
+    'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI · M.S.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
   // Place the image file at public/assets/profile.jpg (portrait works best).
@@ -30,7 +30,7 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'I am completing my **M.S. in Computer Science and Artificial Intelligence** at **Dongguk University** (major: AI in Healthcare and Medicine), graduating in **August 2026**. I earned a **B.S. in Industrial & Management Engineering** from Induk University, where I graduated as **valedictorian**. I am now seeking **industry roles** where I can apply machine learning to **drug discovery** and molecular data.',
+  'I hold an **M.S. in Computer Science and Artificial Intelligence** from **Dongguk University** _(major: AI in Healthcare and Medicine)_. I earned a **B.S. in Industrial & Management Engineering** from Induk University, where I graduated as **valedictorian**. I am now seeking **industry roles** where I can apply machine learning to **drug discovery** and molecular data.',
   'My work focuses on **AI for drug discovery**, centered on **ADMET prediction** and **molecular graph learning**. I build **interpretable models** that use **attention** to reveal which molecular substructures drive each prediction, so the model’s reasoning stays **transparent and traceable** rather than opaque. Building on this, I have developed models that fuse **complementary molecular views and multiple modalities** for more reliable prediction — two of which are now being **finalized for submission** and are **under peer review**.',
   'Looking ahead, I want to advance **drug discovery** through research centered on **interpretable AI** and **graph learning**. I am also comfortable working across **multiple modalities**, and I want to explore how combining these techniques can strengthen both the **capability and interpretability** of AI in real-world settings.',
 ]
@@ -135,6 +135,7 @@ export const projectGroups: ProjectGroup[] = [
         title:
           'Multimodal AI-based Target Discovery and Drug Validation for Aging-related MASLD',
         org: 'Individual Basic Research Program, NRF (MSIT)',
+        pi: 'Dr. Sangsoo Lim (Dongguk University)',
         status: 'Participating Researcher',
         desc: 'Multimodal AI for target discovery and drug validation in aging-related metabolic fatty liver disease (MASLD).',
         tags: ['Multimodal AI', 'Drug Discovery', 'Bioinformatics'],
@@ -143,8 +144,9 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Jul 2025 – Aug 2026',
         title: 'Open AI Drug Discovery and Data Analysis Platform Center',
         org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
+        pi: 'Dr. Minho Lee (Dongguk University)',
         status: 'Participating Researcher',
-        desc: 'Development of an open platform for AI-driven drug discovery and biomedical data analysis.',
+        desc: 'Development of an open platform for AI-driven drug discovery and biomedical data analysis; participated through PRISM Lab (Co-Investigator: Dr. Sangsoo Lim).',
         tags: ['AI Drug Discovery', 'Data Analysis'],
       },
     ],
