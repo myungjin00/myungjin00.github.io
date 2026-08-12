@@ -15,7 +15,7 @@ export const profile = {
   headline: 'AI for Drug Discovery · ADMET Prediction · Drug Repurposing · Graph Learning · XAI',
   degree: 'M.S.',
   location: 'Seoul, South Korea',
-  lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
+  lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
   notes: {
     label: 'Learning',
