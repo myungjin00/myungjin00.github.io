@@ -27,8 +27,8 @@ export const profile = {
   links: [
     { label: 'Email', href: 'mailto:leemj637@gmail.com' },
     { label: 'GitHub', href: 'https://github.com/myungjin00' },
+    { label: 'CV (PDF)', href: '/assets/cv.pdf' },
     // { label: 'LinkedIn', href: '' },   // TODO
-    // { label: 'CV (PDF)', href: '' },    // TODO
   ],
 }
 
@@ -95,16 +95,6 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: '2026',
-        title: 'MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction',
-        authors: 'Mo J., Lee M., Lee S., Lim S.*',
-        org: 'Bioinformatics (under review)',
-        status: 'Under review',
-        desc: 'Multi-view molecular graph framework (MAGNET = Multi-view Aggregation of Graphs for Neural Embedding of Topologies) integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with multi-objective self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.',
-        tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
-        links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
-      },
-      {
-        period: '2026',
         title: 'SJoINT: Substructure-Driven Junction Tree for Interpretable ADMET Prediction',
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
         org: 'Manuscript in preparation',
@@ -112,6 +102,16 @@ export const projectGroups: ProjectGroup[] = [
         desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250K; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
         tags: ['Junction tree', 'Cross-attention', 'ADMET', 'Contrastive'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
+      },
+      {
+        period: '2026',
+        title: 'MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction',
+        authors: 'Mo J., Lee M., Lee S., Lim S.*',
+        org: 'Bioinformatics (under review)',
+        status: 'Under review',
+        desc: 'Multi-view molecular graph framework (MAGNET = Multi-view Aggregation of Graphs for Neural Embedding of Topologies) integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with multi-objective self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.',
+        tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
+        links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
     ],
     note: '* Corresponding author. Names in bold indicate the CV owner.',
@@ -301,6 +301,27 @@ export const vitae: VitaeSection[] = [
     ],
   },
   {
+    heading: 'Technical Skills',
+    items: [
+      { period: '', title: 'Programming', detail: 'Python, R, Java, C#, JavaScript, SQL, HTML' },
+      {
+        period: '',
+        title: 'Deep Learning',
+        detail:
+          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, NumPy, Pandas',
+      },
+      { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
+      {
+        period: '',
+        title: 'Bioinformatics',
+        // Non-breaking spaces keep each term intact; wraps only at the commas.
+        detail:
+          'Scanpy, Seurat, bulk & single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
+      },
+      { period: '', title: 'Tools & Databases', detail: 'Git, Linux, Docker, MySQL' },
+    ],
+  },
+  {
     heading: 'Honors & Awards',
     items: [
       {
@@ -343,27 +364,6 @@ export const vitae: VitaeSection[] = [
     ],
   },
   {
-    heading: 'Technical Skills',
-    items: [
-      { period: '', title: 'Programming', detail: 'Python, R, Java, C#, JavaScript, SQL, HTML' },
-      {
-        period: '',
-        title: 'Deep Learning',
-        detail:
-          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, NumPy, Pandas',
-      },
-      { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
-      {
-        period: '',
-        title: 'Bioinformatics',
-        // Non-breaking spaces keep each term intact; wraps only at the commas.
-        detail:
-          'Scanpy, Seurat, bulk & single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
-      },
-      { period: '', title: 'Tools & Databases', detail: 'Git, Linux, Docker, MySQL' },
-    ],
-  },
-  {
     heading: 'Languages',
     items: [
       { period: '', title: 'Korean', detail: 'Native' },
@@ -379,7 +379,7 @@ export const contact = {
   links: [
     { label: 'Email', value: 'leemj637@gmail.com', href: 'mailto:leemj637@gmail.com', desc: 'Reach out anytime' },
     { label: 'GitHub', value: 'github.com/myungjin00', href: 'https://github.com/myungjin00', desc: 'Code & projects' },
+    { label: 'CV (PDF)', value: 'View CV', href: '/assets/cv.pdf', desc: 'Full curriculum vitae' },
     // { label: 'LinkedIn', value: '', href: '', desc: 'Professional profile' }, // TODO
-    // { label: 'CV (PDF)', value: 'Download CV', href: '', desc: 'Full curriculum vitae' }, // TODO
   ],
 }
