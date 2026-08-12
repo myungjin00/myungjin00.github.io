@@ -255,8 +255,11 @@ export const vitae: VitaeSection[] = [
       },
       {
         period: 'Jul 2025',
-        title: 'MAGNET — Poster Presentation', // TODO — exact poster title
+        title:
+          'Integrating Triple-View Chemical Graph Aggregation with Deep Topological Embedding for ADME Property Prediction',
         detail: 'Poster · MAGNET · Korea Computer Congress (KCC) 2025, KIISE, Korea',
+        abstract:
+          'We propose a molecular structure learning framework that integrates three fragmentation methods — BRICS, Murcko scaffold, and Junction Tree — to interpret SMILES-based molecular representations from multiple structural perspectives. Substructures extracted from each fragmentation method are organized into a triple-view graph and learned with a graph-transformer-based model, allowing the framework to precisely capture complex molecular structural information. On prediction tasks using the MoleculeNet benchmark, the proposed framework outperforms existing models, and ablation studies confirm that integrating the three fragmentation methods contributes crucially to the performance gains. This work demonstrates the potential for interpretable modeling of structural complexity and is expected to serve as a foundational technique for precise representation learning in drug design and molecular generation.',
       },
     ],
   },
