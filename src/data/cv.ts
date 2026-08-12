@@ -12,10 +12,11 @@ export const profile = {
   role: 'M.S. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do, ending with current status.
+  // The lab (below) is appended as a link after this text.
   headline:
-    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S. Candidate @ PRISM Lab',
+    'AI for Drug Discovery · ADMET Prediction · Interpretable Graph Learning · M.S. Candidate',
   location: 'Seoul, South Korea',
-  lab: { label: '@PRISM Lab', href: 'https://sangsoolim.notion.site' },
+  lab: { label: 'PRISM Lab', href: 'https://sangsoolim.notion.site' },
   // Place the image file at public/assets/profile.jpg (portrait works best).
   photo: '/assets/profile.jpg',
   email: 'leemj637@gmail.com',

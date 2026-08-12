@@ -128,7 +128,19 @@ function About({ go }: { go: (s: Section) => void }) {
               <b>{profile.firstName}</b> {profile.lastName}
               <span className="ko">{profile.nameKo}</span>
             </h1>
-            {profile.headline && <p className="headline">{profile.headline}</p>}
+            {profile.headline && (
+              <p className="headline">
+                {profile.headline}
+                {profile.lab && (
+                  <>
+                    {' @ '}
+                    <a href={profile.lab.href} target="_blank" rel="noreferrer">
+                      {profile.lab.label}
+                    </a>
+                  </>
+                )}
+              </p>
+            )}
             {profile.location && <p className="location">📍 {profile.location}</p>}
             <div className="linkrow">
               {profile.links.map((l) => (
