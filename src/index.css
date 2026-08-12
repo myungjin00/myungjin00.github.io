@@ -403,7 +403,6 @@ main {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  text-align: justify;
 }
 button.chip-btn { background: none; cursor: pointer; }
 .kw-row { display: flex; flex-wrap: wrap; gap: 8px; }
