@@ -237,50 +237,51 @@ function About({ go }: { go: (s: Section) => void }) {
   return (
     <div className="stack-lg">
       <div>
-        <div className="about-grid">
-          <div>
-            <h1 className="name">
-              <b>{profile.firstName}</b> {profile.lastName}
-              <span className="ko">{profile.nameKo}</span>
-            </h1>
-            {profile.headline && <p className="headline">{profile.headline}</p>}
-            {profile.degree && (
-              <p className="standing">
-                {profile.degree}
-                {profile.lab && (
-                  <>
-                    {' @ '}
-                    <a href={profile.lab.href} target="_blank" rel="noreferrer">
-                      {profile.lab.label}
-                    </a>
-                  </>
-                )}
-              </p>
-            )}
-            {profile.location && <p className="location">📍 {profile.location}</p>}
-            <div className="linkrow">
-              {profile.links.map((l) => (
-                <a
-                  key={l.label}
-                  href={l.href}
-                  target={l.href.startsWith('mailto') ? undefined : '_blank'}
-                  rel="noreferrer"
-                >
-                  {l.label}
+        <h1 className="name">
+          <b>{profile.firstName}</b> {profile.lastName}
+          <span className="ko">{profile.nameKo}</span>
+        </h1>
+        {profile.headline && <p className="headline">{profile.headline}</p>}
+        {profile.degree && (
+          <p className="standing">
+            {profile.degree}
+            {profile.lab && (
+              <>
+                {' @ '}
+                <a href={profile.lab.href} target="_blank" rel="noreferrer">
+                  {profile.lab.label}
                 </a>
-              ))}
-            </div>
-            {bio[0] && <p className="bio">{renderRich(bio[0])}</p>}
-          </div>
+              </>
+            )}
+          </p>
+        )}
+        {profile.location && <p className="location">📍 {profile.location}</p>}
+        <div className="linkrow">
+          {profile.links.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              target={l.href.startsWith('mailto') ? undefined : '_blank'}
+              rel="noreferrer"
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
 
+        <div className="intro-grid">
+          {bio[0] && <p className="bio intro-first">{renderRich(bio[0])}</p>}
           {profile.photo ? (
-            <img className="portrait" src={profile.photo} alt={profile.name} />
+            <div className="intro-photo">
+              <img src={profile.photo} alt={profile.name} />
+            </div>
           ) : (
-            <div className="portrait portrait-fallback" aria-hidden>
+            <div className="intro-photo portrait-fallback" aria-hidden>
               {initials(profile.name)}
             </div>
           )}
         </div>
+
         {bio.slice(1).map((p, i) => (
           <p className="bio" key={i}>
             {renderRich(p)}
