@@ -13,3 +13,6 @@ MJ_증명사진.jpg
 
 # uploaded original posters (clean copies live in public/assets)
 /*.pdf
+
+# raw source uploads (optimized copies live in public/assets)
+_raw/
