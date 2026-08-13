@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, useContext, createContext } from 'react'
 import * as EN from './data/cv'
-import * as KO from './data/cv.ko'
 import type { NewsItem, Project, VitaeItem } from './data/cv'
 
 // Language bundles share the same shape; the active one is provided via context.
@@ -336,12 +335,51 @@ function VitaeExtras({ it }: { it: VitaeItem }) {
 
 function Vitae() {
   const { vitae, ui } = useCV()
+  const [active, setActive] = useState('')
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.filter((e) => e.isIntersecting)
+        if (!vis.length) return
+        vis.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        setActive(vis[0].target.id)
+      },
+      { rootMargin: '-90px 0px -62% 0px', threshold: 0 },
+    )
+    vitae.forEach((sec) => {
+      const el = document.getElementById(slugId(sec.heading))
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
+  }, [vitae])
+
+  const jump = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
-    <div className="stack-md">
-      <p className="vitae-note">{ui.vitaeNote}</p>
-      {vitae.map((sec) => (
-        <div key={sec.heading}>
-          <h2 className="vitae-sec-title">{sec.heading}</h2>
+    <div className="vitae-layout">
+      <nav className="vitae-toc" aria-label="Sections on this page">
+        {vitae.map((sec) => {
+          const id = slugId(sec.heading)
+          return (
+            <button
+              key={sec.heading}
+              className={active === id ? 'toc-link active' : 'toc-link'}
+              onClick={() => jump(id)}
+            >
+              {sec.heading}
+            </button>
+          )
+        })}
+      </nav>
+      <div className="stack-md vitae-body">
+        <p className="vitae-note">{ui.vitaeNote}</p>
+        {vitae.map((sec) => (
+          <div key={sec.heading} id={slugId(sec.heading)}>
+            <h2 className="vitae-sec-title">{sec.heading}</h2>
           {'keywords' in sec ? (
             <div className="kw-row">
               {sec.keywords.map((k) => (
@@ -385,7 +423,7 @@ function Vitae() {
               ))}
             </div>
           ) : (
-            <div className={sec.items.some((it) => it.period) ? 'rows timeline' : 'rows'}>
+            <div className="rows">
               {sec.items.map((it, i) => (
                 <div className="row wide" key={i} id={slugId(it.title)}>
                   <span className="row-date">{it.period}</span>
@@ -397,9 +435,10 @@ function Vitae() {
                 </div>
               ))}
             </div>
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -435,9 +474,6 @@ export default function App() {
     const h = window.location.hash.slice(1) as Section
     return SECTIONS.includes(h) ? h : 'about'
   })
-  const [lang, setLang] = useState<'en' | 'ko'>(() =>
-    localStorage.getItem('lang') === 'ko' ? 'ko' : 'en',
-  )
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const saved = localStorage.getItem('theme')
     if (saved === 'light' || saved === 'dark') return saved
@@ -447,7 +483,7 @@ export default function App() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [query, setQuery] = useState('')
 
-  const cv = (lang === 'ko' ? KO : EN) as Bundle
+  const cv = EN
   const ui = cv.ui
   const search = useMemo(() => buildSearch(cv), [cv])
 
@@ -455,11 +491,6 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
   }, [theme])
-
-  useEffect(() => {
-    localStorage.setItem('lang', lang)
-    document.documentElement.setAttribute('lang', lang)
-  }, [lang])
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 500)
@@ -534,14 +565,6 @@ export default function App() {
                 )}
                 <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
                   ⌕
-                </button>
-                <button
-                  className="nav-icon nav-lang"
-                  aria-label="Switch language"
-                  title="Language"
-                  onClick={() => setLang((l) => (l === 'en' ? 'ko' : 'en'))}
-                >
-                  {lang === 'en' ? 'KOR' : 'ENG'}
                 </button>
                 <button
                   className="nav-icon"

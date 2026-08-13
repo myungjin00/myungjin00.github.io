@@ -307,12 +307,17 @@ export const vitae: VitaeSection[] = [
   {
     heading: 'Technical Skills',
     items: [
-      { period: '', title: 'Programming', detail: 'Python, R, Java, C#, JavaScript, SQL, HTML' },
+      { period: '', title: 'Programming', detail: 'Python, R (basic), Java, C#, JavaScript, SQL, HTML' },
       {
         period: '',
         title: 'Deep Learning',
         detail:
-          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, NumPy, Pandas',
+          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn',
+      },
+      {
+        period: '',
+        title: 'Data Analysis & Visualization',
+        detail: 'pandas, NumPy, anndata, seaborn, matplotlib',
       },
       { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
       {

@@ -168,14 +168,6 @@ a:hover {
   transition: color 0.15s;
 }
 .nav-icon:hover { color: var(--accent); }
-.nav-lang {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 2px 6px;
-  border: 1px solid var(--border-strong);
-  border-radius: 5px;
-}
 
 /* ---------- Search overlay ---------- */
 .search-overlay {
@@ -467,34 +459,56 @@ main {
   margin: 0;
 }
 
-/* ---------- Vitae timeline rail (dated sections) ---------- */
-.timeline {
-  position: relative;
+/* ---------- Vitae: left table-of-contents ---------- */
+.vitae-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
 }
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 14px;
-  bottom: 14px;
-  width: 2px;
-  background: var(--border);
+.vitae-toc {
+  display: none;
 }
-.timeline .row {
-  position: relative;
-  padding-left: 26px;
-  border-top: none;
+.vitae-body > div {
+  scroll-margin-top: 84px;
 }
-.timeline .row::before {
-  content: '';
-  position: absolute;
-  left: 1px;
-  top: 17px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--bg);
+@media (min-width: 900px) {
+  .vitae-layout {
+    grid-template-columns: 172px minmax(0, 1fr);
+    gap: 46px;
+    align-items: start;
+  }
+  .vitae-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: sticky;
+    top: 84px;
+    padding-left: 14px;
+    border-left: 1px solid var(--border);
+  }
+}
+.toc-link {
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  margin-left: -15px;
+  padding: 3px 0 3px 13px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  color: var(--muted);
+  transition: color 0.15s, border-color 0.15s;
+}
+.toc-link:hover {
+  color: var(--fg);
+}
+.toc-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 600;
 }
 
 /* ---------- Publications ---------- */
