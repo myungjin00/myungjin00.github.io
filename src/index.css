@@ -473,8 +473,8 @@ main {
 }
 @media (min-width: 900px) {
   .vitae-layout {
-    grid-template-columns: 188px minmax(0, 1fr);
-    gap: 44px;
+    grid-template-columns: 204px minmax(0, 1fr);
+    gap: 42px;
     align-items: start;
   }
   .vitae-toc {
@@ -496,9 +496,9 @@ main {
   text-align: left;
   cursor: pointer;
   font-family: var(--sans);
-  font-size: 0.92rem;
+  font-size: 1rem;
   letter-spacing: 0.01em;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--muted);
   transition: color 0.15s, border-color 0.15s;
 }
