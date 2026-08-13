@@ -361,7 +361,7 @@ export const vitae: VitaeSection[] = [
         detail: 'Software Registration, Korea Copyright Commission · No. C-2025-040207',
       },
       {
-        period: '2025',
+        period: 'Jan 2025',
         title: 'System and Method for Predicting Olfactory Characteristics of Odor Mixture Data',
         detail: 'Korean Patent Application (pending), No. 10-2025-0003146',
       },
