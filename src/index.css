@@ -112,9 +112,29 @@ a:hover {
 .nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: 8px 24px;
   padding: 16px 0;
+}
+.nav-name {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  transition: color 0.15s;
+}
+.nav-name:hover { color: var(--accent); }
+.nav-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
 }
 .nav button {
   background: none;
@@ -445,6 +465,36 @@ main {
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
+}
+
+/* ---------- Vitae timeline rail (dated sections) ---------- */
+.timeline {
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline .row {
+  position: relative;
+  padding-left: 26px;
+  border-top: none;
+}
+.timeline .row::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 17px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg);
 }
 
 /* ---------- Publications ---------- */

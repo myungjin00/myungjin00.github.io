@@ -385,7 +385,7 @@ function Vitae() {
               ))}
             </div>
           ) : (
-            <div className="rows">
+            <div className={sec.items.some((it) => it.period) ? 'rows timeline' : 'rows'}>
               {sec.items.map((it, i) => (
                 <div className="row wide" key={i} id={slugId(it.title)}>
                   <span className="row-date">{it.period}</span>
@@ -514,39 +514,44 @@ export default function App() {
         <header className="topbar">
           <div className="wrap">
             <nav className="nav">
-              {SECTIONS.map((id) => (
-                <button
-                  key={id}
-                  className={section === id ? 'active' : ''}
-                  onClick={() => go(id)}
-                >
-                  {ui.nav[id]}
+              <button className="nav-name" onClick={() => go('about')}>
+                {cv.profile.name}
+              </button>
+              <div className="nav-right">
+                {SECTIONS.map((id) => (
+                  <button
+                    key={id}
+                    className={section === id ? 'active' : ''}
+                    onClick={() => go(id)}
+                  >
+                    {ui.nav[id]}
+                  </button>
+                ))}
+                {cv.profile.notes && (
+                  <a className="nav-ext" href={cv.profile.notes.href} target="_blank" rel="noreferrer">
+                    {cv.profile.notes.label} ↗
+                  </a>
+                )}
+                <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
+                  ⌕
                 </button>
-              ))}
-              {cv.profile.notes && (
-                <a className="nav-ext" href={cv.profile.notes.href} target="_blank" rel="noreferrer">
-                  {cv.profile.notes.label} ↗
-                </a>
-              )}
-              <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
-                ⌕
-              </button>
-              <button
-                className="nav-icon nav-lang"
-                aria-label="Switch language"
-                title="Language"
-                onClick={() => setLang((l) => (l === 'en' ? 'ko' : 'en'))}
-              >
-                {lang === 'en' ? 'KOR' : 'ENG'}
-              </button>
-              <button
-                className="nav-icon"
-                aria-label="Toggle dark mode"
-                title="Toggle theme"
-                onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-              >
-                {theme === 'dark' ? '☀' : '☾'}
-              </button>
+                <button
+                  className="nav-icon nav-lang"
+                  aria-label="Switch language"
+                  title="Language"
+                  onClick={() => setLang((l) => (l === 'en' ? 'ko' : 'en'))}
+                >
+                  {lang === 'en' ? 'KOR' : 'ENG'}
+                </button>
+                <button
+                  className="nav-icon"
+                  aria-label="Toggle dark mode"
+                  title="Toggle theme"
+                  onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+                >
+                  {theme === 'dark' ? '☀' : '☾'}
+                </button>
+              </div>
             </nav>
           </div>
         </header>
