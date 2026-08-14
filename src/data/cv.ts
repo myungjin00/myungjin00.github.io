@@ -316,7 +316,7 @@ export const vitae: VitaeSection[] = [
         title: 'Bioinformatics',
         // Non-breaking spaces keep each term intact; wraps only at the commas.
         detail:
-          'Scanpy, Seurat, bulk & single-cell RNA-seq, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
+          'Scanpy, Seurat, bulk & single-cell RNA-seq analysis, differential expression (DESeq2 / PyDESeq2, MAST), GSEA / ssGSEA / GSVA, GO enrichment',
       },
       { period: '', title: 'Tools & Databases', detail: 'Git, Linux, Docker, MySQL' },
     ],
