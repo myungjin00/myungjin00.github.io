@@ -308,7 +308,7 @@ export const vitae: VitaeSection[] = [
       {
         period: '',
         title: 'Data Analysis & Visualization',
-        detail: 'pandas, NumPy, anndata, seaborn, matplotlib',
+        detail: 'pandas, NumPy, anndata, NetworkX, seaborn, matplotlib',
       },
       { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, Chemprop' },
       {
