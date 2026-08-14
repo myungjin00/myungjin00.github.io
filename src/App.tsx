@@ -280,6 +280,10 @@ function About({ go }: { go: (s: Section) => void }) {
         ))}
         <p className="bio">
           {aboutClosing.before}{' '}
+          <a href={aboutClosing.hereHref} target="_blank" rel="noreferrer">
+            {aboutClosing.hereLabel}
+          </a>
+          {aboutClosing.mid}{' '}
           <a href={`mailto:${profile.email}`}>{ui.emailWord}</a>
           {aboutClosing.after}
         </p>
