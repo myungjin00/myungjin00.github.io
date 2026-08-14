@@ -28,7 +28,7 @@ export const profile = {
     { label: 'Email', href: 'mailto:leemj637@gmail.com' },
     { label: 'GitHub', href: 'https://github.com/myungjin00' },
     { label: 'CV (PDF)', href: '/assets/cv.pdf' },
-    // { label: 'LinkedIn', href: '' },   // TODO
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/myungjin00' },
   ],
 }
 
@@ -375,7 +375,7 @@ export const contact = {
     { label: 'Email', value: 'leemj637@gmail.com', href: 'mailto:leemj637@gmail.com', desc: 'Reach out anytime' },
     { label: 'GitHub', value: 'github.com/myungjin00', href: 'https://github.com/myungjin00', desc: 'Code & projects' },
     { label: 'CV (PDF)', value: 'View CV', href: '/assets/cv.pdf', desc: 'Full curriculum vitae' },
-    // { label: 'LinkedIn', value: '', href: '', desc: 'Professional profile' }, // TODO
+    { label: 'LinkedIn', value: 'linkedin.com/in/myungjin00', href: 'https://www.linkedin.com/in/myungjin00', desc: 'Professional profile' },
   ],
 }
 
