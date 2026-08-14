@@ -18,7 +18,7 @@ export const profile = {
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
   notes: {
-    label: 'Learning',
+    label: 'Blog',
     href: 'https://myungjinlee.notion.site/Myungjin-s-Notes-3baa81750c2e80388ed7e6e6676f308c',
   },
   // Place the image file at public/assets/profile.jpg (portrait works best).
@@ -34,18 +34,18 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'Hi, I’m **Myungjin Lee** — a machine learning researcher working on **AI for drug discovery**. I just finished my M.S.E. in Computer Science and Artificial Intelligence at Dongguk University _(major: AI in Healthcare and Medicine)_, and before that graduated top of my class with a B.E. in Industrial & Management Engineering from Induk University. I’m now **looking for opportunities** to bring machine learning to drug discovery and molecular data.',
-  'My core focus is **graph learning** for molecular representation and **ADMET prediction**, and I’ve also worked on a wider range of AI-for-drug-discovery and bioinformatics problems — from **drug repurposing** to transcriptomic analysis for target discovery in aging-related MASLD. I especially enjoy building **interpretable AI models**: mine use an **attention mechanism** to show which molecular substructures drive a prediction, so you can actually see why the model decides what it does. Two of my ADMET papers are in the works — one under peer review, the other being finalized for submission.',
-  'Looking further ahead, I want to keep pushing **drug discovery** with interpretable, graph-based AI — linking molecular representation to **drug–target interaction** and **drug-response prediction** so that one framework can reason all the way from a molecule’s structure to its effect on cells. Eventually, I’d love to take this into **generative molecular design**, turning what a model learns into genuinely new drug candidates.',
+  'Hi, I’m **Myungjin Lee**, a machine learning researcher working at the intersection of **AI and drug discovery**. I recently completed an M.S.E. in Computer Science and Artificial Intelligence at Dongguk University, specializing in AI for Healthcare and Medicine. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m now **looking for opportunities** to apply machine learning to drug discovery and molecular data analysis.',
+  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including **drug repurposing** and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretability**: rather than treating molecular prediction models as black boxes, I develop **attention-based models** that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts in progress — one under peer review, and another in final preparation for submission.',
+  'In the long term, I hope to connect molecular representation learning with **drug–target interaction** and **drug-response prediction**, building interpretable models that can trace the path from molecular structure to cellular response. Ultimately, I want to bring these ideas into **generative molecular design**, using interpretable AI to help propose novel drug candidates.',
 ]
 
 // Closing call-to-action on the About page.
 // "here" links to the CV (PDF); the word "e-mail" is rendered as a mailto link.
 export const aboutClosing = {
-  before: 'If you’d like to know more about me, see',
-  hereLabel: 'here',
+  before: 'You can',
+  hereLabel: 'learn more about my research here',
   hereHref: '/assets/cv.pdf',
-  mid: ', and feel free to reach out anytime by',
+  mid: ', and please feel free to reach out by',
   after: '.',
 }
 
