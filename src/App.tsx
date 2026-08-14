@@ -601,33 +601,26 @@ export default function App() {
             {section === 'vitae' && (
               <>
                 <div className="page-head">
+                  <h1 className="page-title">{ui.page.vitae}</h1>
                   <a
-                    className="cv-doc"
+                    className="cv-pdf"
                     href="/assets/cv.pdf"
-                    download
-                    aria-label="Download CV (PDF)"
-                    title="Download CV (PDF)"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="View / download CV (PDF)"
                   >
-                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                       <path
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="1.7"
+                        strokeWidth="1.9"
                         strokeLinejoin="round"
                         strokeLinecap="round"
                         d="M6 2.75h7.5L18.5 7.75V21.25H6z M13.5 2.75V8h5"
                       />
-                      <path
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 11.5v6 M9.5 15l2.5 2.5 2.5-2.5"
-                      />
                     </svg>
+                    PDF
                   </a>
-                  <h1 className="page-title">{ui.page.vitae}</h1>
                 </div>
                 <Vitae />
               </>
