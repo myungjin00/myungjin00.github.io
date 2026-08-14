@@ -274,7 +274,8 @@ main {
 .page-head {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 16px;
   margin: 0 0 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
@@ -284,21 +285,26 @@ main {
   padding: 0;
   border: none;
 }
-.cv-doc {
+.cv-pdf {
   flex: none;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  color: var(--accent);
-  border: 1px solid var(--border-strong);
+  gap: 7px;
+  padding: 9px 18px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--accent);
   border-radius: 10px;
-  transition: background 0.15s, border-color 0.15s;
+  box-shadow: 0 2px 6px rgba(192, 67, 42, 0.35);
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
 }
-.cv-doc:hover {
-  background: var(--accent-weak);
-  border-color: var(--accent);
+.cv-pdf:hover {
+  background: #a5371f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(192, 67, 42, 0.45);
 }
 
 /* Divider between Vitae sections (visual break when the topic changes) */
