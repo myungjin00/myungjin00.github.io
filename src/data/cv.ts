@@ -68,7 +68,7 @@ export const news: NewsItem[] = [
     link: { label: 'BIOINFO2025', href: 'http://bioinfo2025.ksbi.or.kr/' },
   },
   {
-    date: 'Mar 2024',
+    date: 'Jan 2024',
     text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
   },
 ]
@@ -288,10 +288,10 @@ export const vitae: VitaeSection[] = [
     heading: 'Research Experience',
     items: [
       {
-        period: 'Mar 2024 – Aug 2026',
+        period: 'Jan 2024 – Present',
         title: 'Researcher, PRISM Lab',
         detail:
-          '**Position:** Researcher · Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
+          '**Position:** Researcher at [PRISM Lab](https://sangsoolim.notion.site), Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
       },
     ],
   },
