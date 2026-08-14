@@ -39,9 +39,13 @@ export const bio: string[] = [
   'Looking further ahead, I want to keep pushing **drug discovery** with interpretable, graph-based AI — linking molecular representation to **drug–target interaction** and **drug-response prediction** so that one framework can reason all the way from a molecule’s structure to its effect on cells. Eventually, I’d love to take this into **generative molecular design**, turning what a model learns into genuinely new drug candidates.',
 ]
 
-// Closing call-to-action on the About page. The word "e-mail" is rendered as a mailto link.
+// Closing call-to-action on the About page.
+// "here" links to the CV (PDF); the word "e-mail" is rendered as a mailto link.
 export const aboutClosing = {
-  before: 'If you’d like to connect, feel free to reach out anytime by',
+  before: 'If you’d like to know more about me, take a look',
+  hereLabel: 'here',
+  hereHref: '/assets/cv.pdf',
+  mid: ', and feel free to reach out anytime by',
   after: '.',
 }
 
