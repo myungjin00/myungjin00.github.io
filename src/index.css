@@ -674,6 +674,11 @@ button.chip-btn { background: none; cursor: pointer; }
   transition: border-color 0.2s, background 0.2s;
 }
 .contact-card:hover { border-color: var(--accent); background: var(--accent-weak); text-decoration: none; }
+.contact-icon {
+  display: inline-flex;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
 .contact-card .k {
   font-family: var(--mono);
   font-size: 0.72rem;
