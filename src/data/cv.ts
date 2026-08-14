@@ -42,7 +42,7 @@ export const bio: string[] = [
 // Closing call-to-action on the About page.
 // "here" links to the CV (PDF); the word "e-mail" is rendered as a mailto link.
 export const aboutClosing = {
-  before: 'If you’d like to know more about me, see my CV',
+  before: 'If you’d like to know more about me, see',
   hereLabel: 'here',
   hereHref: '/assets/cv.pdf',
   mid: ', and feel free to reach out anytime by',
