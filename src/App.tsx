@@ -151,6 +151,7 @@ function ProjectRow({ p }: { p: Project }) {
         <p className="pub-title">{p.title}</p>
         {p.org && <p className="pub-venue">{p.org}</p>}
         {p.pi && <p className="proj-pi">{ui.piLabel} {p.pi}</p>}
+        {p.collab && <p className="proj-pi">Collaborator: {p.collab}</p>}
         {p.desc && (
           <p className="proj-desc">
             {p.desc.split('\n').map((line, i) => (
@@ -338,7 +339,7 @@ function VitaeExtras({ it }: { it: VitaeItem }) {
 }
 
 function Vitae() {
-  const { vitae, ui } = useCV()
+  const { vitae } = useCV()
   const [active, setActive] = useState('')
 
   useEffect(() => {
@@ -380,7 +381,6 @@ function Vitae() {
         })}
       </nav>
       <div className="stack-md vitae-body">
-        <p className="vitae-note">{ui.vitaeNote}</p>
         {vitae.map((sec) => (
           <div key={sec.heading} id={slugId(sec.heading)}>
             <h2 className="vitae-sec-title">{sec.heading}</h2>
@@ -600,7 +600,35 @@ export default function App() {
             )}
             {section === 'vitae' && (
               <>
-                <h1 className="page-title">{ui.page.vitae}</h1>
+                <div className="page-head">
+                  <a
+                    className="cv-doc"
+                    href="/assets/cv.pdf"
+                    download
+                    aria-label="Download CV (PDF)"
+                    title="Download CV (PDF)"
+                  >
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                        d="M6 2.75h7.5L18.5 7.75V21.25H6z M13.5 2.75V8h5"
+                      />
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 11.5v6 M9.5 15l2.5 2.5 2.5-2.5"
+                      />
+                    </svg>
+                  </a>
+                  <h1 className="page-title">{ui.page.vitae}</h1>
+                </div>
                 <Vitae />
               </>
             )}
