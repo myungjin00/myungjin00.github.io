@@ -303,7 +303,7 @@ export const vitae: VitaeSection[] = [
         period: '',
         title: 'Deep Learning',
         detail:
-          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn',
+          'PyTorch, PyTorch Geometric, Hugging Face Transformers, scikit-learn, GNNExplainer',
       },
       {
         period: '',
