@@ -12,7 +12,7 @@ export const profile = {
   role: 'M.S.E. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
-  headline: 'AI for Drug Discovery · ADMET Prediction · Drug Repurposing · Graph Learning · XAI',
+  headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
   degree: 'M.S.E.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
