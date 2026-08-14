@@ -141,16 +141,6 @@ export const projectGroups: ProjectGroup[] = [
           'Accurate prediction of molecular properties such as absorption, distribution, metabolism, excretion, and toxicity (ADMET) is crucial in the drug discovery process; however, ensuring the interpretability of prediction models remains a significant challenge. Although existing Graph Neural Network (GNN)-based models demonstrate high predictive accuracy, they often suffer from the “black box” limitation of failing to explain which molecular substructures contribute to specific properties. We propose SJoINT, a dual-encoder model that explicitly utilizes molecular substructure information to achieve both accuracy and interpretability. SJoINT takes an atom-level molecular graph and a corresponding junction tree — representing the molecular scaffold and functional groups — as dual inputs, and learns the relationship between the two representations through an iterative cross-attention mechanism, enabling it to identify the key substructures associated with particular ADMET properties. On the MoleculeNet benchmark, SJoINT achieves state-of-the-art performance on the SIDER task for predicting toxic side effects, demonstrating the effectiveness of integrating micro-level (atomic) and macro-level (substructure) information for complex drug toxicity profiles. Overall, SJoINT provides accurate predictions while offering interpretable insights into the relationship between molecular substructures and drug properties.',
         links: [{ label: 'Poster (PDF)', href: '/assets/bioinfo2025.pdf' }],
       },
-      {
-        period: 'Jul 2025',
-        title:
-          'Integrating Triple-View Chemical Graph Aggregation with Deep Topological Embedding for ADME Property Prediction',
-        org: 'Poster · KCC2025, KIISE, Korea',
-        status: 'Poster',
-        abstract:
-          'We propose a molecular structure learning framework that integrates three fragmentation methods — BRICS, Murcko scaffold, and Junction Tree — to interpret SMILES-based molecular representations from multiple structural perspectives. Substructures extracted from each fragmentation method are organized into a triple-view graph and learned with a graph-transformer-based model, allowing the framework to precisely capture complex molecular structural information. On prediction tasks using the MoleculeNet benchmark, the proposed framework outperforms existing models, and ablation studies confirm that integrating the three fragmentation methods contributes crucially to the performance gains. This work demonstrates the potential for interpretable modeling of structural complexity and is expected to serve as a foundational technique for precise representation learning in drug design and molecular generation.',
-        links: [{ label: 'Poster (PDF)', href: '/assets/kcc2025.pdf' }],
-      },
     ],
   },
   {
@@ -333,11 +323,6 @@ export const vitae: VitaeSection[] = [
   {
     heading: 'Honors & Awards',
     items: [
-      {
-        period: '2025',
-        title: 'Best Paper Award, Undergraduate Paper Track — KCC2025',
-        detail: 'Korea Computer Congress (KCC), KIISE, Korea · MAGNET (co-author)',
-      },
       {
         period: '2023',
         title: 'Highest Academic Achievement Award',
