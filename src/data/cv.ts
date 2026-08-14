@@ -255,8 +255,8 @@ export const vitae: VitaeSection[] = [
       {
         title: 'Machine Learning & Data Mining for Bioinformatics',
         items: [
-          'Multi-omics Data Integration',
           'Network Biology',
+          'Omics-based Target Discovery',
           'Multimodal AI for Biomedical Problems',
         ],
       },
