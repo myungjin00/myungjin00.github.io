@@ -60,11 +60,6 @@ export const news: NewsItem[] = [
     link: { label: 'BIOINFO2025', href: 'http://bioinfo2025.ksbi.or.kr/' },
   },
   {
-    date: 'Jul 2025',
-    text: '💬 Presented MAGNET as a poster at KCC2025, Korea.',
-    link: { label: 'KCC2025', href: 'https://www.kiise.or.kr/conference/kcc/2025/' },
-  },
-  {
     date: 'Mar 2024',
     text: '🚀 Joined PRISM Lab at Dongguk University as a graduate researcher.',
   },
