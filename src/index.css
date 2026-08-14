@@ -674,18 +674,28 @@ button.chip-btn { background: none; cursor: pointer; }
   transition: border-color 0.2s, background 0.2s;
 }
 .contact-card:hover { border-color: var(--accent); background: var(--accent-weak); text-decoration: none; }
+.contact-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 .contact-icon {
   display: inline-flex;
+  flex: none;
   color: var(--accent);
-  margin-bottom: 10px;
+}
+.contact-icon svg {
+  width: 30px;
+  height: 30px;
 }
 .contact-card .k {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--muted);
-  margin: 0 0 4px;
+  margin: 0;
 }
 .contact-card .v {
   font-size: 1rem;

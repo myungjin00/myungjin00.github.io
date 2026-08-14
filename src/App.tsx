@@ -493,8 +493,10 @@ function Contact() {
             target={c.href.startsWith('mailto') ? undefined : '_blank'}
             rel="noreferrer"
           >
-            <span className="contact-icon">{contactIcon(c.label)}</span>
-            <p className="k">{c.label}</p>
+            <div className="contact-head">
+              <span className="contact-icon">{contactIcon(c.label)}</span>
+              <p className="k">{c.label}</p>
+            </div>
             <p className="v">{c.value}</p>
             <p className="d">{c.desc}</p>
           </a>
