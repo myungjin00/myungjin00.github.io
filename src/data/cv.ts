@@ -298,7 +298,7 @@ export const vitae: VitaeSection[] = [
   {
     heading: 'Technical Skills',
     items: [
-      { period: '', title: 'Programming', detail: 'Python, R (basic), Java, C#, JavaScript, SQL, HTML' },
+      { period: '', title: 'Programming', detail: 'Python, R (basic), Java, C#, JavaScript, SQL' },
       {
         period: '',
         title: 'Deep Learning',
@@ -310,7 +310,7 @@ export const vitae: VitaeSection[] = [
         title: 'Data Analysis & Visualization',
         detail: 'pandas, NumPy, anndata, seaborn, matplotlib',
       },
-      { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, ChemPy' },
+      { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, Chemprop' },
       {
         period: '',
         title: 'Bioinformatics',
