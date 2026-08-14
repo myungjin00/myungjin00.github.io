@@ -93,7 +93,7 @@ export const myAuthorTokens = ['Lee M.', 'M. Lee', 'Myungjin Lee']
 
 export const projectGroups: ProjectGroup[] = [
   {
-    heading: 'Research',
+    heading: 'Manuscripts',
     items: [
       {
         period: '2026',
