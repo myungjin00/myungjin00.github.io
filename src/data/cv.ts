@@ -9,11 +9,11 @@ export const profile = {
   // First name is rendered bold, like the reference site.
   firstName: 'Myungjin',
   lastName: 'Lee',
-  role: 'M.S. in Computer Science & Artificial Intelligence',
+  role: 'M.E. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
   headline: 'AI for Drug Discovery · ADMET Prediction · Drug Repurposing · Graph Learning · XAI',
-  degree: 'M.S.',
+  degree: 'M.E.',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
@@ -34,7 +34,7 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'Hi, I’m **Myungjin Lee** — a machine learning researcher working on **AI for drug discovery**. I just finished my M.S. in Computer Science and Artificial Intelligence at Dongguk University _(major: AI in Healthcare and Medicine)_, and before that graduated top of my class with a B.S. in Industrial & Management Engineering from Induk University. I’m now **looking for opportunities** to bring machine learning to drug discovery and molecular data.',
+  'Hi, I’m **Myungjin Lee** — a machine learning researcher working on **AI for drug discovery**. I just finished my M.E. in Computer Science and Artificial Intelligence at Dongguk University _(major: AI in Healthcare and Medicine)_, and before that graduated top of my class with a B.E. in Industrial & Management Engineering from Induk University. I’m now **looking for opportunities** to bring machine learning to drug discovery and molecular data.',
   'My core focus is **graph learning** for molecular representation and **ADMET prediction**, and I’ve also worked on a wider range of AI-for-drug-discovery and bioinformatics problems — from **drug repurposing** to transcriptomic analysis for target discovery in aging-related MASLD. I especially enjoy building **interpretable AI models**: mine use an **attention mechanism** to show which molecular substructures drive a prediction, so you can actually see why the model decides what it does. Two of my ADMET papers are in the works — one under peer review, the other being finalized for submission.',
   'Looking further ahead, I want to keep pushing **drug discovery** with interpretable, graph-based AI — linking molecular representation to **drug–target interaction** and **drug-response prediction** so that one framework can reason all the way from a molecule’s structure to its effect on cells. Eventually, I’d love to take this into **generative molecular design**, turning what a model learns into genuinely new drug candidates.',
 ]
@@ -42,7 +42,7 @@ export const bio: string[] = [
 // Closing call-to-action on the About page.
 // "here" links to the CV (PDF); the word "e-mail" is rendered as a mailto link.
 export const aboutClosing = {
-  before: 'If you’d like to know more about me, take a look',
+  before: 'If you’d like to know more about me, see my CV',
   hereLabel: 'here',
   hereHref: '/assets/cv.pdf',
   mid: ', and feel free to reach out anytime by',
@@ -265,19 +265,19 @@ export const vitae: VitaeSection[] = [
     items: [
       {
         period: 'Mar 2024 – Aug 2026',
-        title: 'M.S. in Computer Science and Artificial Intelligence',
+        title: 'M.E. in Computer Science and Artificial Intelligence',
         detail:
           'Dongguk University, Seoul, Korea · Major: AI in Healthcare and Medicine · GPA 4.04/4.5',
       },
       {
         period: 'Mar 2023 – Feb 2024',
-        title: 'B.S. in Industrial & Management Engineering (Advanced Major Program)',
+        title: 'B.E. in Industrial & Management Engineering (Advanced Major Program)',
         detail:
           'Induk University, Seoul, Korea · Convergence Minor in Deep Learning · GPA 4.43/4.5 · Valedictorian',
       },
       {
         period: 'Mar 2020 – Feb 2023',
-        title: 'Associate of Engineering in Industrial & Management Engineering',
+        title: 'A.E. in Industrial & Management Engineering',
         detail: 'Induk University, Seoul, Korea · GPA 4.41/4.5 (Major 4.42/4.5) · Valedictorian',
       },
     ],
