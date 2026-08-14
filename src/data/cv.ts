@@ -257,7 +257,7 @@ export const vitae: VitaeSection[] = [
         items: [
           'Network Biology',
           'Omics-based Target Discovery',
-          'Multimodal AI for Biomedical Problems',
+          'Multi-modal AI for Biomedical Problems',
         ],
       },
     ],
