@@ -54,6 +54,10 @@ export type NewsItem = { date: string; text: string; link?: { label: string; hre
 
 export const news: NewsItem[] = [
   {
+    date: 'Aug 2026',
+    text: '🎓 Graduated with my M.S.E. in Computer Science and Artificial Intelligence from Dongguk University.',
+  },
+  {
     date: 'Jun 2026',
     text: '💬 Presented SJoINT as a poster at KCC2026, Korea.',
     link: { label: 'KCC2026', href: 'https://www.kiise.or.kr/conference/kcc/2026/' },
@@ -65,7 +69,7 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Mar 2024',
-    text: '🚀 Joined PRISM Lab at Dongguk University as a graduate researcher.',
+    text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
   },
 ]
 
@@ -78,6 +82,7 @@ export type Project = {
   authors?: string // for research works; own name in `myAuthorTokens` is highlighted
   org?: string // funding agency / venue / competition host
   pi?: string // Principal Investigator (for funded projects where I participate)
+  collab?: string // Collaborator (rendered on its own line under PI)
   role?: string
   status?: string // e.g. 'Under review', 'In preparation', 'Top 10%'
   desc?: string
@@ -148,7 +153,7 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Sep 2024 – Aug 2025',
-        title: 'Master’s Student Research Grant (석사과정생 연구장려금지원사업)',
+        title: '석사과정생 연구장려금지원사업',
         org: 'Ministry of Science and ICT (MSIT)',
         role: 'Principal Investigator',
         status: 'PI',
@@ -167,8 +172,9 @@ export const projectGroups: ProjectGroup[] = [
         title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증',
         org: 'Individual Basic Research Program, NRF (MSIT)',
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
+        collab: 'Dr. Gung Lee (Mayo Clinic, USA)',
         status: 'Participating Researcher',
-        desc: 'Preliminary omics / bioinformatics analysis for target discovery in aging-related MASLD.\nCollaborator: Dr. Gung Lee (Mayo Clinic, USA).',
+        desc: 'Preliminary omics / bioinformatics analysis for target discovery in aging-related MASLD.',
         abstract:
           'Curated and analyzed bulk and single-cell RNA-seq from public repositories and from experimental in vitro senescence assays (Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) mainly in aging mouse liver, with a supporting cross-check in public human data. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.',
         moreLabel: 'Details',
@@ -243,8 +249,6 @@ export const vitae: VitaeSection[] = [
           'Molecular Graph Representation Learning',
           'ADMET Property Prediction',
           'Drug Repurposing',
-          'Drug–Target Interaction (DTI)',
-          'Drug Response Prediction',
           'Explainable AI (XAI)',
         ],
       },
@@ -253,8 +257,6 @@ export const vitae: VitaeSection[] = [
         items: [
           'Multi-omics Data Integration',
           'Network Biology',
-          'Differential Expression Analysis',
-          'Dimensionality Reduction',
           'Multimodal AI for Biomedical Problems',
         ],
       },
@@ -286,10 +288,10 @@ export const vitae: VitaeSection[] = [
     heading: 'Research Experience',
     items: [
       {
-        period: 'Mar 2024 – Present',
-        title: 'Graduate Researcher, PRISM Lab',
+        period: 'Mar 2024 – Aug 2026',
+        title: 'Researcher, PRISM Lab',
         detail:
-          'Dongguk University, Seoul, Korea (Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ))',
+          '**Position:** Researcher · Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
       },
     ],
   },
@@ -390,6 +392,5 @@ export const ui = {
   searchPlaceholder: 'Search projects, skills, papers…',
   noMatches: 'No matches.',
   emailWord: 'e-mail',
-  vitaeNote: 'Abbreviated curriculum vitae.',
   footer: '© 2026 Myungjin Lee · Dongguk University',
 }
