@@ -13,7 +13,7 @@ export const profile = {
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
   headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
-  degree: 'M.S.E.',
+  degree: 'M.S.E. · Master’s Researcher',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
@@ -27,14 +27,14 @@ export const profile = {
   links: [
     { label: 'Email', href: 'mailto:leemj637@gmail.com' },
     { label: 'GitHub', href: 'https://github.com/myungjin00' },
-    { label: 'CV (PDF)', href: '/assets/cv.pdf' },
+    { label: 'CV (PDF)', href: '/assets/MyungjinLee_CV.pdf' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/myungjin00' },
   ],
 }
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I recently completed an M.S.E. in Computer Science and Artificial Intelligence at Dongguk University, specializing in AI for Healthcare and Medicine. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m now looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
+  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I completed my M.S.E. in Computer Science and Artificial Intelligence at Dongguk University in August 2026, specializing in AI for Healthcare and Medicine, and I’m currently a master’s researcher at PRISM Lab (Dongguk University) with Dr. Sangsoo Lim. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
   'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts in progress—one under peer review and another in final preparation for submission.',
   'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects.',
 ]
@@ -44,7 +44,7 @@ export const bio: string[] = [
 export const aboutClosing = {
   before: 'You can learn more about my research',
   hereLabel: 'here',
-  hereHref: '/assets/cv.pdf',
+  hereHref: '/assets/MyungjinLee_CV.pdf',
   mid: ', and please feel free to reach out by',
   after: '.',
 }
@@ -53,6 +53,10 @@ export const aboutClosing = {
 export type NewsItem = { date: string; text: string; link?: { label: string; href: string } }
 
 export const news: NewsItem[] = [
+  {
+    date: 'Sep 2026',
+    text: '🔬 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
+  },
   {
     date: 'Aug 2026',
     text: '🎓 Graduated with my M.S.E. in Computer Science and Artificial Intelligence from Dongguk University.',
@@ -114,7 +118,7 @@ export const projectGroups: ProjectGroup[] = [
         period: '2026',
         title: 'MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction',
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
-        org: 'Bioinformatics (under review)',
+        org: 'Journal of Cheminformatics (under review)',
         status: 'Under review',
         desc: 'Multi-view molecular graph framework (MAGNET = Multi-view Aggregation of Graphs for Neural Embedding of Topologies) integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with multi-objective self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.',
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
@@ -154,7 +158,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         period: 'Sep 2024 – Aug 2025',
         title: '석사과정생 연구장려금지원사업',
-        org: 'Ministry of Science and ICT (MSIT)',
+        org: 'Ministry of Education (MOE) · National Research Foundation of Korea (NRF)',
         role: 'Principal Investigator',
         status: 'PI',
         desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT.\nAdvisor: Dr. Sangsoo Lim.',
@@ -188,7 +192,7 @@ export const projectGroups: ProjectGroup[] = [
         status: 'Participating Researcher',
         desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
         abstract:
-          'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked and developed AI models for absorption, distribution, metabolism, excretion, toxicity, and physicochemical properties, including an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the developed models as Docker images and deployed them to the national bio-data platform (KBDI).',
+          'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked and developed AI models for absorption, distribution, metabolism, excretion, toxicity, and physicochemical properties, including an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the drug-repurposing model as a Docker image and registered it on the national bio-data platform (KBDI).',
         moreLabel: 'Details',
         tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
         links: [{ label: 'KBDI ↗', href: 'https://kbdi.re.kr/main/mainVw.do' }],
@@ -269,7 +273,7 @@ export const vitae: VitaeSection[] = [
         period: 'Mar 2024 – Aug 2026',
         title: 'M.S.E. in Computer Science and Artificial Intelligence',
         detail:
-          'Dongguk University, Seoul, Korea · Major: AI in Healthcare and Medicine · GPA 4.04/4.5',
+          'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction',
       },
       {
         period: 'Mar 2023 – Feb 2024',
@@ -289,9 +293,9 @@ export const vitae: VitaeSection[] = [
     items: [
       {
         period: 'Jan 2024 – Present',
-        title: 'Researcher, PRISM Lab',
+        title: 'Master’s Researcher, PRISM Lab',
         detail:
-          '**Position:** Researcher at [PRISM Lab](https://sangsoolim.notion.site), Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
+          '**Position:** Master’s Researcher (Sep 2026 – Present; graduate researcher Jan 2024 – Aug 2026) at [PRISM Lab](https://sangsoolim.notion.site), Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
       },
     ],
   },
@@ -362,7 +366,7 @@ export const vitae: VitaeSection[] = [
     heading: 'Languages',
     items: [
       { period: '', title: 'Korean', detail: 'Native' },
-      { period: '', title: 'English', detail: 'TOEIC 860 (LC 440 / RC 420)' },
+      { period: '', title: 'English', detail: 'TOEIC 860 (LC 440 / RC 420) · OPIc IH' },
     ],
   },
 ]
@@ -374,7 +378,7 @@ export const contact = {
   links: [
     { label: 'Email', value: 'leemj637@gmail.com', href: 'mailto:leemj637@gmail.com', desc: 'Reach out anytime' },
     { label: 'GitHub', value: 'github.com/myungjin00', href: 'https://github.com/myungjin00', desc: 'Code & projects' },
-    { label: 'CV (PDF)', value: 'View CV', href: '/assets/cv.pdf', desc: 'Full curriculum vitae' },
+    { label: 'CV (PDF)', value: 'View CV', href: '/assets/MyungjinLee_CV.pdf', desc: 'Full curriculum vitae' },
     { label: 'LinkedIn', value: 'linkedin.com/in/myungjin00', href: 'https://www.linkedin.com/in/myungjin00', desc: 'Professional profile' },
   ],
 }

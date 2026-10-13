@@ -637,7 +637,7 @@ export default function App() {
                   <h1 className="page-title">{ui.page.vitae}</h1>
                   <a
                     className="cv-pdf"
-                    href="/assets/cv.pdf"
+                    href="/assets/MyungjinLee_CV.pdf"
                     target="_blank"
                     rel="noreferrer"
                     title="View / download CV (PDF)"
