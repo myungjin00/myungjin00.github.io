@@ -123,7 +123,7 @@ export const projectGroups: ProjectGroup[] = [
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
     ],
-    note: '* Corresponding author. Names in bold indicate the CV owner.',
+    note: '* Corresponding author. My name is shown in bold.',
   },
   {
     heading: 'Presentations',
