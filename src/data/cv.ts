@@ -34,9 +34,9 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I completed my M.E. in Computer Science and Artificial Intelligence at Dongguk University in August 2026, specializing in AI for Healthcare and Medicine, and I’m currently a master’s researcher at PRISM Lab (Dongguk University) with Dr. Sangsoo Lim. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
+  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I’m currently a master’s researcher at PRISM Lab, Dongguk University, working with Dr. Sangsoo Lim, where I also earned my M.E. in Computer Science and Artificial Intelligence.',
   'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts in progress—one under peer review and another in final preparation for submission.',
-  'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects.',
+  'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
 ]
 
 // Closing call-to-action on the About page.
@@ -55,25 +55,25 @@ export type NewsItem = { date: string; text: string; link?: { label: string; hre
 export const news: NewsItem[] = [
   {
     date: 'Sep 2026',
-    text: 'Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
+    text: '🔬 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
   },
   {
     date: 'Aug 2026',
-    text: 'Graduated with my M.E. in Computer Science and Artificial Intelligence from Dongguk University.',
+    text: '🎓 Graduated with my M.E. in Computer Science and Artificial Intelligence from Dongguk University.',
   },
   {
     date: 'Jun 2026',
-    text: 'Presented SJoINT as a poster at KCC2026, Korea.',
+    text: '💬 Presented SJoINT as a poster at KCC2026, Korea.',
     link: { label: 'KCC2026', href: 'https://www.kiise.or.kr/conference/kcc/2026/' },
   },
   {
     date: 'Oct 2025',
-    text: 'Presented SJoINT as a poster at BIOINFO2025, Korea.',
+    text: '💬 Presented SJoINT as a poster at BIOINFO2025, Korea.',
     link: { label: 'BIOINFO2025', href: 'http://bioinfo2025.ksbi.or.kr/' },
   },
   {
     date: 'Jan 2024',
-    text: 'Joined PRISM Lab at Dongguk University as a researcher.',
+    text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
   },
 ]
 
@@ -195,7 +195,7 @@ export const projectGroups: ProjectGroup[] = [
           'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked and developed AI models for absorption, distribution, metabolism, excretion, toxicity, and physicochemical properties, including an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the drug-repurposing model as a Docker image and registered it on the national bio-data platform (KBDI).',
         moreLabel: 'Details',
         tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
-        links: [{ label: 'KBDI ↗', href: 'https://kbdi.re.kr/main/mainVw.do' }],
+        links: [{ label: 'KBDI', href: 'https://kbdi.re.kr/main/mainVw.do' }],
       },
     ],
   },
@@ -293,9 +293,9 @@ export const vitae: VitaeSection[] = [
     items: [
       {
         period: 'Jan 2024 – Present',
-        title: 'Master’s Researcher, PRISM Lab',
+        title: 'PRISM Lab, Dongguk University',
         detail:
-          '**Position:** Master’s Researcher (Sep 2026 – Present; graduate researcher Jan 2024 – Aug 2026) at [PRISM Lab](https://sangsoolim.notion.site), Dongguk University, Seoul, Korea · Advisor: [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ)\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
+          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
       },
     ],
   },

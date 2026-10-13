@@ -169,6 +169,8 @@ function ProjectRow({ p }: { p: Project }) {
               {t}
             </span>
           ))}
+        </div>
+        <div className="linkline">
           {p.links?.map((l) => (
             <a key={l.label} className="chip-btn" href={l.href} target="_blank" rel="noreferrer">
               {l.label}
@@ -271,14 +273,13 @@ function About({ go }: { go: (s: Section) => void }) {
               </a>
             ))}
           </div>
-          {bio[0] && <p className="bio">{renderRich(bio[0])}</p>}
+          {/* All bio paragraphs wrap around the floated photo. */}
+          {bio.map((p, i) => (
+            <p className="bio" key={i}>
+              {renderRich(p)}
+            </p>
+          ))}
         </div>
-
-        {bio.slice(1).map((p, i) => (
-          <p className="bio" key={i}>
-            {renderRich(p)}
-          </p>
-        ))}
         <p className="bio">
           {aboutClosing.before}{' '}
           <a href={aboutClosing.hereHref} target="_blank" rel="noreferrer">
@@ -321,7 +322,7 @@ function VitaeExtras({ it }: { it: VitaeItem }) {
   if (!hasAbstract && !hasLinks) return null
   return (
     <>
-      <div className="tagrow" style={{ marginTop: 8 }}>
+      <div className="linkline">
         {it.links?.map((l) => (
           <a key={l.label} className="chip-btn" href={l.href} target="_blank" rel="noreferrer">
             {l.label}
@@ -600,6 +601,8 @@ export default function App() {
                     {cv.profile.notes.label} ↗
                   </a>
                 )}
+              </div>
+              <div className="nav-tools">
                 <button className="nav-icon" aria-label="Search" title="Search (/)" onClick={() => setSearchOpen(true)}>
                   ⌕
                 </button>

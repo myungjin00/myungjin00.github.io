@@ -143,6 +143,23 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 20px;
+  margin-left: auto;
+}
+.nav-tools { display: flex; align-items: center; gap: 14px; }
+@media (max-width: 560px) {
+  /* Name + icons on the first line; sections in one swipeable row below. */
+  .nav-tools { order: 1; }
+  .nav-right {
+    order: 2;
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 18px;
+    scrollbar-width: none;
+  }
+  .nav-right::-webkit-scrollbar { display: none; }
+  .nav-right > * { flex: none; }
 }
 .nav button {
   background: none;
@@ -437,7 +454,8 @@ main {
   margin: 20px 0 0;
   font-size: 1rem;
   line-height: 1.7;
-  text-align: left;
+  text-align: justify;
+  hyphens: auto;
 }
 .bio + .bio { margin-top: 16px; }
 
@@ -583,7 +601,8 @@ main {
   margin: 4px 0 0;
 }
 .proj-pi { font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; }
-.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; text-align: left; }
+.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; text-align: justify;
+  hyphens: auto; }
 .group-note { font-size: 0.75rem; color: var(--muted); margin: 10px 0 0; font-style: italic; }
 .tagrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
 .tag {
@@ -605,16 +624,19 @@ main {
   color: var(--accent);
   border: 1px solid transparent;
 }
+/* Links / toggles are plain accent text, so they read differently from the tag pills. */
+.linkline { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; }
+.linkline:empty { display: none; }
 .chip-btn {
   font-family: var(--sans);
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  border: 1px solid var(--border-strong);
-  border-radius: 5px;
-  color: var(--fg);
-  transition: background 0.15s, color 0.15s;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0;
+  border: 0;
+  color: var(--accent);
 }
-.chip-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); text-decoration: none; }
+.chip-btn[href]::after { content: ' ↗'; }
+.chip-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Vitae ---------- */
 .vitae-note { font-size: 0.875rem; color: var(--muted); margin: 0 0 8px; }
@@ -627,7 +649,8 @@ main {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  text-align: left;
+  text-align: justify;
+  hyphens: auto;
 }
 .abstract > p { margin: 0; }
 .abstract > p + p { margin-top: 10px; }
