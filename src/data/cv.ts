@@ -21,8 +21,8 @@ export const profile = {
     label: 'blog',
     href: 'https://myungjinlee.notion.site/Myungjin-s-Notes-3baa81750c2e80388ed7e6e6676f308c',
   },
-  // Place the image file at public/assets/profile.jpg (portrait works best).
-  photo: '/assets/profile.jpg',
+  // Place the image file at public/assets/profile_2610.jpg (portrait works best).
+  photo: '/assets/profile_2610.jpg',
   email: 'leemj637@gmail.com',
   links: [
     { label: 'Email', href: 'mailto:leemj637@gmail.com' },
