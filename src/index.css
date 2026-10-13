@@ -1,18 +1,20 @@
 /* =============================================================================
    Design system — warm academic homepage.
-   Cream ground + terracotta accent; EB Garamond (serif) / DM Sans / DM Mono.
+   Cool off-white ground + deep teal accent; EB Garamond (serif) / DM Sans / DM Mono.
    Fonts are loaded from Google Fonts in index.html.
    ============================================================================= */
 
 :root {
-  --bg: #faf9f7;
-  --fg: #1a1916;
-  --muted: #6b6560;
-  --border: rgba(26, 25, 22, 0.12);
-  --border-strong: rgba(26, 25, 22, 0.22);
-  --accent: #c0432a;
-  --accent-weak: rgba(192, 67, 42, 0.08);
-  --card: #f4f2ee;
+  --bg: #f7f8f7;
+  --fg: #141917;
+  --muted: #5f6866;
+  --border: rgba(20, 25, 23, 0.12);
+  --border-strong: rgba(20, 25, 23, 0.22);
+  --accent: #0f6e66;
+  --accent-weak: rgba(15, 110, 102, 0.08);
+  --card: #eef2f1;
+  --on-accent: #ffffff;
+  --accent-shadow: rgba(15, 110, 102, 0.35);
 
   --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
   --sans: 'DM Sans', system-ui, -apple-system, 'Noto Sans KR', sans-serif;
@@ -23,35 +25,41 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #191613;
-    --fg: #f2efe9;
-    --muted: #9a938a;
-    --border: rgba(242, 239, 233, 0.14);
-    --border-strong: rgba(242, 239, 233, 0.26);
-    --accent: #e07a5f;
-    --accent-weak: rgba(224, 122, 95, 0.12);
-    --card: #211d18;
+    --bg: #111615;
+    --fg: #edf2f0;
+    --muted: #8f9a97;
+    --border: rgba(237, 242, 240, 0.14);
+    --border-strong: rgba(237, 242, 240, 0.26);
+    --accent: #5cc8b8;
+    --accent-weak: rgba(92, 200, 184, 0.12);
+    --card: #19201e;
+    --on-accent: #0b1513;
+    --accent-shadow: rgba(0, 0, 0, 0.45);
   }
 }
 :root[data-theme='dark'] {
-  --bg: #191613;
-  --fg: #f2efe9;
-  --muted: #9a938a;
-  --border: rgba(242, 239, 233, 0.14);
-  --border-strong: rgba(242, 239, 233, 0.26);
-  --accent: #e07a5f;
-  --accent-weak: rgba(224, 122, 95, 0.12);
-  --card: #211d18;
+  --bg: #111615;
+  --fg: #edf2f0;
+  --muted: #8f9a97;
+  --border: rgba(237, 242, 240, 0.14);
+  --border-strong: rgba(237, 242, 240, 0.26);
+  --accent: #5cc8b8;
+  --accent-weak: rgba(92, 200, 184, 0.12);
+  --card: #19201e;
+  --on-accent: #0b1513;
+  --accent-shadow: rgba(0, 0, 0, 0.45);
 }
 :root[data-theme='light'] {
-  --bg: #faf9f7;
-  --fg: #1a1916;
-  --muted: #6b6560;
-  --border: rgba(26, 25, 22, 0.12);
-  --border-strong: rgba(26, 25, 22, 0.22);
-  --accent: #c0432a;
-  --accent-weak: rgba(192, 67, 42, 0.08);
-  --card: #f4f2ee;
+  --bg: #f7f8f7;
+  --fg: #141917;
+  --muted: #5f6866;
+  --border: rgba(20, 25, 23, 0.12);
+  --border-strong: rgba(20, 25, 23, 0.22);
+  --accent: #0f6e66;
+  --accent-weak: rgba(15, 110, 102, 0.08);
+  --card: #eef2f1;
+  --on-accent: #ffffff;
+  --accent-shadow: rgba(15, 110, 102, 0.35);
 }
 
 * {
@@ -239,7 +247,7 @@ a:hover {
   border-radius: 50%;
   border: 1px solid var(--border-strong);
   background: var(--accent);
-  color: #faf9f7;
+  color: var(--on-accent);
   font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
@@ -298,13 +306,13 @@ main {
   color: #fff;
   background: var(--accent);
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(192, 67, 42, 0.35);
+  box-shadow: 0 2px 6px var(--accent-shadow);
   transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
 }
 .cv-pdf:hover {
   background: #a5371f;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(192, 67, 42, 0.45);
+  box-shadow: 0 4px 12px var(--accent-shadow);
 }
 
 /* Divider between Vitae sections (visual break when the topic changes) */
@@ -329,7 +337,7 @@ main {
   margin-bottom: 20px;
 }
 .more-link {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.75rem;
   color: var(--muted);
   background: none;
@@ -411,7 +419,7 @@ main {
   margin-top: 16px;
 }
 .linkrow a {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.75rem;
   color: var(--fg);
   border: 1px solid var(--border-strong);
@@ -422,14 +430,14 @@ main {
 .linkrow a:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: #faf9f7;
+  color: var(--on-accent);
   text-decoration: none;
 }
 .bio {
   margin: 20px 0 0;
   font-size: 1rem;
   line-height: 1.7;
-  text-align: justify;
+  text-align: left;
 }
 .bio + .bio { margin-top: 16px; }
 
@@ -440,11 +448,8 @@ main {
   width: 200px;
   max-width: 60vw;
   margin: 14px 0;
-  border: 1px solid var(--border);
-  filter: grayscale(15%);
-  transition: filter 0.5s;
+  border-radius: 12px;
 }
-.portrait:hover { filter: grayscale(0); }
 @media (min-width: 768px) {
   /* Photo floats to the right, starting just under the keyword line;
      standing / location / links / intro wrap beside it. */
@@ -571,18 +576,18 @@ main {
   margin: 2px 0;
 }
 .pub-venue {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.75rem;
   font-style: italic;
   color: var(--muted);
   margin: 4px 0 0;
 }
-.proj-pi { font-size: 0.8rem; color: var(--muted); margin: 4px 0 0; font-family: var(--mono); }
-.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; text-align: justify; }
+.proj-pi { font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; }
+.proj-desc { font-size: 0.9rem; color: var(--muted); margin: 6px 0 0; line-height: 1.55; text-align: left; }
 .group-note { font-size: 0.75rem; color: var(--muted); margin: 10px 0 0; font-style: italic; }
 .tagrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
 .tag {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.7rem;
   color: var(--muted);
   background: var(--card);
@@ -591,7 +596,7 @@ main {
   border-radius: 5px;
 }
 .badge {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.7rem;
   letter-spacing: 0.03em;
   padding: 3px 8px;
@@ -601,7 +606,7 @@ main {
   border: 1px solid transparent;
 }
 .chip-btn {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.7rem;
   padding: 3px 8px;
   border: 1px solid var(--border-strong);
@@ -609,7 +614,7 @@ main {
   color: var(--fg);
   transition: background 0.15s, color 0.15s;
 }
-.chip-btn:hover { background: var(--accent); border-color: var(--accent); color: #faf9f7; text-decoration: none; }
+.chip-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); text-decoration: none; }
 
 /* ---------- Vitae ---------- */
 .vitae-note { font-size: 0.875rem; color: var(--muted); margin: 0 0 8px; }
@@ -622,7 +627,7 @@ main {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 8px;
-  text-align: justify;
+  text-align: left;
 }
 .abstract > p { margin: 0; }
 .abstract > p + p { margin-top: 10px; }
@@ -690,7 +695,7 @@ button.chip-btn { background: none; cursor: pointer; }
   height: 30px;
 }
 .contact-card .k {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;

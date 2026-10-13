@@ -55,25 +55,25 @@ export type NewsItem = { date: string; text: string; link?: { label: string; hre
 export const news: NewsItem[] = [
   {
     date: 'Sep 2026',
-    text: '🔬 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
+    text: 'Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
   },
   {
     date: 'Aug 2026',
-    text: '🎓 Graduated with my M.E. in Computer Science and Artificial Intelligence from Dongguk University.',
+    text: 'Graduated with my M.E. in Computer Science and Artificial Intelligence from Dongguk University.',
   },
   {
     date: 'Jun 2026',
-    text: '💬 Presented SJoINT as a poster at KCC2026, Korea.',
+    text: 'Presented SJoINT as a poster at KCC2026, Korea.',
     link: { label: 'KCC2026', href: 'https://www.kiise.or.kr/conference/kcc/2026/' },
   },
   {
     date: 'Oct 2025',
-    text: '💬 Presented SJoINT as a poster at BIOINFO2025, Korea.',
+    text: 'Presented SJoINT as a poster at BIOINFO2025, Korea.',
     link: { label: 'BIOINFO2025', href: 'http://bioinfo2025.ksbi.or.kr/' },
   },
   {
     date: 'Jan 2024',
-    text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
+    text: 'Joined PRISM Lab at Dongguk University as a researcher.',
   },
 ]
 
