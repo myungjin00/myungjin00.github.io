@@ -9,11 +9,11 @@ export const profile = {
   // First name is rendered bold, like the reference site.
   firstName: 'Myungjin',
   lastName: 'Lee',
-  role: 'M.S.E. in Computer Science & Artificial Intelligence',
+  role: 'M.E. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
   headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
-  degree: 'M.S.E. · Master’s Researcher',
+  degree: 'M.E. · Master’s Researcher',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
@@ -34,7 +34,7 @@ export const profile = {
 
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
-  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I completed my M.S.E. in Computer Science and Artificial Intelligence at Dongguk University in August 2026, specializing in AI for Healthcare and Medicine, and I’m currently a master’s researcher at PRISM Lab (Dongguk University) with Dr. Sangsoo Lim. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
+  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I completed my M.E. in Computer Science and Artificial Intelligence at Dongguk University in August 2026, specializing in AI for Healthcare and Medicine, and I’m currently a master’s researcher at PRISM Lab (Dongguk University) with Dr. Sangsoo Lim. Before that, I earned a B.E. in Industrial and Management Engineering from Induk University, where I graduated at the top of my class. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
   'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts in progress—one under peer review and another in final preparation for submission.',
   'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects.',
 ]
@@ -59,7 +59,7 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Aug 2026',
-    text: '🎓 Graduated with my M.S.E. in Computer Science and Artificial Intelligence from Dongguk University.',
+    text: '🎓 Graduated with my M.E. in Computer Science and Artificial Intelligence from Dongguk University.',
   },
   {
     date: 'Jun 2026',
@@ -271,7 +271,7 @@ export const vitae: VitaeSection[] = [
     items: [
       {
         period: 'Mar 2024 – Aug 2026',
-        title: 'M.S.E. in Computer Science and Artificial Intelligence',
+        title: 'M.E. in Computer Science and Artificial Intelligence',
         detail:
           'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction',
       },
