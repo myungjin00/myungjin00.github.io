@@ -55,7 +55,7 @@ export type NewsItem = { date: string; text: string; link?: { label: string; hre
 export const news: NewsItem[] = [
   {
     date: 'Sep 2026',
-    text: '🔬 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
+    text: '💻 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
   },
   {
     date: 'Aug 2026',
