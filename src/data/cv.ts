@@ -77,6 +77,10 @@ export const news: NewsItem[] = [
     link: { label: 'BIOINFO2025', href: 'http://bioinfo2025.ksbi.or.kr/' },
   },
   {
+    date: 'Sep 2024',
+    text: '🏅 Awarded a Master’s Student Research Grant from the National Research Foundation of Korea (NRF) as Principal Investigator.',
+  },
+  {
     date: 'Jan 2024',
     text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
   },
