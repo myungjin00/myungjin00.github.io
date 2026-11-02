@@ -119,10 +119,12 @@ export const projectGroups: ProjectGroup[] = [
       },
       {
         period: '2026',
-        title: 'MAGNET: Cross-view Molecular Graph Learning for Interpretable ADMET Prediction',
+        title: 'MAGNET: Cross-view structural consensus for interpretable molecular property prediction',
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
         status: 'Under review',
-        desc: 'Multi-view molecular graph framework (MAGNET = Multi-view Aggregation of Graphs for Neural Embedding of Topologies) integrating BRICS, junction-tree, and Murcko fragmentations via cross-view meta-graphs, with multi-objective self-supervised pretraining on ZINC250K and ChemBERTa-enhanced fine-tuning across 10 MoleculeNet ADMET benchmarks.',
+        desc: 'Molecular graph learning framework integrating BRICS, junction-tree, and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph, with multi-objective self-supervised pretraining (graph contrastive learning, descriptor prediction, graph–SMILES alignment); best performance on seven of ten molecular property benchmarks.',
+        abstract:
+          'Accurate and interpretable molecular property prediction remains challenging because chemically relevant features span multiple structural scales. Here, we introduce MAGNET, a molecular graph learning framework that integrates BRICS, Junction Tree and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph. By connecting overlapping fragments across complementary views, MAGNET enables information exchange between chemically related substructures. Multi-objective self-supervised pretraining combines graph contrastive learning, molecular descriptor prediction and graph–SMILES alignment. Across ten molecular property benchmarks, MAGNET achieves the best performance on seven and the best average rank among sixteen models. Fragments identified across complementary decompositions exhibit enriched model attention and larger prediction changes upon perturbation. Importantly, attention enrichment depends on the structural complementarity of the supporting views rather than their number alone. Fragment-level analyses further recover established chemical relationships involving membrane permeability, BACE inhibition and hydration free energy. These findings highlight cross-view structural consensus as a useful signal for chemically informed molecular prediction and substructure attribution.',
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
