@@ -35,7 +35,7 @@ export const profile = {
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
   'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I’m currently a master’s researcher at PRISM Lab, Dongguk University, working with Dr. Sangsoo Lim, where I also earned my M.E. in Computer Science and Artificial Intelligence.',
-  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts in progress—one under peer review and another in final preparation for submission.',
+  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts under peer review.',
   'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
 ]
 
@@ -53,6 +53,10 @@ export const aboutClosing = {
 export type NewsItem = { date: string; text: string; link?: { label: string; href: string } }
 
 export const news: NewsItem[] = [
+  {
+    date: 'Nov 2026',
+    text: '💬 Presenting SJoINT as a poster at GIW2026 (Nov 18–19).',
+  },
   {
     date: 'Sep 2026',
     text: '💻 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
@@ -108,7 +112,7 @@ export const projectGroups: ProjectGroup[] = [
         period: '2026',
         title: 'SJoINT: Substructure-Driven Junction Tree for Interpretable ADMET Prediction',
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
-        status: 'In preparation',
+        status: 'Under review',
         desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250K; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
         tags: ['Junction tree', 'Cross-attention', 'ADMET', 'Contrastive'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
@@ -122,12 +126,30 @@ export const projectGroups: ProjectGroup[] = [
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
+      {
+        period: '2026',
+        title: 'Lipid abundance and lysophospholipid signaling regulate the senescence-associated secretory phenotype',
+        authors: 'Lee G., Byeon S.K., Olaleye O.E., Han Y., Lee M., Vizioli M.G., Ogrodnik M., Pirius N., Sales Gomez L., Victorelli S., Khosla S., Pandey A., Passos J., Lim S., Jurk D.',
+        org: 'Collaboration with Mayo Clinic',
+        status: 'In preparation',
+        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.',
+        tags: ['Senescence', 'SASP', 'Lipidomics', 'Aging'],
+      },
     ],
     note: '* Corresponding author. My name is shown in bold.',
   },
   {
     heading: 'Presentations',
     items: [
+      {
+        period: 'Nov 2026',
+        title:
+          'Cross-attentive Integration of Atom-level and Junction-tree Representations for Molecular Property Prediction',
+        org: 'Poster · GIW2026',
+        status: 'Poster',
+        abstract:
+          'Accurate prediction of molecular properties, including ADMET endpoints, is central to drug discovery, yet substructure-level interpretation remains challenging. We introduce a model integrating atom-level molecular graphs and substructure-level junction trees through membership-constrained bidirectional cross-attention: substructures attend only to their member atoms, and atoms attend only to substructures containing them. Each molecule’s two representations form a positive pair for augmentation-free contrastive pretraining on ZINC250k. Against 23 baselines on nine MoleculeNet datasets, our model achieved the best average rank under random splits (1.78; first on seven datasets) and the second-best under scaffold splits. On the MoleculeACE activity-cliff benchmark (30 targets), it achieved the lowest overall and cliff-restricted mean RMSEs among 24 methods (0.749 and 0.816, respectively). Ablations showed performance gains from both the membership constraint and pretraining. Across all nine datasets, substructure-to-atom attention shifted with layer depth from carbon atoms toward heteroatoms, while atom-to-substructure attention shifted from ring substructures toward smaller bond-based substructures. These patterns were already present in the pretrained model. In all nine datasets, masking higher-attention substructures tended to cause larger prediction changes. For all 30 targets, attention differences within activity-cliff pairs were concentrated near modified atoms. The model combines competitive predictive performance with directly inspectable atom-substructure attention.',
+      },
       {
         period: 'Jun 2026',
         title:
