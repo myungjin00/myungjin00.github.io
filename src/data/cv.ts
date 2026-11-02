@@ -159,7 +159,7 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Jun 2026',
         title:
           'Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning',
-        org: 'Poster · KCC2026, KIISE, Korea',
+        org: 'Poster · KCC2026, KIISE, ICC Jeju, Korea',
         status: 'Poster',
         abstract:
           'We propose a self-supervised molecular representation learning framework that represents each molecule from two perspectives — a junction tree and a molecular graph — and integrates them via structure-constrained bidirectional cross-attention. The method encodes atom–substructure correspondence as a mask so that information is exchanged only between corresponding elements, and it performs contrastive learning using the two graph representations of the same molecule as a positive pair, without any data augmentation. On nine MoleculeNet benchmarks, the method shows competitive performance against conventional GNNs, pretrained language models, and self-supervised GNNs, and ablation studies confirm the effect of the structure-constrained bidirectional cross-attention and the dual-graph representation. Attention analysis further shows that atom–substructure relationships are selectively reflected depending on the prediction task, suggesting that augmentation-free self-supervised learning reflecting structural correspondence can be effective for molecular property prediction.',
@@ -168,7 +168,7 @@ export const projectGroups: ProjectGroup[] = [
       {
         period: 'Oct 2025',
         title: 'Weighted Junction-Tree Nodes for Enhanced Interpretability in ADMET Tasks',
-        org: 'Poster · BIOINFO2025, KSBI, Korea',
+        org: 'Poster · BIOINFO2025, KSBI, Suwon Convention Center, Korea',
         status: 'Poster',
         abstract:
           'Accurate prediction of molecular properties such as absorption, distribution, metabolism, excretion, and toxicity (ADMET) is crucial in the drug discovery process; however, ensuring the interpretability of prediction models remains a significant challenge. Although existing Graph Neural Network (GNN)-based models demonstrate high predictive accuracy, they often suffer from the “black box” limitation of failing to explain which molecular substructures contribute to specific properties. We propose SJoINT, a dual-encoder model that explicitly utilizes molecular substructure information to achieve both accuracy and interpretability. SJoINT takes an atom-level molecular graph and a corresponding junction tree — representing the molecular scaffold and functional groups — as dual inputs, and learns the relationship between the two representations through an iterative cross-attention mechanism, enabling it to identify the key substructures associated with particular ADMET properties. On the MoleculeNet benchmark, SJoINT achieves state-of-the-art performance on the SIDER task for predicting toxic side effects, demonstrating the effectiveness of integrating micro-level (atomic) and macro-level (substructure) information for complex drug toxicity profiles. Overall, SJoINT provides accurate predictions while offering interpretable insights into the relationship between molecular substructures and drug properties.',
