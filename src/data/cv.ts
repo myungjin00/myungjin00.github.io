@@ -56,6 +56,7 @@ export const news: NewsItem[] = [
   {
     date: 'Nov 2026',
     text: '💬 Presenting SJoINT as a poster at GIW2026, Korea.',
+    link: { label: 'GIW2026', href: 'https://giw2026.ksbi.or.kr/' },
   },
   {
     date: 'Sep 2026',
