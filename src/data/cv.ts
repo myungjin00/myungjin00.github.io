@@ -78,7 +78,7 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Sep 2024',
-    text: '🏅 Awarded a Master’s Student Research Grant from the National Research Foundation of Korea (NRF) as Principal Investigator.',
+    text: '🌱 Awarded a Master’s Student Research Grant from the National Research Foundation of Korea (NRF) as Principal Investigator.',
   },
   {
     date: 'Jan 2024',
@@ -118,8 +118,8 @@ export const projectGroups: ProjectGroup[] = [
         title: 'SJoINT: Substructure-Driven Junction Tree for Interpretable Molecular Property Prediction',
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
         status: 'Under review',
-        desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250K; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
-        tags: ['Junction tree', 'Cross-attention', 'ADMET', 'Contrastive'],
+        desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250k; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
+        tags: ['Junction tree', 'Cross-attention', 'Interpretability', 'Contrastive pre-training'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
       },
       {
