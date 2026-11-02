@@ -55,8 +55,8 @@ export type NewsItem = { date: string; text: string; link?: { label: string; hre
 export const news: NewsItem[] = [
   {
     date: 'Nov 2026',
-    text: '💬 Presenting SJoINT as a poster at GIW2026, Korea.',
-    link: { label: 'GIW2026', href: 'https://giw2026.ksbi.or.kr/' },
+    text: '💬 Presenting SJoINT as a poster at BIOINFO/GIW ISCB-Asia 2026, Korea.',
+    link: { label: 'BIOINFO/GIW ISCB-Asia 2026', href: 'https://giw2026.ksbi.or.kr/' },
   },
   {
     date: 'Sep 2026',
@@ -146,7 +146,7 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Nov 2026',
         title:
           'Cross-attentive Integration of Atom-level and Junction-tree Representations for Molecular Property Prediction',
-        org: 'Poster · GIW2026, Yonsei University, Korea',
+        org: 'Poster · BIOINFO/GIW ISCB-Asia 2026, Yonsei University, Korea',
         status: 'Poster',
         abstract:
           'Accurate prediction of molecular properties, including ADMET endpoints, is central to drug discovery, yet substructure-level interpretation remains challenging. We introduce a model integrating atom-level molecular graphs and substructure-level junction trees through membership-constrained bidirectional cross-attention: substructures attend only to their member atoms, and atoms attend only to substructures containing them. Each molecule’s two representations form a positive pair for augmentation-free contrastive pretraining on ZINC250k. Against 23 baselines on nine MoleculeNet datasets, our model achieved the best average rank under random splits (1.78; first on seven datasets) and the second-best under scaffold splits. On the MoleculeACE activity-cliff benchmark (30 targets), it achieved the lowest overall and cliff-restricted mean RMSEs among 24 methods (0.749 and 0.816, respectively). Ablations showed performance gains from both the membership constraint and pretraining. Across all nine datasets, substructure-to-atom attention shifted with layer depth from carbon atoms toward heteroatoms, while atom-to-substructure attention shifted from ring substructures toward smaller bond-based substructures. These patterns were already present in the pretrained model. In all nine datasets, masking higher-attention substructures tended to cause larger prediction changes. For all 30 targets, attention differences within activity-cliff pairs were concentrated near modified atoms. The model combines competitive predictive performance with directly inspectable atom-substructure attention.',
