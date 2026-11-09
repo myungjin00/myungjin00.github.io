@@ -35,7 +35,7 @@ export const profile = {
 // About-page bio paragraphs (rendered in order). First-person narrative.
 export const bio: string[] = [
   'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I’m currently a master’s researcher at PRISM Lab, Dongguk University, working with Dr. Sangsoo Lim, where I also earned my M.E. in Computer Science and Artificial Intelligence.',
-  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic target discovery in aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts under peer review.',
+  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic analysis of cellular senescence and aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts under peer review.',
   'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
 ]
 
@@ -137,7 +137,7 @@ export const projectGroups: ProjectGroup[] = [
         authors: 'Lee G., Byeon S.K., Olaleye O.E., Han Y., Lee M., Vizioli M.G., Ogrodnik M., Pirius N., Sales Gomez L., Victorelli S., Khosla S., Pandey A., Passos J., Lim S., Jurk D.*',
         org: 'Collaboration with Mayo Clinic',
         status: 'Under review',
-        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.',
+        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.\n**My role:** transcriptomic analysis of public, in vitro, and in vivo senescence data (differential expression, gene-set enrichment).',
         tags: ['Senescence', 'SASP', 'Lipidomics', 'Aging'],
       },
     ],
@@ -203,9 +203,9 @@ export const projectGroups: ProjectGroup[] = [
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
         collab: 'Dr. Gung Lee (Mayo Clinic, USA)',
         status: 'Participating Researcher',
-        desc: 'Preliminary omics / bioinformatics analysis for target discovery in aging-related MASLD.',
+        desc: 'Transcriptomic database construction and disease-progression analysis for aging-related MASLD.',
         abstract:
-          'Curated and analyzed bulk and single-cell RNA-seq from public repositories and from experimental in vitro senescence assays (Mayo Clinic collaboration), building QC → DEG → GSEA/ssGSEA → gene-set module-scoring pipelines to characterize lipid-metabolism reprogramming and cellular-senescence signatures (SenMayo/SASP) mainly in aging mouse liver, with a supporting cross-check in public human data. Cross-compared independent datasets to prioritize candidate genes (Cd36, Psap, Ucp2, Sgpl1) and Plin2-defined senescent-cell subsets, establishing omics evidence for downstream target validation.',
+          'Curated public bulk and single-cell RNA-seq datasets into an integrated database for aging-related MASLD and defined stages of disease progression. Analyzed stage-wise gene expression changes, with functional enrichment (GSEA using GO, KEGG, and Hallmark gene sets) and cellular-senescence gene-set analysis (SenMayo, SHGS).',
         moreLabel: 'Details',
         tags: ['Single-cell RNA-seq', 'Bulk RNA-seq', 'Omics Analysis', 'Cellular Senescence'],
       },
@@ -320,7 +320,7 @@ export const vitae: VitaeSection[] = [
         period: 'Jan 2024 – Present',
         title: 'PRISM Lab, Dongguk University',
         detail:
-          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq omics analysis for target discovery.',
+          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq analysis of cellular senescence and aging-related MASLD with Mayo Clinic collaborators.',
       },
     ],
   },
