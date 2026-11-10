@@ -136,7 +136,7 @@ export const projectGroups: ProjectGroup[] = [
         title: 'Lipid abundance and lysophospholipid signaling regulate the senescence-associated secretory phenotype',
         authors: 'Lee G., Byeon S.K., Olaleye O.E., Han Y., Lee M., Vizioli M.G., Ogrodnik M., Pirius N., Sales Gomez L., Victorelli S., Khosla S., Pandey A., Passos J., Lim S., Jurk D.*',
         org: 'Collaboration with Mayo Clinic',
-        status: 'Under review',
+        status: 'In preparation',
         desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.\n**My role:** transcriptomic analysis of public, in vitro, and in vivo senescence data (differential expression, gene-set enrichment).',
         tags: ['Senescence', 'SASP', 'Lipidomics', 'Aging'],
       },
