@@ -144,6 +144,21 @@ export const projectGroups: ProjectGroup[] = [
     note: '* Corresponding author. My name is shown in bold.',
   },
   {
+    heading: 'Publications',
+    items: [
+      {
+        period: 'Jun 2026',
+        title: 'Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning',
+        authors: 'Lee M., Mo J., Lim S.*',
+        org: 'Proceedings of the Korea Computer Congress (KCC) 2026, KIISE, pp. 291–293',
+        status: 'Conference paper',
+        desc: 'Self-supervised molecular representation learning that integrates junction-tree and molecular-graph views via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining; evaluated on nine MoleculeNet benchmarks.',
+        tags: ['Junction tree', 'Cross-attention', 'Contrastive pre-training'],
+        links: [{ label: 'DBpia', href: 'https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12929290' }],
+      },
+    ],
+  },
+  {
     heading: 'Presentations',
     items: [
       {
@@ -159,7 +174,7 @@ export const projectGroups: ProjectGroup[] = [
         period: 'Jun 2026',
         title:
           'Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning',
-        org: 'Paper & Poster · KCC2026 Proceedings (pp. 291–293), KIISE, ICC Jeju, Korea',
+        org: 'Poster · KCC2026, KIISE, ICC Jeju, Korea',
         status: 'Poster',
         abstract:
           'We propose a self-supervised molecular representation learning framework that represents each molecule from two perspectives — a junction tree and a molecular graph — and integrates them via structure-constrained bidirectional cross-attention. The method encodes atom–substructure correspondence as a mask so that information is exchanged only between corresponding elements, and it performs contrastive learning using the two graph representations of the same molecule as a positive pair, without any data augmentation. On nine MoleculeNet benchmarks, the method shows competitive performance against conventional GNNs, pretrained language models, and self-supervised GNNs, and ablation studies confirm the effect of the structure-constrained bidirectional cross-attention and the dual-graph representation. Attention analysis further shows that atom–substructure relationships are selectively reflected depending on the prediction task, suggesting that augmentation-free self-supervised learning reflecting structural correspondence can be effective for molecular property prediction.',
