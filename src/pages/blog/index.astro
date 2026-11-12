@@ -155,17 +155,13 @@ const refs = [
     if (!searching) return
 
     const lang = root.dataset.lang === 'ko' ? 'ko' : 'en'
-    // match against both languages so a Korean query still finds the English page,
-    // then show whichever version the reader is on
+    // match against both languages so a Korean query still finds a note written in English words,
+    // but list only the notes that exist in the language the reader picked
     const hits = (docs ?? []).filter(d => {
       const hay = Object.values(d.hay).join(' ')
       return terms.every(t => (hay as string).includes(t))
-    })
+    }).flatMap(d => d.rows.filter(r => r.l === lang || r.l === 'both'))
     out.querySelector('tbody')!.innerHTML = hits
-      .flatMap(d => {
-        const own = d.rows.filter(r => r.l === lang || r.l === 'both')
-        return own.length ? own : d.rows.slice(0, 1)   // untranslated note: show what exists
-      })
       .map(r => `
       <tr><td>
         <a href="${r.href}">${esc(r.title)}</a>
@@ -175,14 +171,8 @@ const refs = [
     found.textContent = hits.length ? `${hits.length} match${hits.length > 1 ? 'es' : ''}` : 'no match'
   }
   q.addEventListener('input', run)
-  // the magnifier in the header points here; on this page it should just focus the box
-  const focusQ = () => { q.focus(); q.scrollIntoView({ block: 'center' }) }
-  if (location.hash === '#q') { apply('en'); focusQ() }
-  document.querySelector('a.find-btn')?.addEventListener('click', e => {
-    e.preventDefault()
-    apply('en')          // the header search is the site-wide one, and it searches in English
-    focusQ()
-  })
+  // /blog/#q lands with the box focused; the header magnifier is the separate site-wide search
+  if (location.hash === '#q') { q.focus(); q.scrollIntoView({ block: 'center' }) }
   // Escape clears, which is what every search box does
   q.addEventListener('keydown', e => { if (e.key === 'Escape') { q.value = ''; run() } })
 </script>

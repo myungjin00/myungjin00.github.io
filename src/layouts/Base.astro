@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { u } from '../lib'
+import Monogram from '../components/Monogram.astro'
 
 // footer marks: the two brand logos as their owners draw them; the CV says what it is in letters
 const GITHUB = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>'
@@ -74,7 +75,7 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
 <body>
   <header class="top">
     <div class="wrap bar">
-      <a class="home" href={u('')}>~/<b>myungjin-lee</b></a>
+      <a class="home" href={u('')} aria-label="Myungjin Lee, home"><Monogram size={22} title="" /><span>Myungjin Lee</span></a>
       <div class="bar-right">
         <nav aria-label="Main">
           {nav.map(n => <a href={n.href} aria-current={n.on ? 'page' : undefined}>{n.label}</a>)}
@@ -87,10 +88,10 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <a class="find-btn" href={u('blog/#q')} aria-label="Search notes" title="Search notes">
+        <button class="find-btn" id="find" type="button" aria-label="Search the site" title="Search the site (/)" data-index={u('search.json')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-        </a>
+        </button>
         <div class="fs" role="group" aria-label="Text size">
           <button type="button" data-fs="-" aria-label="Smaller text">A</button>
           <button type="button" data-fs="+" aria-label="Larger text">A</button>
@@ -134,6 +135,14 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
     </div>
   </footer>
 
+  <dialog id="finder" aria-label="Search the site">
+    <form method="dialog" class="finder-box">
+      <input id="finder-q" type="search" placeholder="Search research, news, vitae and notes" autocomplete="off" spellcheck="false">
+      <ul id="finder-out" role="listbox"></ul>
+      <p class="finder-hint mono">enter to open · ↑↓ to move · esc to close</p>
+    </form>
+  </dialog>
+
   <script>
     import { initCursor } from '../scripts/cursor.js'
     import { nodeField } from '../scripts/node-field.js'
@@ -163,6 +172,45 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
       else delete root.dataset.theme
       try { localStorage.setItem('theme', dark ? 'dark' : 'light') } catch {}
     })
+
+    // site-wide search: titles and summaries of every page; the Notes page keeps its own full-text search
+    const finder = document.getElementById('finder') as HTMLDialogElement
+    const fq = document.getElementById('finder-q') as HTMLInputElement
+    const fout = document.getElementById('finder-out')!
+    const findBtn = document.getElementById('find')!
+    const KIND: Record<string, string> = { page: 'page', project: 'project', research: 'research', news: 'news', vitae: 'vitae', note: 'note' }
+    const RANK = ['page', 'project', 'research', 'news', 'vitae', 'note']
+    let index: any[] | null = null, sel = 0, shown: any[] = []
+    const esc = (s = '') => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as any)[c])
+    const draw = () => {
+      const q = fq.value.trim().toLowerCase()
+      const words = q.split(/\s+/).filter(Boolean)
+      shown = !index || !words.length ? [] : index
+        .filter(h => words.every(w => h.h.includes(w)))
+        .sort((a, b) => (+!a.t.toLowerCase().includes(q) - +!b.t.toLowerCase().includes(q)) || RANK.indexOf(a.k) - RANK.indexOf(b.k))
+        .slice(0, 12)
+      sel = Math.min(sel, Math.max(shown.length - 1, 0))
+      fout.innerHTML = words.length && !shown.length ? '<li class="finder-none">Nothing found.</li>'
+        : shown.map((h, i) => `<li role="option" aria-selected="${i === sel}"><a href="${h.u}"><span class="finder-k mono">${KIND[h.k]}</span><span class="finder-t">${esc(h.t)}</span>${h.d ? `<span class="finder-d">${esc(h.d)}</span>` : ''}</a></li>`).join('')
+    }
+    const openFinder = async () => {
+      if (!finder.open) finder.showModal()
+      fq.select()
+      index ??= await fetch(findBtn.dataset.index!).then(r => r.json()).catch(() => [])
+      draw()
+    }
+    findBtn.addEventListener('click', openFinder)
+    addEventListener('keydown', e => {
+      const t = e.target as HTMLElement
+      if (e.key === '/' && !finder.open && !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) && !t.isContentEditable) { e.preventDefault(); openFinder() }
+    })
+    fq.addEventListener('input', () => { sel = 0; draw() })
+    fq.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); sel = (sel + (e.key === 'ArrowDown' ? 1 : -1) + shown.length) % Math.max(shown.length, 1); draw() }
+      if (e.key === 'Enter' && shown[sel]) { e.preventDefault(); finder.close(); location.href = shown[sel].u }
+    })
+    fout.addEventListener('click', e => { if ((e.target as HTMLElement).closest('a')) finder.close() })
+    finder.addEventListener('click', e => { if (e.target === finder) finder.close() })
   </script>
 </body>
 </html>
@@ -176,8 +224,9 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
   .top { position: sticky; top: 0; z-index: 10; background: var(--paper);
          border-bottom: 1px solid transparent; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 66px; font: 13px var(--mono); }
-  .home { color: var(--muted); text-decoration: none; white-space: nowrap; }
-  .home b { color: var(--green); font-weight: 500; }
+  .home { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; white-space: nowrap;
+          font: 600 calc(15.5px * var(--fs)) var(--sans); letter-spacing: -.01em; }
+  .home:hover { color: var(--green); }
   nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
   nav::-webkit-scrollbar { display: none; }
   /* where you are reads as a washed-in block, in the top nav and in the contents bar alike */
@@ -248,6 +297,21 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
   .to-top[hidden] { display: none; }
   .to-top.on { opacity: 1; transform: none; }
   .to-top:hover { color: var(--green); border-color: var(--green); }
+  #finder { width: min(640px, calc(100% - 32px)); margin: 12vh auto auto; padding: 0; border: 1px solid var(--line); border-radius: 8px;
+            background: var(--paper); color: var(--ink); box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .45); }
+  #finder::backdrop { background: color-mix(in srgb, var(--ink) 28%, transparent); }
+  .finder-box { margin: 0; }
+  #finder-q { width: 100%; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink);
+              font: calc(17px * var(--fs)) var(--sans); padding: 16px 18px; outline: none; }
+  #finder-out { list-style: none; margin: 0; padding: 6px; max-height: 56vh; overflow-y: auto; }
+  #finder-out:empty { display: none; }
+  #finder-out a { display: grid; grid-template-columns: 72px minmax(0, 1fr); column-gap: 10px; padding: 8px 10px; border-radius: 5px; text-decoration: none; }
+  #finder-out [aria-selected="true"] a, #finder-out a:hover { background: color-mix(in srgb, var(--green) 12%, transparent); }
+  .finder-k { grid-row: span 2; font-size: calc(12px * var(--fs)); color: var(--muted); padding-top: 3px; }
+  .finder-t { color: var(--ink); font-size: calc(15.5px * var(--fs)); font-weight: 500; }
+  .finder-d { color: var(--muted); font-size: calc(13px * var(--fs)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .finder-none { padding: 12px 14px; color: var(--muted); font-size: calc(14px * var(--fs)); }
+  .finder-hint { margin: 0; padding: 8px 18px; border-top: 1px solid var(--line); font-size: calc(12px * var(--fs)); color: var(--muted); }
   .to-top svg { width: 18px; height: 18px; stroke-width: 1.6; }
   @media (max-width: 560px) { .to-top { right: 14px; bottom: 14px; width: 38px; height: 38px; } }
   @media (prefers-reduced-motion: reduce) { .to-top { transition: none; } }
