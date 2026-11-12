@@ -31,7 +31,7 @@ const posts = mergeTranslations(allPosts).map(e => e.lead).slice(0, 3)
   <section class="wrap hero">
     <div class="intro">
       <h1><span class="first">Myungjin</span> Lee <span class="ko">{profile.nameKo}</span></h1>
-      <p class="role">master’s researcher · <a href={profile.lab.href}>PRISM Lab</a>, Dongguk University · Seoul</p>
+      <p class="role">Master’s researcher · <a href={profile.lab.href}>PRISM Lab</a>, Dongguk University · Seoul</p>
       <div class="bio">
         <p>I’m a machine learning researcher working at the intersection of AI and drug discovery — a master’s researcher at PRISM Lab, Dongguk University, with Dr. Sangsoo Lim, where I also earned my M.E. in Computer Science and Artificial Intelligence.</p>
         <p>My research is on <span class="hl">graph-based molecular representation learning</span> and <span class="hl">ADMET prediction</span>. A central theme is interpretable molecular prediction: rather than treating these models as black boxes, I build attention-based models that highlight the substructures most relevant to each prediction. I’ve also worked on drug repurposing, and on <span class="hl blue">transcriptomic analysis</span> of cellular senescence and aging-related MASLD.</p>
@@ -94,7 +94,7 @@ const posts = mergeTranslations(allPosts).map(e => e.lead).slice(0, 3)
   .ko { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: .4em; color: var(--muted); margin-left: .3em; vertical-align: .35em; }
   .closing { margin: 18px 0 0; font-size: calc(14px * var(--fs)); color: var(--soft); }
   h1 { font-weight: 600; font-size: calc(clamp(38px, 5.2vw, 56px) * var(--fs)); line-height: 1; letter-spacing: -.025em; margin: 0; }
-  .role { font: calc(12.5px * var(--fs)) var(--mono); color: var(--muted); margin: 14px 0 0; }
+  .role { font-size: calc(15.5px * var(--fs)); color: var(--soft); margin: 14px 0 0; }
   .bio { margin: 22px 0 0; }
   .bio p { margin: 0 0 12px; font-family: var(--serif); font-size: calc(18px * var(--fs)); line-height: 1.6; }
   .bio p:last-child { margin-bottom: 0; }
