@@ -1,36 +1,31 @@
 # myungjin00.github.io
 
-Personal CV / portfolio site for **Myungjin Lee** — built with React + Vite + TypeScript,
-deployed to GitHub Pages.
+Personal research site for **Myungjin Lee** — molecular machine learning and omics.
+Built with [Astro](https://astro.build), deployed to GitHub Pages.
 
-**Live site:** https://myungjin00.github.io
+- **Live:** https://myungjin00.github.io
+- **Staging:** https://myungjin00.github.io/site-lab/
 
-## Edit content
+The same source builds both. The base path comes from `ASTRO_BASE`, which defaults to
+`/site-lab` here and is set to `/` on the live site.
 
-All CV content lives in a single file:
+## Layout
 
 ```
-src/data/cv.ts
+src/pages/        the pages; projects/ has one page per project
+src/layouts/      Base (header, nav, search, footer) and Project
+src/data/         cv.ts is the single source for the CV, news and project data
+src/content/blog/ the notes, in English and Korean, paired by `group`
+src/scripts/      the canvas scenes, the contact terminal, the seasonal layer
+scripts/          figure generation (Python) and the self-checks
 ```
 
-Edit the fields there (profile, education, publications, projects, skills, …) and the site
-updates automatically. Items marked `// TODO` are placeholders to fill in later.
+## Develop
 
-To add a profile photo: drop the image in `public/assets/` (e.g. `profile.jpg`) and set
-`photo: '/assets/profile.jpg'` in `src/data/cv.ts`.
-
-## Local development
-
-```bash
+```sh
 npm install
-npm run dev       # http://localhost:5173
-npm run build     # production build into dist/
-npm run preview   # preview the production build
+npm run dev        # http://localhost:4321/site-lab/
+npm run build      # -> dist/
+node scripts/check-scenes.mjs   # the molecular scenes stay well-formed
+node scripts/check-seoul.mjs    # the clock's day/night and season logic
 ```
-
-## Deployment
-
-Pushing to the `main` branch triggers the GitHub Actions workflow
-(`.github/workflows/deploy.yml`), which builds the site and publishes it to GitHub Pages.
-
-One-time setup on GitHub: **Settings → Pages → Build and deployment → Source → GitHub Actions**.

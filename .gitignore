@@ -6,8 +6,14 @@ dist
 incoming/*.pdf
 UNDEFINED_CANDIDATES.txt
 
-# raw source uploads (optimised copies live in public/assets)
+# internal working notes — kept on disk, not published
+PAPERS_NEEDED.txt
+REVIEW.md
+REVIEW_LOG.md
+STYLE.md
+incoming/
+
+# raw source uploads — never published
 _raw/
 MJ_증명사진.jpg
 /*.pdf
-scripts/
