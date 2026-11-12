@@ -1,22 +1,29 @@
 # myungjin00.github.io
 
-Personal site for **Myungjin Lee** — research, news, notes and CV — built with Astro,
+Personal CV / portfolio site for **Myungjin Lee** — built with React + Vite + TypeScript,
 deployed to GitHub Pages.
 
 **Live site:** https://myungjin00.github.io
 
 ## Edit content
 
-- CV content (papers, projects, grants, news, education, skills): `src/data/cv.ts`
-- Featured projects on the home page: `src/data/projects.ts`
-- Notes: Markdown files in `src/content/blog/`
-- Images and PDFs: `public/assets/`
+All CV content lives in a single file:
+
+```
+src/data/cv.ts
+```
+
+Edit the fields there (profile, education, publications, projects, skills, …) and the site
+updates automatically. Items marked `// TODO` are placeholders to fill in later.
+
+To add a profile photo: drop the image in `public/assets/` (e.g. `profile.jpg`) and set
+`photo: '/assets/profile.jpg'` in `src/data/cv.ts`.
 
 ## Local development
 
 ```bash
 npm install
-npm run dev       # http://localhost:4321
+npm run dev       # http://localhost:5173
 npm run build     # production build into dist/
 npm run preview   # preview the production build
 ```
