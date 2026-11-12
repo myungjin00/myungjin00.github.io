@@ -18,14 +18,19 @@ const lipid = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p
     { k: 'alongside', v: `<a href="${u('projects/masld/')}">Aging-related MASLD</a>` },
   ]}>
   <figure slot="plate" class="plate">
-    <img src={u('assets/fig/lipid-volcano.png')} alt="A volcano plot of lipid-high against lipid-low senescent cells. Almost everything significant moves up in the lipid-high cells, and the labelled genes are cytokines and chemokines — CXCL8, CXCL1, CXCL6, IL1A, IL1B, C3, NAMPT." width="1700" height="954" loading="eager">
-    <figcaption><span>Lipid-high against lipid-low senescent cells</span><span>in vitro bulk RNA-seq · the labelled genes are SASP factors</span></figcaption>
+    <img src={u('assets/fig/lipid-volcano-lipid.png')} alt="A volcano plot of lipid-high against lipid-low senescent cells, with the lipid-related differentially expressed genes marked in green — C3, ZC3H12A, IL1B, C1QTNF1, TNFAIP3, NFKBIA, PTGS1, EDNRB, DHCR24. Almost everything significant moves up in the lipid-high cells." width="1288" height="915" loading="eager">
+    <figcaption><span>Lipid-high against lipid-low senescent cells</span><span>in vitro bulk RNA-seq · lipid-related genes in green</span></figcaption>
   </figure>
 
   <h2>The project</h2>
   <p>This is a collaboration with Mayo Clinic on how much lipid a senescent cell carries and how loudly it signals — the senescence-associated secretory phenotype, or SASP. Senescent cells differ from one another in lipid content, so the lipid-high and lipid-low populations can be separated and sequenced. Almost everything that differs between them shifts in one direction, and the genes that shift furthest are the secreted ones.</p>
+  <figure class="plate inline">
+    <img class="tall" src={u('assets/fig/lipid-heatmap.png')} alt="A clustered heatmap of inflammatory and lipid-metabolic genes in lipid-high against lipid-low senescent cells. The two groups separate, with cytokine genes high in the lipid-high cells and lipid-handling genes high in the lipid-low ones." width="774" height="986" loading="lazy">
+    <figcaption><span>The same comparison, clustered</span><span>row z-score · the two groups separate on inflammatory and lipid genes</span></figcaption>
+  </figure>
+  <p>Clustered on those genes, the two populations come apart: the cytokines sit with the lipid-high cells and the lipid-handling genes with the lipid-low ones.</p>
   <p><span class="role">My role</span> the transcriptomic analysis across the public, <i>in vitro</i> and <i>in vivo</i> senescence data.</p>
-  <p class="note">The manuscript is in preparation. The figure above is an example of the analysis, not a figure from it.</p>
+  <p class="note">The manuscript is in preparation. The figures above are examples of the analysis, not figures from it.</p>
 
   <h2>The paper</h2>
   <div class="paper cell"><p class="t">{lipid.title}</p><p class="a" set:html={authors(lipid.authors)} /><p class="v">{lipid.status} · {lipid.org}</p></div>
@@ -36,3 +41,5 @@ const lipid = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p
     {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}><span class="t">{r.t}</span><span class="d">{r.d}</span></a></li>)}
   </ul>
 </Project>
+<!-- a portrait figure, so it is centred at a readable width rather than stretched -->
+<style>.plate img.tall { width: auto; max-width: min(100%, 440px); margin: 18px auto 6px; }</style>
