@@ -1,0 +1,66 @@
+---
+import Project from '../../layouts/Project.astro'
+import { u } from '../../lib'
+// the notes that carry the background for this page
+const READING = [
+  { id: 'masld-staging', t: 'MASLD: the names, and the two axes that are staged', d: 'why NAFLD became MASLD, and why steatosis grade and fibrosis stage are not one scale' },
+  { id: 'liver-cells', t: 'What the liver is made of', d: 'the cell types a liver transcriptome is averaging over' },
+  { id: 'geo-fastq', t: 'From a GEO accession to a count matrix', d: 'what the collection half of this project does' },
+  { id: 'gene-sets', t: 'Gene sets and enrichment: GO, KEGG, Reactome, Hallmark', d: 'how the enrichment above is computed, and what it can and cannot say' },
+]
+---
+<Project slug="masld"
+  lede="Public liver transcriptomes are scattered across accessions, species and assay types. Collected into one database, they can be asked a question once, instead of one dataset at a time — and asked whether they agree."
+  facts={[
+    { k: 'project', v: 'Aging-related MASLD, NRF (MSIT)' },
+    { k: 'funded', v: 'Mar 2025 – Feb 2026' },
+    { k: 'status', v: 'manuscript in progress' },
+    { k: 'pi', v: 'Dr. Sangsoo Lim' },
+    { k: 'collaborator', v: 'Dr. Gung Lee, Mayo Clinic' },
+    { k: 'my role', v: 'data collection and analysis' },
+    { k: 'data', v: 'public — GEO, SRA' },
+    { k: 'alongside', v: `<a href="${u('projects/lipid/')}">Lipids and the SASP</a>` },
+  ]}>
+  <figure slot="plate" class="plate">
+    <img src={u('assets/fig/tms-liver-umap.png')} alt="Two UMAP projections of the same mouse liver cells from Tabula Muris Senis: one coloured by cell type, where hepatocytes, Kupffer cells, endothelial cells and lymphocytes form separate groups, and one coloured by age, where cells from the oldest mice sit apart within the hepatocyte group." width="1693" height="471">
+    <figcaption><span>Mouse liver, Tabula Muris Senis</span><span>droplet scRNA-seq · GSE149590 · by cell type and by age</span></figcaption>
+  </figure>
+
+  <h2>What is being built</h2>
+  <p>MASLD, metabolic dysfunction-associated steatotic liver disease, is read here from public liver transcriptomes. Those exist in quantity, but the metadata that decides a comparison — age, diet period, disease stage, fibrosis stage — is written differently in every accession, and the assay types do not line up. Collection comes first: the datasets are curated into one schema, with a reference side carrying genes, pathways, compounds and their cross-references. A question then becomes one query instead of a week of re-parsing.</p>
+  <figure class="plate inline">
+    <img src={u('assets/fig/masld-db.png')} alt="A diagram of the MASLD data collection: public omics datasets split into bulk RNA-seq, microarray, single-cell and spatial, with human and mouse counts, beside a bio knowledge base split into compound, pathway and gene sources." width="3760" height="1102" loading="lazy">
+    <figcaption><span>What the database holds</span><span>public omics datasets · and a reference side of genes, pathways and compounds</span></figcaption>
+  </figure>
+  <p>Three aging-liver sets carry the analysis so far: bulk mouse liver from SRA, the <i>Tabula Muris Senis</i> bulk series and the matching single-cell atlas. Differential expression runs with PyDESeq2 on the bulk arms and MAST on the single-cell one; enrichment runs against GO, KEGG, Reactome and Hallmark.</p>
+  <p><span class="role">My role</span> the data collection and the analysis — curating the accessions into the schema, and the differential expression, enrichment and single-cell scoring on top of it.</p>
+
+  <h2>A lipid vocabulary of its own</h2>
+  <p>To ask a transcriptome about lipid metabolism you first need a list of which pathways count as lipid metabolism, and none of the standard databases publishes one. So lipid-related terms are pulled out of GO, KEGG, Reactome and Hallmark by keyword and sorted by hand into five groups: anabolism; catabolism; mixed metabolism; transport and localisation; and droplet and storage. A short list of lysophospholipid-related genes sits alongside them. That catalogue is what every enrichment on this project is tested against, and it is what makes results from different datasets comparable.</p>
+
+  <h2>What it shows so far</h2>
+  <p>In the bulk arm, young against old shows how much of the variation age accounts for, and which genes move with it — among them the lipid-related ones, which can be marked and carried into gene-set enrichment.</p>
+  <figure class="plate inline">
+    <img src={u('assets/fig/tms-young-old.png')} alt="Two panels from public bulk liver RNA-seq: a principal-component plot of young against old mice, and a volcano plot of differential expression in which lipid-related genes are marked." width="2659" height="920" loading="lazy">
+    <figcaption><span>Young against old, in bulk</span><span>bulk RNA-seq · GSE132040 · lipid genes marked in green</span></figcaption>
+  </figure>
+  <p>The first thing the collection is good for is a negative result. Two public bulk studies of the same tissue, the same species and the same contrast — young mouse liver against old — agree on only a small minority of the pathways each one calls enriched. Whatever is read off a single aging-liver dataset is partly a property of that dataset.</p>
+  <p>What they do agree on is lipid handling, and the direction is consistent: fatty-acid oxidation, bile-acid synthesis and cholesterol biosynthesis come down with age, while droplet and storage terms move the other way.</p>
+  <figure class="plate inline">
+    <img src={u('assets/fig/tms-go.png')} alt="Two dot plots of gene-ontology enrichment for the age-associated genes: the top biological processes by false discovery rate, and the lipid-related terms among them, grouped into anabolism, catabolism, transport and droplet storage." width="2565" height="960" loading="lazy">
+    <figcaption><span>What the age-associated genes are for</span><span>GO enrichment · and the lipid-related terms among them</span></figcaption>
+  </figure>
+  <p>A liver is a mixture, though: hepatocytes do the metabolic work, Kupffer cells and lymphocytes the immune work, and endothelial and stellate cells line and support the tissue. Aging does not move them together, so the bulk result is an average over cell types that may be going in different directions. The single-cell arm is therefore scored per cell.</p>
+  <figure class="plate inline">
+    <img src={u('assets/fig/tms-lipid-genes.png')} alt="Violin plots of Cd36, Plin2 and Il6 expression in eight liver cell types at four ages: 1, 18, 21 and 24 months. The lipid-droplet genes vary by cell type and age, while Il6 is near zero almost everywhere." width="1877" height="1308" loading="lazy">
+    <figcaption><span>Two lipid-droplet genes and one cytokine, by cell type and age</span><span>droplet scRNA-seq · GSE149590</span></figcaption>
+  </figure>
+  <p>It also rules out the shortcut. <i>Il6</i> — the cytokine a bulk measurement would be expected to pick up — is near zero in almost every cell, and the lipid-droplet genes do not simply rise with age either. No single marker survives single-cell depth. Senescence is therefore scored from gene sets, with three methods side by side: ssGSEA, AddModuleScore and AUCell.</p>
+  <p class="note">The funded period ran from March 2025 to February 2026; the database and the manuscript are still in progress. The lipid processes that come out of the public data are the same ones a collaboration with the Mayo Clinic approaches from the cell side — <a href={u('projects/lipid/')}>Lipids and the SASP</a>.</p>
+
+  <h2>Background, in the notes</h2>
+  <p>The vocabulary this work runs on is written up separately — what the disease stages mean, what the liver is made of, how a public accession becomes a count matrix — so the pages here can stay on the work itself.</p>
+  <ul class="reading">
+    {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}><span class="t">{r.t}</span><span class="d">{r.d}</span></a></li>)}
+  </ul>
+</Project>

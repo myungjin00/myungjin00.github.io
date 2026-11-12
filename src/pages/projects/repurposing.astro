@@ -1,0 +1,46 @@
+---
+import Project from '../../layouts/Project.astro'
+import { u } from '../../lib'
+// what is registered on KBDI, in the two tracks
+const REPO = ['TxGNN', 'DREAMwalk', 'DRHGCN', 'AMDGT', 'SVGA']
+const PROP = ['GROVER', 'MolCLR', 'MGSSL', 'HiMol', 'HiGNN', 'GraphFP', 'MolFCL', 'MMGX', 'S-CGIB', 'AttentiveFP', 'D-MPNN', 'GIN', 'GAT']
+---
+<Project slug="repurposing"
+  lede="Old drugs can find new uses, and a molecule’s properties can be read off its structure. Both fields publish new models faster than they agree on how to compare them, so this work rebuilds the published ones in a single environment and runs them on the same footing."
+  facts={[
+    { k: 'project', v: 'Open-access AI drug-discovery platform, NRF (MSIT)' },
+    { k: 'pi', v: 'Dr. Minho Lee, Dongguk University' },
+    { k: 'my role', v: 'the repurposing and property-prediction tracks' },
+    { k: 'registered on', v: '<a href="https://kbdi.re.kr/main/mainVw.do">KBDI</a>' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" role="img" aria-label="A schematic biomedical knowledge graph of drugs, diseases, genes, side effects and pathways. It is embedded into a space where like sits with like, and drugs are then ranked for one disease, with a dashed line marking a proposed new use."></canvas>
+    <figcaption><span>What the benchmark asks of a model</span><span>an illustration, not real data · graph → embedding → ranked drugs · hover a disease</span></figcaption>
+  </figure>
+
+  <h2>Drug repurposing</h2>
+  <p>A repurposing model reads a biomedical knowledge graph — drugs, diseases, genes, side effects, pathways and the edges between them — and proposes a drug for a disease it was not developed for. The published models disagree on their graph, their split and their metric, so their reported numbers are not comparable.</p>
+  <p>Five candidate graphs were surveyed and <a href="https://zitniklab.hms.harvard.edu/projects/PrimeKG/">PrimeKG</a> was kept, cut down to the 3,379 drugs and 935 diseases that every model can represent numerically. Each model is given the same similarities to work from: between drugs from their chemical structure, between proteins from their sequences, and between diseases from their position in the MeSH medical vocabulary. Five models were then rebuilt on that one graph.</p>
+  <ul class="pills">{REPO.map(m => <li>{m}</li>)}</ul>
+  <p>The split is by disease rather than by edge: the 190 test diseases are held out whole, so a model has to rank drugs for a disease it has never seen. Hypertension is carried through as a worked case.</p>
+
+  <h2>Molecular property prediction</h2>
+  <p>The second track is the same exercise for molecules: thirteen models for physicochemical property and toxicity prediction, rebuilt and run on the nine MoleculeNet datasets — ESOL, FreeSolv and Lipophilicity for regression; BACE, BBBP, ClinTox, SIDER, Tox21 and ToxCast for classification.</p>
+  <p>Every model sees the same 8:1:1 molecule-level split over five seeds, with no test molecule anywhere in training, and keeps the hyperparameters its own paper reported, with no retuning per dataset. The question is how the published methods compare when nothing else differs.</p>
+  <ul class="pills">{PROP.map(m => <li>{m}</li>)}</ul>
+  <p class="note">The interpretable model that came out of this track is <a href={u('projects/sjoint/')}>SJoINT</a>, and the multi-view one is <a href={u('projects/magnet/')}>MAGNET</a>.</p>
+
+  <h2>On the platform</h2>
+  <p>A benchmark is only reusable if someone else can run it. Each model is packaged as a self-contained <code>linux/amd64</code> image: pinned dependencies, the original source, the trained parameters and the data to check it against. One <code>docker run</code> takes it from preprocessing to saved predictions. Nothing is downloaded at runtime, so the same image runs under Docker, Kubernetes or Singularity on a scheduler.</p>
+  <p>Nineteen models are registered on <a href="https://kbdi.re.kr/main/mainVw.do">KBDI</a>, the national bio-data platform — the eighteen above and one more developed in the project — with the curated PrimeKG graph beside them.</p>
+</Project>
+<style>
+  #scene { aspect-ratio: 16 / 7; min-height: 260px; }
+  .pills { list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 20px; padding: 0; }
+  .pills li { font: calc(12px * var(--fs))/1 var(--mono); padding: 5px 10px; border-radius: 999px;
+    background: color-mix(in srgb, var(--green) 11%, transparent); color: var(--green); white-space: nowrap; }
+</style>
+<script>
+  import { knowledgeGraph } from '../../scripts/scenes/knowledge-graph.js'
+  knowledgeGraph(document.getElementById('scene') as HTMLCanvasElement)
+</script>

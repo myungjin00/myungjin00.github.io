@@ -1,0 +1,38 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, u } from '../../lib'
+const magnet = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p => p.title.startsWith('Cross-view'))!
+---
+<Project slug="magnet"
+  lede="There is more than one sensible way to cut a molecule into fragments. MAGNET keeps three of them and links their fragments into a single meta-graph, so the model can compare the views instead of committing to one."
+  facts={[
+    { k: 'status', v: 'manuscript under review' },
+    { k: 'code', v: '<a href="https://github.com/sslim-aidrug/MAGNET">sslim-aidrug/MAGNET</a>' },
+    { k: 'my role', v: 'experiments, figures and the manuscript' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" role="img" aria-label="One molecule is cut three ways — junction tree, Murcko scaffold and BRICS. Fragments covering exactly the same atoms collapse into a single node, and the rest are joined wherever they share atoms, giving one meta-graph."></canvas>
+    <figcaption><span>How MAGNET builds a meta-graph</span><span>a worked example, not results · orange atoms · one colour per fragment</span></figcaption>
+  </figure>
+
+  <h2>The idea</h2>
+  <p>BRICS breaks a molecule at synthetically meaningful bonds, a junction tree splits it into ring systems and functional-group motifs, and a Murcko decomposition keeps the core framework and drops the side chains. Each view sees a different scale, and each is defensible.</p>
+  <p>The wager is that a region several decompositions agree on is a real property-relevant substructure, not an artefact of one fragmentation rule.</p>
+  <p>MAGNET builds a meta-graph in which fragments from all three decompositions become nodes, joined wherever they share atoms, with the edge weight set by how much of the source fragment the overlap covers. Fragments that cover exactly the same atoms in different views collapse into one node. The correspondence between the views is therefore part of the graph, not something discarded in preprocessing. A graph transformer then reads it with local message passing and global attention together.</p>
+  <p>Pretraining runs on ZINC250k and asks three things of the model at once: that two partly hidden copies of the meta-graph come out alike, that it predict standard computed descriptors of the molecule, and that its reading of the graph agree with a fixed language model’s reading of the same molecule written as text.</p>
+  <p class="note">The results are in a manuscript under review; the code and the splits are public.</p>
+
+  <figure class="plate inline">
+    <img src={u('assets/fig/magnet-overview.jpg')} alt="MAGNET overview: molecular fragmentation, meta-graph construction, pretraining and fine-tuning." width="1800" height="1316" loading="lazy">
+    <figcaption><span>The MAGNET framework</span><span>a fragmentation · b meta-graph · c pretraining · d fine-tuning</span></figcaption>
+  </figure>
+
+  <h2>Paper</h2>
+  <div class="paper"><p class="t">{magnet.title}</p><p class="a" set:html={authors(magnet.authors)} /><p class="v">{magnet.status}</p></div>
+</Project>
+<style>#scene { aspect-ratio: 16 / 7; min-height: 260px; }</style>
+<script>
+  import { magnetFlow } from '../../scripts/scenes/magnet-flow.js'
+  magnetFlow(document.getElementById('scene') as HTMLCanvasElement)
+</script>

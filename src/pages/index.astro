@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro'
+import { news, projectGroups, profile, aboutClosing } from '../data/cv'
+import { projects } from '../data/projects'
+import { u, mergeTranslations, tone, newsHtml } from '../lib'
+import { getCollection } from 'astro:content'
+import { newsIcon } from '../data/icons'
+
+const group = (h: string) => projectGroups.find(g => g.heading === h)?.items ?? []
+const papers = [...group('Manuscripts'), ...group('Publications')]
+
+// the five things worth opening, each with a page of its own. Three carry a manuscript and
+// show its status; the other two are funded projects and show the funder instead, so the
+// column never means two different things at once.
+const BY_SLUG: Record<string, string> = { sjoint: 'SJoINT', magnet: 'Cross-view', lipid: 'Lipid abundance' }
+const FUNDER: Record<string, string> = { masld: 'NRF (MSIT)', repurposing: 'NRF (MSIT)' }
+const selected = projects.map(p => {
+  const paper = BY_SLUG[p.slug] ? papers.find(m => m.title.startsWith(BY_SLUG[p.slug])) : undefined
+  const status = paper ? (paper.status === 'Conference paper' ? 'published' : paper.status.toLowerCase()) : undefined
+  return { ...p, kind: paper ? 'paper' : 'project', right: status ?? FUNDER[p.slug] ?? p.period }
+})
+const plain = (s: string) => s.replace(/^[^\p{L}\p{N}]+/u, '')
+const allPosts = (await getCollection('blog', p => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date)
+const posts = mergeTranslations(allPosts).map(e => e.lead).slice(0, 3)
+---
+<Base subnav={[
+  { label: 'main projects', href: '#selected' },
+  { label: 'news', href: '#news' },
+  { label: 'notes', href: '#notes' },
+]}>
+  <section class="wrap hero">
+    <div class="intro">
+      <h1><span class="first">Myungjin</span> Lee <span class="ko">{profile.nameKo}</span></h1>
+      <p class="role">Post-Master Researcher · <a href={profile.lab.href}>PRISM Lab</a>, Dongguk University · Seoul</p>
+      <div class="bio">
+        <p>I work on machine learning for drug discovery, in Dr. Sangsoo Lim’s PRISM Lab at Dongguk University, where I also took my M.E. in Computer Science and Artificial Intelligence.</p>
+        <p>Most of it is <span class="hl">graph-based molecular representation learning</span> and <span class="hl">molecular property prediction</span> — and making those predictions legible: instead of a black-box predictor, I build attention-based models whose weights point to the substructures behind each answer. I have also worked on drug repurposing, and on <span class="hl blue">transcriptomic analysis</span> of cellular senescence and aging-related MASLD (metabolic dysfunction-associated steatotic liver disease).</p>
+        <p>Next I want to carry molecular representation learning into predicting drug–target interactions and drug responses, so that structure connects to what a compound does in a cell. I am looking for a research position where that work continues.</p>
+      </div>
+      <p class="closing">{aboutClosing.before} <a href={u('research/')}>{aboutClosing.hereLabel}</a>{aboutClosing.mid} <a href={u('contact/')}>email</a>{aboutClosing.after}</p>
+    </div>
+    <figure class="portrait">
+      <img src={u('assets/profile_2609.jpg')} alt="Portrait of Myungjin Lee" width="520" height="693">
+    </figure>
+  </section>
+
+  <section class="wrap block" id="selected">
+    <h2 class="sec">main projects</h2>
+    <table class="rows">
+      <tbody>
+        {selected.map(p => (
+          <tr>
+            <td>
+              <a href={u(`projects/${p.slug}/`)}>{p.title}</a>
+              <span class="sub">{p.line}</span>
+            </td>
+            <td class="s">
+              <span class="kind mono">{p.kind}</span>
+              {tone(p.right) ? <span class={`pill t-${tone(p.right)}`}>{p.right}</span> : <span class="plainright">{p.right}</span>}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="more mono"><a href={u('research/')}>all research →</a></p>
+  </section>
+
+  <section class="wrap block two" id="news">
+    <div>
+      <h2 class="sec">news</h2>
+      <ul class="log">
+        {news.slice(0, 3).map(n => (
+          <li><span class="d mono">{n.date.toLowerCase()}</span><span><span class="ico" set:html={newsIcon(n.text)} /><span set:html={newsHtml(n)} /></span></li>
+        ))}
+      </ul>
+      <p class="more mono"><a href={u('news/')}>all news →</a></p>
+    </div>
+    <div>
+      <h2 class="sec" id="notes">notes</h2>
+      {posts.length ? (
+        <ul class="log">
+          {posts.map(p => <li><span class="d mono">{p.data.category}</span><a href={u(`blog/${p.id}/`)}>{p.data.title}</a></li>)}
+        </ul>
+      ) : <p class="quiet">Nothing posted yet.</p>}
+      <p class="more mono"><a href={u('blog/')}>all notes →</a></p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* the right-hand column carries two things: what kind of work it is, and its state */
+  td.s .kind { display: block; font-size: calc(10.5px * var(--fs)); letter-spacing: .06em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  td.s .plainright { color: var(--soft); }
+  @media (max-width: 660px) { td.s .kind { display: inline; margin-right: 8px; } }
+
+  #selected td a { color: var(--ink); font-weight: 500; text-decoration: none; }
+  #selected td a:hover { color: var(--green); }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 52px; align-items: center; padding-block: 44px 36px; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 24px; padding-block: 28px 32px; } .portrait { justify-self: start !important; width: 128px !important; } }
+  .first { color: var(--name); }
+  .ko { font-family: var(--serif); font-style: normal; font-weight: 400; font-size: .4em; color: var(--muted); margin-left: .3em; vertical-align: .35em; }
+  .closing { margin: 18px 0 0; font-size: calc(14px * var(--fs)); color: var(--soft); }
+  h1 { font-weight: 600; font-size: calc(clamp(38px, 5.2vw, 56px) * var(--fs)); line-height: 1; letter-spacing: -.025em; margin: 0; }
+  .role { font-size: calc(15.5px * var(--fs)); color: var(--soft); margin: 14px 0 0; }
+  .bio { margin: 22px 0 0; }
+  .bio p { margin: 0 0 12px; font-family: var(--serif); font-size: calc(18px * var(--fs)); line-height: 1.6; }
+  .bio p:last-child { margin-bottom: 0; }
+  .portrait { margin: 0; justify-self: end; width: 196px; aspect-ratio: 3 / 4; border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 18px 40px -26px rgba(28, 36, 33, .5); }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .block { padding-block: 24px; }
+  .more { margin: 14px 0 0; font-size: calc(12.5px * var(--fs)); }
+  .more a { text-decoration: none; }
+  .two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 44px; }
+  @media (max-width: 820px) { .two { grid-template-columns: 1fr; gap: 28px; } }
+  .log { list-style: none; margin: 0; padding: 0; font-size: calc(14px * var(--fs)); }
+  .log li { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 12px; padding: 6px 0; color: var(--soft); align-items: baseline; }
+  .log .d { font-size: calc(12.5px * var(--fs)); color: var(--muted); white-space: nowrap; }
+  .log a { text-decoration: none; }
+  .log :global(a.venue) { color: var(--blue); font-weight: 500; border-bottom: 1px solid color-mix(in srgb, var(--blue) 35%, transparent); }
+  .log .ico { display: inline-flex; vertical-align: -2px; margin-right: 7px; color: var(--green); opacity: .85; }
+  .log .ico :global(svg) { width: 1em; height: 1em; stroke-width: 1.8; }
+  .quiet { color: var(--muted); font-size: calc(14px * var(--fs)); margin: 0; }
+</style>

@@ -12,8 +12,8 @@ export const profile = {
   role: 'M.E. in Computer Science & Artificial Intelligence',
   major: 'AI in Healthcare and Medicine',
   // Keyword line under the name — what I do. Degree/lab shown on its own line below.
-  headline: 'AI for Drug Discovery · ADMET Prediction · Graph Learning · XAI',
-  degree: 'M.E. · Master’s Researcher',
+  headline: 'AI for Drug Discovery · Molecular Property Prediction · Graph Learning · XAI',
+  degree: 'M.E. · Post-Master Researcher',
   location: 'Seoul, South Korea',
   lab: { label: 'PRISM Lab (Dongguk Univ.)', href: 'https://sangsoolim.notion.site' },
   // External nav link (e.g. Notion notes/blog). Opens in a new tab.
@@ -27,25 +27,19 @@ export const profile = {
   links: [
     { label: 'Email', href: 'mailto:leemj637@gmail.com' },
     { label: 'GitHub', href: 'https://github.com/myungjin00' },
-    { label: 'CV (PDF)', href: '/assets/MyungjinLee_CV.pdf' },
+    { label: 'CV (PDF)', href: 'assets/MyungjinLee_CV.pdf' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/myungjin00' },
   ],
 }
 
-// About-page bio paragraphs (rendered in order). First-person narrative.
-export const bio: string[] = [
-  'Hi, I’m Myungjin Lee, a machine learning researcher working at the intersection of AI and drug discovery. I’m currently a master’s researcher at PRISM Lab, Dongguk University, working with Dr. Sangsoo Lim, where I also earned my M.E. in Computer Science and Artificial Intelligence.',
-  'My research focuses on **graph-based molecular representation learning** and **ADMET prediction**. I’ve also worked across several areas of AI-driven drug discovery and bioinformatics, including drug repurposing and transcriptomic analysis of cellular senescence and aging-related MASLD. A central theme of my work is **interpretable molecular prediction**: rather than treating molecular prediction models as black boxes, I develop attention-based models that highlight the molecular substructures most relevant to each prediction. I currently have two ADMET-related manuscripts under peer review.',
-  'Going forward, I hope to extend my work on molecular representation learning to drug–target interaction and drug-response prediction, with the goal of better connecting molecular structure to downstream biological effects. I’m looking for opportunities to apply machine learning to drug discovery and molecular data analysis.',
-]
 
 // Closing call-to-action on the About page.
 // "here" links to the CV (PDF); the word "e-mail" is rendered as a mailto link.
 export const aboutClosing = {
-  before: 'You can learn more about my research',
-  hereLabel: 'here',
-  hereHref: '/assets/MyungjinLee_CV.pdf',
-  mid: ', and please feel free to reach out by',
+  before: 'More of the work is under',
+  hereLabel: 'Research',
+  hereHref: 'assets/MyungjinLee_CV.pdf',
+  mid: ' \u2014 the fastest way to reach me is',
   after: '.',
 }
 
@@ -60,7 +54,7 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Sep 2026',
-    text: '💻 Continuing at PRISM Lab, Dongguk University, as a master’s researcher.',
+    text: '💻 Continuing at PRISM Lab, Dongguk University, as a post-master researcher.',
   },
   {
     date: 'Aug 2026',
@@ -78,11 +72,11 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Sep 2024',
-    text: '🌱 Awarded a Master’s Student Research Grant from the National Research Foundation of Korea (NRF) as Principal Investigator.',
+    text: '🌱 Received a Research Subsidy for Master’s Students (IITP, MSIT) as Principal Investigator.',
   },
   {
     date: 'Jan 2024',
-    text: '🚀 Joined PRISM Lab at Dongguk University as a researcher.',
+    text: '🚀 Joined PRISM Lab at Dongguk University as a graduate researcher.',
   },
 ]
 
@@ -107,7 +101,6 @@ export type Project = {
 export type ProjectGroup = { heading: string; items: Project[]; note?: string }
 
 // Your name as it appears in author lists (for bold/underline highlighting).
-export const myAuthorTokens = ['Lee M.', 'M. Lee', 'Myungjin Lee']
 
 export const projectGroups: ProjectGroup[] = [
   {
@@ -118,17 +111,17 @@ export const projectGroups: ProjectGroup[] = [
         title: 'SJoINT: Substructure-Driven Junction Tree for Interpretable Molecular Property Prediction',
         authors: 'Lee M., Mo J., Kang M., Lim S.*',
         status: 'Under review',
-        desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250k; evaluated on MoleculeNet ADMET and MoleculeACE activity-cliff tasks.',
-        tags: ['Junction tree', 'Cross-attention', 'Interpretability', 'Contrastive pre-training'],
+        desc: 'Dual-view molecular representation learning fusing atom-level graphs and substructure-level junction trees via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining on ZINC250k; evaluated on the nine MoleculeNet property-prediction datasets and the MoleculeACE activity-cliff benchmark.',
+        tags: ['Junction tree', 'Cross-attention', 'Interpretability', 'Contrastive pretraining'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/SJoINT' }],
       },
       {
         period: '2026',
-        title: 'MAGNET: Cross-view structural consensus for interpretable molecular property prediction',
+        title: 'Cross-view structural consensus for interpretable molecular property prediction',
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
         status: 'Under review',
-        desc: 'Molecular graph learning framework integrating BRICS, junction-tree, and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph, with multi-objective self-supervised pretraining (graph contrastive learning, descriptor prediction, graph–SMILES alignment); best performance on seven of ten molecular property benchmarks.',
-        tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
+        desc: 'Molecular graph learning framework integrating BRICS, junction-tree and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph, with multi-objective self-supervised pretraining (graph contrastive learning, descriptor prediction, graph–SMILES alignment), evaluated on molecular property benchmarks.\n**My role:** contributed to the experiments, the figures and the manuscript.',
+        tags: ['Molecular graphs', 'Multi-view', 'Molecular property prediction', 'Self-supervised'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
       {
@@ -137,7 +130,7 @@ export const projectGroups: ProjectGroup[] = [
         authors: 'Lee G., Byeon S.K., Olaleye O.E., Han Y., Lee M., Vizioli M.G., Ogrodnik M., Pirius N., Sales Gomez L., Victorelli S., Khosla S., Pandey A., Passos J., Lim S., Jurk D.*',
         org: 'Collaboration with Mayo Clinic',
         status: 'In preparation',
-        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.\n**My role:** transcriptomic analysis of public, in vitro, and in vivo senescence data (differential expression, gene-set enrichment).',
+        desc: 'How lipid abundance and lysophospholipid signalling relate to the senescence-associated secretory phenotype, across public, in vitro and in vivo senescence models.\n**My role:** the transcriptomic analysis across public, _in vitro_ and _in vivo_ senescence data.',
         tags: ['Senescence', 'SASP', 'Lipidomics', 'Aging'],
       },
     ],
@@ -153,7 +146,7 @@ export const projectGroups: ProjectGroup[] = [
         org: 'Proceedings of the Korea Computer Congress (KCC) 2026, KIISE, pp. 291–293',
         status: 'Conference paper',
         desc: 'Self-supervised molecular representation learning that integrates junction-tree and molecular-graph views via structure-constrained bidirectional cross-attention, with augmentation-free contrastive pretraining; evaluated on nine MoleculeNet benchmarks.',
-        tags: ['Junction tree', 'Cross-attention', 'Contrastive pre-training'],
+        tags: ['Junction tree', 'Cross-attention', 'Contrastive pretraining'],
         links: [{ label: 'DBpia', href: 'https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12929290' }],
       },
     ],
@@ -167,8 +160,6 @@ export const projectGroups: ProjectGroup[] = [
           'Cross-attentive Integration of Atom-level and Junction-tree Representations for Molecular Property Prediction',
         org: 'Poster · BIOINFO/GIW ISCB-Asia 2026, Yonsei University, Korea',
         status: 'Poster',
-        abstract:
-          'Accurate prediction of molecular properties, including ADMET endpoints, is central to drug discovery, yet substructure-level interpretation remains challenging. We introduce a model integrating atom-level molecular graphs and substructure-level junction trees through membership-constrained bidirectional cross-attention: substructures attend only to their member atoms, and atoms attend only to substructures containing them. Each molecule’s two representations form a positive pair for augmentation-free contrastive pretraining on ZINC250k. Against 23 baselines on nine MoleculeNet datasets, our model achieved the best average rank under random splits (1.78; first on seven datasets) and the second-best under scaffold splits. On the MoleculeACE activity-cliff benchmark (30 targets), it achieved the lowest overall and cliff-restricted mean RMSEs among 24 methods (0.749 and 0.816, respectively). Ablations showed performance gains from both the membership constraint and pretraining. Across all nine datasets, substructure-to-atom attention shifted with layer depth from carbon atoms toward heteroatoms, while atom-to-substructure attention shifted from ring substructures toward smaller bond-based substructures. These patterns were already present in the pretrained model. In all nine datasets, masking higher-attention substructures tended to cause larger prediction changes. For all 30 targets, attention differences within activity-cliff pairs were concentrated near modified atoms. The model combines competitive predictive performance with directly inspectable atom-substructure attention.',
       },
       {
         period: 'Jun 2026',
@@ -176,16 +167,12 @@ export const projectGroups: ProjectGroup[] = [
           'Structure-Constrained Bidirectional Cross-Attention for Self-Supervised Molecular Representation Learning',
         org: 'Poster · KCC2026, KIISE, ICC Jeju, Korea',
         status: 'Poster',
-        abstract:
-          'We propose a self-supervised molecular representation learning framework that represents each molecule from two perspectives — a junction tree and a molecular graph — and integrates them via structure-constrained bidirectional cross-attention. The method encodes atom–substructure correspondence as a mask so that information is exchanged only between corresponding elements, and it performs contrastive learning using the two graph representations of the same molecule as a positive pair, without any data augmentation. On nine MoleculeNet benchmarks, the method shows competitive performance against conventional GNNs, pretrained language models, and self-supervised GNNs, and ablation studies confirm the effect of the structure-constrained bidirectional cross-attention and the dual-graph representation. Attention analysis further shows that atom–substructure relationships are selectively reflected depending on the prediction task, suggesting that augmentation-free self-supervised learning reflecting structural correspondence can be effective for molecular property prediction.',
       },
       {
         period: 'Oct 2025',
         title: 'Weighted Junction-Tree Nodes for Enhanced Interpretability in ADMET Tasks',
         org: 'Poster · BIOINFO2025, KSBI, Suwon Convention Center, Korea',
         status: 'Poster',
-        abstract:
-          'Accurate prediction of molecular properties such as absorption, distribution, metabolism, excretion, and toxicity (ADMET) is crucial in the drug discovery process; however, ensuring the interpretability of prediction models remains a significant challenge. Although existing Graph Neural Network (GNN)-based models demonstrate high predictive accuracy, they often suffer from the “black box” limitation of failing to explain which molecular substructures contribute to specific properties. We propose SJoINT, a dual-encoder model that explicitly utilizes molecular substructure information to achieve both accuracy and interpretability. SJoINT takes an atom-level molecular graph and a corresponding junction tree — representing the molecular scaffold and functional groups — as dual inputs, and learns the relationship between the two representations through an iterative cross-attention mechanism, enabling it to identify the key substructures associated with particular ADMET properties. On the MoleculeNet benchmark, SJoINT achieves state-of-the-art performance on the SIDER task for predicting toxic side effects, demonstrating the effectiveness of integrating micro-level (atomic) and macro-level (substructure) information for complex drug toxicity profiles. Overall, SJoINT provides accurate predictions while offering interpretable insights into the relationship between molecular substructures and drug properties.',
       },
     ],
   },
@@ -195,11 +182,11 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Sep 2024 – Aug 2025',
-        title: '석사과정생 연구장려금지원사업',
-        org: 'Ministry of Education (MOE) · National Research Foundation of Korea (NRF)',
+        title: '석사과정생 연구장려금지원사업 (Research Subsidies for Master’s Students)',
+        org: 'IITP (MSIT) · No. S-2025-A0434-00016',
         role: 'Principal Investigator',
         status: 'PI',
-        desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT.\nAdvisor: Dr. Sangsoo Lim.',
+        desc: 'Individual grant for research on junction-tree-based multi-task molecular graph representation learning. The direction became SJoINT.',
         tags: ['Graph Representation Learning', 'Multi-task Learning'],
       },
     ],
@@ -211,28 +198,28 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Mar 2025 – Feb 2026',
-        title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증',
-        org: 'Individual Basic Research Program, NRF (MSIT)',
+        title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증 (Multimodal AI-Based Target Discovery and Drug Validation in Aging-Related Metabolic Dysfunction-Associated Steatotic Liver Disease)',
+        org: 'Individual Basic Research Program, NRF (MSIT) · No. RS-2025-00560523',
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
         collab: 'Dr. Gung Lee (Mayo Clinic, USA)',
         status: 'Participating Researcher',
         desc: 'Transcriptomic database construction and disease-progression analysis for aging-related MASLD.',
         abstract:
-          'Curated public bulk and single-cell RNA-seq datasets into an integrated database for aging-related MASLD and defined stages of disease progression. Analyzed stage-wise gene expression changes, with functional enrichment (GSEA using GO, KEGG, and Hallmark gene sets) and cellular-senescence gene-set analysis (SenMayo, SHGS).',
+          'Curated public bulk and single-cell RNA-seq datasets into an integrated database for aging-related MASLD and defined stages of disease progression. Analyzed stage-wise gene expression changes, with functional enrichment (GSEA using GO, KEGG, Reactome, and Hallmark gene sets) and cellular-senescence gene-set analysis (SenMayo, SHGS).',
         moreLabel: 'Details',
         tags: ['Single-cell RNA-seq', 'Bulk RNA-seq', 'Omics Analysis', 'Cellular Senescence'],
       },
       {
-        period: 'Jul 2025 – Aug 2026',
-        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터',
-        org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
-        pi: 'Dr. Minho Lee (Dongguk University, host)',
+        period: 'Jul 2025 – Present',
+        title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터 (Open Platform Center for AI-Powered Drug Discovery and Analytics)',
+        org: 'Bio & Medical Technology Development Program, NRF (MSIT) · No. RS-2025-18732993',
+        pi: 'Dr. Minho Lee (Dongguk University)',
         status: 'Participating Researcher',
-        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
+        desc: 'Led the drug-repurposing and molecular property prediction tracks of an open-access AI drug-discovery platform on KISTI HPC.',
         abstract:
-          'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked 13 AI models for physicochemical-property and toxicity prediction on nine MoleculeNet datasets, and developed an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the drug-repurposing model as a Docker image and registered it, together with the ADMET benchmark, on the national bio-data platform (KBDI).',
+          'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMwalk, DRHGCN, AMDGT, SVGA) under identical conditions over 3,379 drugs and 935 diseases, with 190 diseases held out for testing (case study: hypertension). Developed DC-VGAE, which incorporates disease similarity and clinical drug–disease relationships, and a performance-based ensemble.\nMolecular property prediction: benchmarked 13 models for physicochemical-property and toxicity prediction on nine MoleculeNet datasets, and developed an interpretable model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged each benchmarked model as a container carrying its weights, data and reproduction command, and registered nineteen — the eighteen benchmarked ones and DC-VGAE — together with the curated PrimeKG graph, on the national bio-data platform (KBDI).',
         moreLabel: 'Details',
-        tags: ['Drug Repurposing', 'ADMET', 'Knowledge Graph', 'Docker'],
+        tags: ['Drug Repurposing', 'Molecular Property Prediction', 'Knowledge Graph', 'Docker'],
         links: [{ label: 'KBDI', href: 'https://kbdi.re.kr/main/mainVw.do' }],
       },
     ],
@@ -241,11 +228,11 @@ export const projectGroups: ProjectGroup[] = [
     heading: 'Competitions & Applied Projects',
     items: [
       {
-        period: 'Aug 2024',
+        period: 'Aug 2024 – Sep 2024',
         title: '2024 Samsung AI Challenge — Machine Learning Force Fields',
         org: 'Samsung Electronics SAIT · DACON',
         status: 'Top 10% (11th)',
-        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces — with uncertainty quantification — for semiconductor-material simulation, replacing costly DFT calculations. Ranked 11th overall (top 10%) as team DAI.',
+        desc: 'Built machine-learning force fields (MLFFs) to predict atomic energies and forces — with uncertainty quantification — for semiconductor-material simulation, replacing costly DFT calculations. Competed as team DAI.',
         tags: ['MLFF', 'Uncertainty', 'Simulation'],
         links: [
           { label: 'Competition', href: 'https://dacon.io/competitions/official/236322/overview/description' },
@@ -253,10 +240,10 @@ export const projectGroups: ProjectGroup[] = [
         ],
       },
       {
-        period: '2024',
+        period: 'Apr 2024 – Aug 2024',
         title: 'DREAM Olfactory Mixtures Prediction Challenge',
         org: 'International DREAM Challenge · Sage Bionetworks (Synapse)',
-        desc: 'Built a graph neural network to predict the olfactory similarity of molecular mixtures from their chemical structures, in a community-wide international benchmarking challenge.',
+        desc: 'Built a graph neural network to predict the olfactory similarity of molecular mixtures from their chemical structures, in an international benchmarking challenge.',
         tags: ['Molecular ML', 'GNN', 'Olfaction'],
         links: [
           { label: 'Challenge', href: 'https://www.synapse.org/Synapse:syn53470621' },
@@ -289,7 +276,7 @@ export const vitae: VitaeSection[] = [
         title: 'AI for Drug Discovery',
         items: [
           'Molecular Graph Representation Learning',
-          'ADMET Property Prediction',
+          'Molecular Property Prediction',
           'Drug Repurposing',
           'Explainable AI (XAI)',
         ],
@@ -299,7 +286,7 @@ export const vitae: VitaeSection[] = [
         items: [
           'Network Biology',
           'Omics-based Target Discovery',
-          'Multi-modal AI for Biomedical Problems',
+          'Multimodal AI for Biomedical Problems',
         ],
       },
     ],
@@ -311,13 +298,13 @@ export const vitae: VitaeSection[] = [
         period: 'Mar 2024 – Aug 2026',
         title: 'M.E. in Computer Science and Artificial Intelligence',
         detail:
-          'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction',
+          'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** _Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction_',
       },
       {
         period: 'Mar 2023 – Feb 2024',
         title: 'B.E. in Industrial & Management Engineering (Advanced Major Program)',
         detail:
-          'Induk University, Seoul, Korea · Convergence Minor in Deep Learning · GPA 4.43/4.5 · Valedictorian',
+          'Induk University, Seoul, Korea · Convergence Minor in Deep Learning · GPA 4.43/4.5 · Graduated with honors',
       },
       {
         period: 'Mar 2020 – Feb 2023',
@@ -333,7 +320,7 @@ export const vitae: VitaeSection[] = [
         period: 'Jan 2024 – Present',
         title: 'PRISM Lab, Dongguk University',
         detail:
-          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq analysis of cellular senescence and aging-related MASLD with Mayo Clinic collaborators.',
+          '**Position:** Post-Master Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery: interpretable molecular property prediction from molecular substructures (first-author _SJoINT_; second-author _MAGNET_).\nAlso a drug-repurposing benchmark of nineteen containerised models registered on the national bio-data platform (KBDI); and bulk and single-cell RNA-seq analysis of cellular senescence and aging-related MASLD with Mayo Clinic collaborators.',
       },
     ],
   },
@@ -349,7 +336,7 @@ export const vitae: VitaeSection[] = [
       },
       {
         period: '',
-        title: 'Data Analysis & Visualization',
+        title: 'Data Analysis & Visualisation',
         detail: 'pandas, NumPy, anndata, NetworkX, seaborn, matplotlib',
       },
       { period: '', title: 'Cheminformatics', detail: 'RDKit, DeepChem, TorchDrug, Chemprop' },
@@ -412,27 +399,12 @@ export const vitae: VitaeSection[] = [
 // ---------------------------------------------------------------------------
 export const contact = {
   intro:
-    'I’m always happy to connect with teams, researchers, and fellow students. Feel free to reach out through any of the channels below.',
+    'I am glad to hear from research teams, and from anyone working on molecular or omics data.',
   links: [
-    { label: 'Email', value: 'leemj637@gmail.com', href: 'mailto:leemj637@gmail.com', desc: 'Reach out anytime' },
-    { label: 'GitHub', value: 'github.com/myungjin00', href: 'https://github.com/myungjin00', desc: 'Code & projects' },
-    { label: 'CV (PDF)', value: 'View CV', href: '/assets/MyungjinLee_CV.pdf', desc: 'Full curriculum vitae' },
-    { label: 'LinkedIn', value: 'linkedin.com/in/myungjin00', href: 'https://www.linkedin.com/in/myungjin00', desc: 'Professional profile' },
+    { label: 'Email', value: 'leemj637@gmail.com', href: 'mailto:leemj637@gmail.com', desc: 'Usually the quickest reply' },
+    { label: 'CV (PDF)', value: 'View CV', href: 'assets/MyungjinLee_CV.pdf', desc: 'Full curriculum vitae' },
+    { label: 'GitHub', value: 'myungjin00', href: 'https://github.com/myungjin00', desc: 'Code & projects' },
+    { label: 'LinkedIn', value: 'myungjin00', href: 'https://www.linkedin.com/in/myungjin00', desc: 'Professional profile' },
   ],
 }
 
-// ---------------------------------------------------------------------------
-// UI strings (nav labels, buttons, etc.). Mirrored in cv.ko.ts for Korean.
-export const ui = {
-  nav: { about: 'about', projects: 'projects', news: 'news', vitae: 'vitae', contact: 'contact' },
-  page: { projects: 'Projects', news: 'News', vitae: 'Curriculum Vitae', contact: 'Contact' },
-  aboutNews: 'News',
-  aboutProjects: 'Projects',
-  more: 'more →',
-  abstract: 'Abstract',
-  piLabel: 'PI:',
-  searchPlaceholder: 'Search projects, skills, papers…',
-  noMatches: 'No matches.',
-  emailWord: 'e-mail',
-  footer: '© 2026 Myungjin Lee · Dongguk University',
-}

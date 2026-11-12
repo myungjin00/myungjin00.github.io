@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 344" role="img" aria-label="linux-tree">
+<defs>
+<marker id="ar0" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#D3D8CE"/></marker>
+<marker id="ar1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#C2703C"/></marker>
+</defs>
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">one tree, one root &#8212; no C: drive</text>
+<path d="M300 65 V76.0 H150 V87" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M300 65 V76.0 H300 V87" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M300 65 V76.0 H450 V87" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M150 113 V124.0 H150 V135" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M300 113 V124.0 H300 V135" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M450 113 V124.0 H450 V135" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M150 161 V172.0 H150 V183" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M300 161 V172.0 H258 V183" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M300 161 V172.0 H372 V183" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M450 161 V172.0 H450 V183" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<path d="M258 209 V220.0 H258 V231" fill="none" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="286.8" y="39" width="26.4" height="26" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="300" y="55.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">/</text>
+<rect x="124.0" y="87" width="52.0" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="150" y="103.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">home/</text>
+<rect x="274.0" y="87" width="52.0" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="300" y="103.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">data/</text>
+<rect x="427.2" y="87" width="45.6" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="450" y="103.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">usr/</text>
+<rect x="127.2" y="135" width="45.6" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="150" y="151.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">you/</text>
+<rect x="264.4" y="135" width="71.2" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="300" y="151.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">project/</text>
+<rect x="427.2" y="135" width="45.6" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="450" y="151.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">bin/</text>
+<rect x="114.4" y="183" width="71.2" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="150" y="199.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">notes.md</text>
+<rect x="235.2" y="183" width="45.6" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="258" y="199.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">raw/</text>
+<rect x="336.4" y="183" width="71.2" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="372" y="199.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">results/</text>
+<rect x="420.8" y="183" width="58.400000000000006" height="26" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="450" y="199.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">python</text>
+<rect x="219.2" y="231" width="77.6" height="26" rx="5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.4"/>
+<text x="258" y="247.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">train.csv</text>
+<text x="18" y="290" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">absolute &#8212; from the root:  /data/project/raw/train.csv</text>
+<text x="18" y="306" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#C2703C" font-weight="normal">relative &#8212; from where you are standing in project/:  raw/train.csv</text>
+<text x="18" y="328" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">.  = here        ..  = one level up        ~  = your home</text>
+</svg>

@@ -1,0 +1,55 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, u } from '../../lib'
+const g = (h: string) => projectGroups.find(x => x.heading === h)?.items ?? []
+const sjoint = g('Manuscripts').find(p => p.title.startsWith('SJoINT'))!
+const kcc = g('Publications')[0]
+const posters = g('Presentations')
+const grant = g('Grants')[0]
+---
+<Project slug="sjoint"
+  lede="A molecule can be read as atoms, or as the rings and groups they form. SJoINT reads it both ways at once, and lets each atom exchange information only with the substructures it belongs to."
+  facts={[
+    { k: 'journal', v: 'manuscript under review' },
+    { k: 'code', v: '<a href="https://github.com/sslim-aidrug/SJoINT">sslim-aidrug/SJoINT</a>' },
+    { k: 'conference', v: '<a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12929290">KCC 2026</a>' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" role="img" aria-label="A molecule is read twice — as atoms and as the substructures they form. Each atom is joined only to the substructures that contain it, cross-attention runs over those links alone, and the result is one embedding and a predicted property."></canvas>
+    <figcaption><span>How SJoINT reads a molecule</span><span>a worked example, not results · orange atoms · green substructures</span></figcaption>
+  </figure>
+
+  <h2>The idea</h2>
+  <p>Each molecule is given two views: an atom-level molecular graph, and a junction tree whose nodes are ring systems, non-ring bonds and the single atoms that join them. Two graph neural networks read the two views — a GINE encoder over the atoms, a GATv2 encoder over the tree — and three bidirectional cross-attention blocks pass information between them.</p>
+  <p>The attention is masked by membership. A substructure attends only to its own atoms, and an atom only to the substructures that contain it, so every nonzero weight names one atom and one substructure it belongs to. That mask is the constraint the name refers to, and it is what makes the attention readable as chemistry rather than as an arbitrary weighting.</p>
+  <p>Contrastive pretraining normally needs each molecule distorted into a second copy to learn from. Here the two views are already two readings of the same molecule, so they serve as that pair and no structure is altered across the 249,456 molecules of ZINC250k. That matters when a single changed atom can move the property being predicted. The backbone is then fine-tuned on nine MoleculeNet datasets and on the 30 bioactivity targets of MoleculeACE.</p>
+
+  <figure class="plate inline">
+    <img src={u('assets/fig/sjoint-overview.svg')} alt="The SJoINT framework in three panels: augmentation-free contrastive pretraining of the two views, fine-tuning with a prediction head, and the membership-masked cross-attention between a substructure and its member atoms." width="2216" height="857" loading="lazy">
+    <figcaption><span>The SJoINT framework</span><span>a pretraining · b fine-tuning · c structure-constrained cross-attention</span></figcaption>
+  </figure>
+
+  <h2>What it is for</h2>
+  <p>Because the mask fixes what each weight can mean, its attention weights are read directly, with no explainer added afterwards — including on MoleculeACE, where structurally similar molecules differ sharply in potency.</p>
+  <p class="note">The full results are in a journal manuscript under review. The method and its benchmark setup are published in the KCC 2026 conference paper below, and the code and pretrained checkpoint are public.</p>
+
+  <h2>Papers</h2>
+  <div class="paper"><p class="t">{sjoint.title}</p><p class="a" set:html={authors(sjoint.authors)} /><p class="v">{sjoint.status}</p></div>
+  <div class="paper"><p class="t">{kcc.title}</p><p class="a" set:html={authors(kcc.authors)} /><p class="v">{kcc.org}</p></div>
+
+  <h2>Posters</h2>
+  <ul class="talks">
+    {posters.map(p => (
+      <li><span class="when mono">{p.period}</span><span><span class="t">{p.title}</span><span class="where">{p.org?.replace('Poster · ', '')}</span></span></li>
+    ))}
+  </ul>
+
+  <h2>Where it started</h2>
+  <p>The work began with a Research Subsidy for Master’s Students, IITP (MSIT), on junction-tree-based multi-task molecular graph learning ({grant.period}), which I led as Principal Investigator. It became my master’s thesis, <i>Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction</i>.</p>
+</Project>
+<style>#scene { aspect-ratio: 16 / 7; min-height: 260px; }</style>
+<script>
+  import { sjointFlow } from '../../scripts/scenes/sjoint-flow.js'
+  sjointFlow(document.getElementById('scene') as HTMLCanvasElement)
+</script>

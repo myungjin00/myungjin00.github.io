@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 344" role="img" aria-label="seurat-anndata">
+<defs>
+<marker id="ar0" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#D3D8CE"/></marker>
+</defs>
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">the same single-cell experiment, in two objects</text>
+<text x="40" y="50" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#1E4A39" font-weight="500">Seurat   (R)</text>
+<text x="380" y="50" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#2E5878" font-weight="500">AnnData   (Python)</text>
+<rect x="30" y="66" width="250" height="28" rx="5" fill="#F7F7F3" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="42" y="84" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">pbmc[["RNA"]]$counts</text>
+<text x="272" y="84" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">genes &#215; cells</text>
+<rect x="370" y="66" width="250" height="28" rx="5" fill="#F7F7F3" stroke="#2E5878" stroke-width="1.4"/>
+<text x="382" y="84" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.layers["counts"]</text>
+<text x="612" y="84" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">cells &#215; genes</text>
+<line x1="286" y1="80" x2="364" y2="80" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="100" width="250" height="28" rx="5" fill="#F7F7F3" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="42" y="118" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">pbmc[["RNA"]]$data</text>
+<text x="272" y="118" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">normalised</text>
+<rect x="370" y="100" width="250" height="28" rx="5" fill="#F7F7F3" stroke="#2E5878" stroke-width="1.4"/>
+<text x="382" y="118" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.X</text>
+<text x="612" y="118" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">normalised</text>
+<line x1="286" y1="114" x2="364" y2="114" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="134" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="42" y="152" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">pbmc@meta.data</text>
+<text x="272" y="152" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">per cell</text>
+<rect x="370" y="134" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="382" y="152" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.obs</text>
+<text x="612" y="152" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">per cell</text>
+<line x1="286" y1="148" x2="364" y2="148" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="168" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="42" y="186" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">rownames(pbmc)</text>
+<text x="272" y="186" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">per gene</text>
+<rect x="370" y="168" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="382" y="186" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.var</text>
+<text x="612" y="186" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">per gene</text>
+<line x1="286" y1="182" x2="364" y2="182" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="202" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="42" y="220" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">Embeddings(pbmc, "pca")</text>
+<text x="272" y="220" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">cell &#215; 50</text>
+<rect x="370" y="202" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="382" y="220" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.obsm["X_pca"]</text>
+<text x="612" y="220" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">cell &#215; 50</text>
+<line x1="286" y1="216" x2="364" y2="216" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="236" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="42" y="254" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">Idents(pbmc)</text>
+<text x="272" y="254" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">cluster label</text>
+<rect x="370" y="236" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="382" y="254" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.obs["leiden"]</text>
+<text x="612" y="254" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">cluster label</text>
+<line x1="286" y1="250" x2="364" y2="250" stroke="#D3D8CE" stroke-width="1.1"/>
+<rect x="30" y="270" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="42" y="288" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">pbmc@misc</text>
+<text x="272" y="288" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">everything else</text>
+<rect x="370" y="270" width="250" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="382" y="288" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#1C2421" font-weight="normal">.uns</text>
+<text x="612" y="288" text-anchor="end" font-family="ui-monospace,monospace" font-size="8.5" fill="#6E7873" font-weight="normal">everything else</text>
+<line x1="286" y1="284" x2="364" y2="284" stroke="#D3D8CE" stroke-width="1.1"/>
+<text x="18" y="326" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#C2703C" font-weight="normal">The one that bites: Seurat stores genes &#215; cells, AnnData stores cells &#215; genes. Print dim() before you trust a matrix.</text>
+</svg>

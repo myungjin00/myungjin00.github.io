@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="304" viewBox="0 0 720 304" role="img" aria-label="Timelines of GPU-busy and GPU-waiting time for an input-bound run and a compute-bound run">
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">one wall-clock window &#183; the same GPU work per batch in both runs</text>
+<text x="18" y="48" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="500">input-bound &#183; utilisation 20%</text>
+<text x="116" y="75.4" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">data pipeline</text>
+<text x="116" y="103.4" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">GPU</text>
+<rect x="126.00" y="62" width="568.00" height="20" rx="2" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="0.8"/>
+<rect x="126.00" y="90" width="568.00" height="20" rx="2" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="0.8"/>
+<rect x="126.00" y="62" width="113.60" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="239.60" y="90" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="268.00" y="62" width="113.60" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="381.60" y="90" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="410.00" y="62" width="113.60" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="523.60" y="90" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="552.00" y="62" width="113.60" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="665.60" y="90" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<text x="694" y="128" text-anchor="end" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">4 optimiser steps in the window</text>
+<text x="18" y="158" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="500">compute-bound &#183; utilisation 95%</text>
+<text x="116" y="185.4" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">data pipeline</text>
+<text x="116" y="213.4" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">GPU</text>
+<rect x="126.00" y="172" width="568.00" height="20" rx="2" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="0.8"/>
+<rect x="126.00" y="200" width="568.00" height="20" rx="2" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="0.8"/>
+<rect x="126.00" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="127.49" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="155.89" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="157.39" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="185.79" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="187.28" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="215.68" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="217.18" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="245.58" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="247.07" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="275.47" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="276.97" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="305.37" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="306.86" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="335.26" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="336.76" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="365.16" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="366.65" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="395.05" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="396.55" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="424.95" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="426.44" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="454.84" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="456.34" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="484.74" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="486.23" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="514.63" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="516.13" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="544.53" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="546.02" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="574.42" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="575.92" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="604.32" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="605.81" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="634.21" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="635.71" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<rect x="664.11" y="172" width="1.49" height="20" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<rect x="665.60" y="200" width="28.40" height="20" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<text x="694" y="238" text-anchor="end" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">19 optimiser steps in the window</text>
+<line x1="126" y1="262" x2="154.4" y2="262" stroke="#6E7873" stroke-width="1.2"/>
+<line x1="126.0" y1="258" x2="126.0" y2="266" stroke="#6E7873" stroke-width="1.2"/>
+<line x1="154.4" y1="258" x2="154.4" y2="266" stroke="#6E7873" stroke-width="1.2"/>
+<text x="164.4" y="266" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">one batch of GPU work</text>
+<rect x="126.00" y="286" width="13.00" height="13" rx="2" fill="#F3E3D6" stroke="#C2703C" stroke-width="1.1"/>
+<text x="146" y="296" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">preparing a batch</text>
+<rect x="296.00" y="286" width="13.00" height="13" rx="2" fill="#DCE6EE" stroke="#2E5878" stroke-width="1.1"/>
+<text x="316" y="296" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">GPU computing</text>
+<rect x="456.00" y="286" width="13.00" height="13" rx="2" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="0.8"/>
+<text x="476" y="296" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">idle</text>
+</svg>

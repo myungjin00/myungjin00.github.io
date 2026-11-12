@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="316" viewBox="0 0 720 316" role="img" aria-label="Batches, iterations and epochs counted for 10,000 samples at batch size 32">
+<defs><marker id="ar0" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#6E7873"/></marker></defs>
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">N = 10,000 training samples &#183; batch size B = 32</text>
+<rect x="54.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="82.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="82.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">1</text>
+<rect x="118.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="146.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="146.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">2</text>
+<rect x="182.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="210.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="210.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">3</text>
+<rect x="246.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="274.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="274.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">4</text>
+<rect x="310.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="338.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="338.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">5</text>
+<rect x="374.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="402.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="402.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">6</text>
+<rect x="438.0" y="74" width="56.0" height="34" rx="3" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.2"/>
+<text x="466.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">32</text>
+<text x="466.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">7</text>
+<text x="520" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="#6E7873" font-weight="normal">&#183;&#183;&#183;</text>
+<rect x="546.0" y="74" width="28.0" height="34" rx="3" fill="#F7F7F3" stroke="#2E5878" stroke-width="1.2"/>
+<text x="560.0" y="95.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="600">16</text>
+<text x="560.0" y="123" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">313</text>
+<path d="M54 60 L54 52 L574.0 52 L574.0 60" fill="none" stroke="#D3D8CE" stroke-width="1.2"/>
+<text x="314.0" y="44" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">epoch 1 &#183; one full pass over the 10,000 samples</text>
+<text x="54" y="140" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#2E5878" font-weight="normal">batch &#183; the samples averaged into one update</text>
+<line x1="82.0" y1="142" x2="82.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="82.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="146.0" y1="142" x2="146.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="146.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="210.0" y1="142" x2="210.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="210.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="274.0" y1="142" x2="274.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="274.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="338.0" y1="142" x2="338.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="338.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="402.0" y1="142" x2="402.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="402.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="466.0" y1="142" x2="466.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="466.0" cy="168" r="5.5" fill="#C2703C"/>
+<line x1="560.0" y1="142" x2="560.0" y2="159" stroke="#6E7873" stroke-width="1.1" marker-end="url(#ar0)"/>
+<circle cx="560.0" cy="168" r="5.5" fill="#C2703C"/>
+<circle cx="520" cy="168" r="2" fill="#6E7873"/>
+<text x="54" y="194" text-anchor="start" font-family="ui-monospace,monospace" font-size="9.5" fill="#C2703C" font-weight="normal">iteration &#183; one optimiser step</text>
+<text x="702" y="172" text-anchor="end" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="600">ceil(10,000 / 32) = 313</text>
+<text x="702" y="190" text-anchor="end" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">iterations per epoch</text>
+<line x1="18" y1="218" x2="702" y2="218" stroke="#D3D8CE" stroke-width="1"/>
+<text x="18" y="234" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">the same epoch, 50 times</text>
+<rect x="54.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="63.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="73.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="82.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="92.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="102.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="111.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="121.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="130.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="140.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="150.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="159.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="169.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="178.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="188.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="198.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="207.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="217.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="226.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="236.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="246.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="255.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="265.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="274.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="284.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="294.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="303.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="313.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="322.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="332.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="342.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="351.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="361.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="370.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="380.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="390.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="399.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="409.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="418.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="428.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="438.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="447.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="457.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="466.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="476.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="486.0" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="495.6" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="505.2" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="514.8" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<rect x="524.4" y="248" width="7.4" height="26" rx="2" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="0.9"/>
+<text x="57.7" y="289" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">1</text>
+<text x="528.1" y="289" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">50</text>
+<text x="702" y="265.0" text-anchor="end" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="600">50 &#215; 313 = 15,650</text>
+<text x="702" y="283.0" text-anchor="end" font-family="ui-monospace,monospace" font-size="9.5" fill="#6E7873" font-weight="normal">optimiser steps in total</text>
+</svg>

@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro'
+import { projectGroups, vitae } from '../data/cv'
+import { projects } from '../data/projects'
+import { u, md, authors, tone } from '../lib'
+import { ICONS } from '../data/icons'
+
+const group = (h: string) => projectGroups.find(g => g.heading === h)?.items ?? []
+const page = (t: string) => {
+  const p = projects.find(x =>
+    t.toLowerCase().includes(x.slug) ||
+    (x.slug === 'sjoint' && t.includes('Research Subsid')) ||
+    (x.slug === 'magnet' && t.startsWith('Cross-view')) ||
+    (x.slug === 'repurposing' && t.includes('개방형')) ||
+    (x.slug === 'masld' && t.includes('MASLD')) ||
+    (x.slug === 'lipid' && t.startsWith('Lipid')))
+  return p ? u(`projects/${p.slug}/`) : undefined
+}
+// a model name ahead of the colon is the thing people remember, so it leads in bold
+const enOf = (t: string) => { const i = t.search(/ \((?=[A-Za-z])[^가-힣]*\)$/); return i < 0 ? [t, null] : [t.slice(0, i), t.slice(i + 2, -1)] }
+const split = (t: string) => { const m = t.match(/^([A-Za-z0-9-]{2,12}):\s(.*)$/); return m ? [m[1], m[2]] : [null, t] }
+const rich = (s = '') => md(s).replace('<b>My role:</b>', '<span class="role">My role</span>')
+
+// Research holds the work itself, each item with what it is and what I did;
+// the record (grants, talks, honours, skills) lives on the CV
+const blocks = [
+  {
+    key: 'in-review', label: 'manuscripts',
+    rows: group('Manuscripts').map(p => ({
+      year: p.period.slice(-4), title: p.title, authors: p.authors, sub: p.org, desc: p.desc,
+      right: p.status?.toLowerCase(), done: false, href: page(p.title),
+      links: p.links, tags: p.tags,
+    })),
+  },
+  {
+    key: 'papers', label: 'conference papers',
+    // the last list with starred authors, so the footnote for both paper lists sits here
+    note: '* Corresponding author.',
+    rows: group('Publications').map(p => ({
+      year: p.period.slice(-4), title: p.title, authors: p.authors, sub: p.org, venue: true, desc: p.desc,
+      right: 'published', done: true, href: page(p.title), links: p.links, tags: p.tags,
+    })),
+  },
+  {
+    key: 'patents', label: 'patents & software',
+    rows: ((vitae.find(s => s.heading === 'Patents & Software Registrations') as any)?.items ?? []).map((p: any) => ({
+      year: p.period.slice(-4), title: p.title, sub: p.detail,
+      right: p.detail.includes('pending') ? 'pending' : 'registered', done: !p.detail.includes('pending'),
+    })),
+  },
+  {
+    key: 'research-projects', label: 'research projects',
+    // the grant I led as PI sits with the projects I joined; the CV keeps it as a one-line record
+    rows: [...group('Grants'), ...group('Funded Research Projects')].map(p => ({
+      year: p.period.split(' – ')[0].slice(-4), title: p.title,
+      sub: `${p.org} · PI: ${p.role === 'Principal Investigator' ? 'Myungjin Lee' : p.pi}`,
+      desc: p.desc, right: p.period, done: false, href: page(p.title), links: p.links, tags: p.tags,
+    })),
+  },
+  {
+    key: 'challenges', label: 'challenges',
+    rows: group('Competitions & Applied Projects').map(p => ({
+      year: p.period.slice(-4), title: p.title, sub: p.org, desc: p.desc,
+      right: p.period, badge: p.status, links: p.links, tags: p.tags,
+    })),
+  },
+]
+const pick = (...keys: string[]) => keys.map(k => blocks.find(b => b.key === k)!)
+// three parts: work still in review, work already out, and the work that was carried out
+const parts = [
+  { key: 'manuscripts', label: 'Manuscripts', c: 'blue', icon: ICONS.draft, blocks: pick('in-review') },
+  { key: 'publications', label: 'Publications', c: 'green', icon: ICONS.review, blocks: pick('papers', 'patents') },
+  { key: 'projects', label: 'Projects', c: 'atom', icon: ICONS.project, blocks: pick('research-projects', 'challenges') },
+]
+---
+<Base title="Research" description="Manuscripts under review, conference papers, patents and software, research projects and challenges."
+  subnav={parts.map(pt => ({ label: pt.label.toLowerCase(), href: `#${pt.key}` }))}>
+  <section class="wrap page">
+    <h1>Research</h1>
+
+    {parts.map(pt => (
+    <section class="part" id={pt.key} style={`--c: var(--${pt.c})`}>
+    <h2 class="sec"><span class="ico" set:html={pt.icon} />{pt.label}</h2>
+    {pt.blocks.map(bl => (
+      <div class="grp" id={bl.key}>
+        {pt.blocks.length > 1 && <h3 class="grp-h">{bl.label}</h3>}
+        <table class="rows">
+          <tbody>
+            {bl.rows.map(r => (
+              <tr>
+                <td class="y">{r.year}</td>
+                <td>
+                  {(() => { const [ko, en] = enOf(r.title); const [name, rest] = split(ko); const t = <>{name && <b class="name">{name}: </b>}{rest}</>
+                    return <><span class="t">{r.href ? <a href={r.href}>{t}</a> : t}</span>{en && <span class="en">{en}</span>}</> })()}
+                  {r.authors && <span class="sub" set:html={authors(r.authors)} />}
+                  {r.sub && <span class={r.venue ? 'sub venue' : 'sub'}>{r.sub}</span>}
+                  {r.desc && <span class="desc" set:html={rich(r.desc)} />}
+                  {(r.tags?.length || r.links?.length) && (
+                    <span class="meta">
+                      {r.links?.map(l => <a class="chip" href={l.href}>{l.label} ↗</a>)}
+                      {r.tags?.map(t => <span class="tag">{t}</span>)}
+                    </span>
+                  )}
+                </td>
+                <td class="s">{tone(r.right) ? <span class={`pill t-${tone(r.right)}`}>{r.right}</span> : r.right}{(r as any).badge && <span class={`pill t-${tone((r as any).badge)} badge`}>{(r as any).badge}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {(bl as any).note && <p class="note">{(bl as any).note}</p>}
+      </div>
+    ))}
+    </section>
+    ))}
+  </section>
+</Base>
+<style>
+  .page { padding-block: 32px 24px; }
+  h1 { font-weight: 600; font-size: calc(clamp(34px, 4.6vw, 46px) * var(--fs)); line-height: 1; letter-spacing: -.02em; margin: 0 0 36px; }
+  .part { margin-bottom: 48px; scroll-margin-top: 20px; }
+  .part h2.sec { color: var(--c); }
+  .sec .ico { display: inline-flex; font-size: 1.05em; opacity: .85; }
+  .sec .ico :global(svg) { width: 1em; height: 1em; }
+  .grp-h { font: 500 calc(13px * var(--fs))/1.4 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--soft); margin: 26px 0 2px; }
+  .grp { margin-bottom: 14px; scroll-margin-top: 20px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 5px 6px; margin-top: 7px; }
+  .chip, .tag { font: calc(12px * var(--fs))/1 var(--mono); padding: 4px 7px; border-radius: 3px; white-space: nowrap; }
+  .chip { color: var(--c) !important; border: 1px solid color-mix(in srgb, var(--c) 35%, var(--line)); text-decoration: none; }
+  .chip:hover { border-color: var(--c); }
+  .tag { color: var(--muted); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+  .desc { display: block; font-size: calc(14px * var(--fs)); color: var(--soft); margin-top: 6px; }
+  .desc :global(.role) { font: 500 calc(12px * var(--fs))/1 var(--mono); letter-spacing: .06em; text-transform: uppercase;
+    color: var(--c); background: color-mix(in srgb, var(--c) 15%, transparent); padding: 3px 6px; border-radius: 3px; margin-right: 6px; }
+  .t { font-weight: 500; }
+  .t a { color: var(--ink); text-decoration: none; }
+  .t a:hover { color: var(--c); }
+  .name { color: var(--c); font-weight: 600; }
+  .venue { font-style: italic; }
+  /* a placing sits under the dates, so the dates line up with every other row */
+  .s .badge { display: block; width: fit-content; margin: 8px 0 0 auto; line-height: 1; }
+  @media (max-width: 660px) { .s .badge { display: inline-block; margin: 0 0 0 8px; } }
+  .en { display: block; font-size: calc(14px * var(--fs)); color: var(--soft); margin-top: 1px; }
+  /* phones: the year and status ride above the entry instead of squeezing it into a middle column */
+  @media (max-width: 660px) {
+    .rows tr { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "y s" "c c"; border-bottom: 1px solid var(--line); }
+    .rows td { border: 0; }
+    .rows td.y { grid-area: y; padding-bottom: 0; }
+    .rows td:nth-child(2) { grid-area: c; padding-top: 4px; }
+    .rows td.s { grid-area: s; padding-bottom: 0; }
+  }
+  .note { font-size: calc(13px * var(--fs)); color: var(--muted); margin: 10px 0 0; }
+</style>

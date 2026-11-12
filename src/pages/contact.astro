@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro'
+import { contact, profile } from '../data/cv'
+import { projects } from '../data/projects'
+import { ICONS, GITHUB, LINKEDIN } from '../data/icons'
+import { u } from '../lib'
+
+const ICON: Record<string, string> = { Email: ICONS.mail, GitHub: GITHUB, LinkedIn: LINKEDIN, 'CV (PDF)': ICONS.review }
+// the address is shown with [at] and [dot] for anyone reading it off the page; the link and the
+// copy button carry the real one
+const shown = (l: { label: string; value: string }) => l.label === 'Email' ? l.value.replace('@', ' [at] ').replace(/\.(?=[^.]+$)/, ' [dot] ') : l.value
+
+// what the terminal knows about me — kept here so it stays in step with the rest of the site
+const TERM = {
+  whoami: [
+    'Myungjin Lee — post-master researcher, Dongguk University.',
+    'Molecular machine learning and omics: representation learning',
+    'for molecules, and transcriptomes of the aging liver.',
+  ],
+  now: [
+    'SJoINT and MAGNET are under review.',
+    'The aging-liver database is growing.',
+    'Looking for a research position — in industry, a national',
+    'research institute, a university or a hospital.',
+  ],
+  vitae: [profile.headline, profile.degree + ' · ' + profile.location, '', 'The full record — grants, talks, patents — is on the vitae page.'],
+  research: projects.map(p => ({ slug: p.slug, title: p.title, line: p.line, period: p.period, role: p.role })),
+  contact: contact.links.map(l => ({
+    k: l.label.replace(' (PDF)', '').toLowerCase(),
+    v: l.label === 'CV (PDF)' ? u(l.href) : shown(l),
+    href: l.href.startsWith('http') || l.href.startsWith('mailto') ? l.href : u(l.href),
+  })),
+  base: u(''),
+}
+---
+<Base title="Contact" description="How to reach Myungjin Lee.">
+  <section class="wrap page">
+    <h1>Contact</h1>
+    <p class="say">{contact.intro}</p>
+    <ul class="cards">
+      {contact.links.map(l => (
+        <li class="card">
+          <a class="main" href={l.href.startsWith('http') || l.href.startsWith('mailto') ? l.href : u(l.href)}>
+            <span class="ic" set:html={ICON[l.label]} />
+            <span class="txt"><span class="k mono">{l.label}</span><span class="v">{shown(l)}</span><span class="d">{l.desc}</span></span>
+          </a>
+          {l.label === 'Email' && <button class="copy mono" type="button" data-copy={l.value} aria-label="Copy the email address">copy</button>}
+        </li>
+      ))}
+    </ul>
+
+    <!-- a login banner for a machine that does not exist, in the spirit of the ones that do -->
+    <div class="term" id="term">
+      <div class="bar">
+        <button class="dot r" id="red" type="button" aria-label="Close the terminal"><span>×</span></button>
+        <button class="dot y" id="yellow" type="button" aria-label="Roll the terminal up"><span>−</span></button>
+        <button class="dot g" id="green" type="button" aria-label="Make the terminal taller"><span>+</span></button>
+        <span class="who mono">myungjin@contact — ssh</span>
+      </div>
+      <div class="screen mono" id="screen">
+        <pre id="out" aria-live="polite"></pre>
+        <label class="line" id="line"><span class="ps1 mono" id="ps1">$</span><input id="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Type a command, or help"></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- the machine the terminal runs on, parked at the bottom of the page -->
+  <button class="dock" id="dock" type="button" aria-label="Open the terminal">
+    <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+      <rect x="9" y="3.5" width="30" height="20" rx="2"></rect>
+      <path d="M3 28.5h42l-3.4-5H6.4z"></path>
+      <path d="M13.5 9.5h10M13.5 14h16M13.5 18.5h6.5" stroke-width="1.2" opacity=".5"></path>
+    </svg>
+    <span class="mono">myungjin@contact</span>
+  </button>
+  <script type="application/json" id="term-data" set:html={JSON.stringify(TERM)}></script>
+</Base>
+
+<script>
+  import { shell } from '../scripts/shell.js'
+  const pick = (id: string) => document.getElementById(id)!
+  shell(
+    { term: pick('term'), screen: pick('screen'), out: pick('out'), line: pick('line'),
+      cmd: pick('cmd') as HTMLInputElement, ps1: pick('ps1'), dock: pick('dock'),
+      red: pick('red'), yellow: pick('yellow'), green: pick('green') },
+    JSON.parse(pick('term-data').textContent!),
+  )
+</script>
+
+<script>
+  for (const b of document.querySelectorAll<HTMLButtonElement>('.copy')) {
+    b.addEventListener('click', async () => {
+      const text = b.dataset.copy!
+      try { await navigator.clipboard.writeText(text) }
+      catch {                                             // older browsers, or a page without clipboard access
+        const t = Object.assign(document.createElement('textarea'), { value: text }); document.body.append(t); t.select(); document.execCommand('copy'); t.remove()
+      }
+      b.textContent = 'copied'; b.classList.add('done')
+      setTimeout(() => { b.textContent = 'copy'; b.classList.remove('done') }, 1600)
+    })
+  }
+</script>
+
+<style>
+  .page { padding-block: 32px 24px; }
+  h1 { font-weight: 600; font-size: calc(clamp(34px, 4.6vw, 46px) * var(--fs)); line-height: 1; letter-spacing: -.02em; margin: 0 0 20px; }
+  .say { margin: 0 0 22px; color: var(--soft); }
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }
+  .card { position: relative; }
+  .main { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--plate); text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; }
+  .main:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 10px 24px -18px rgba(0, 0, 0, .45); }
+  .ic { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+  .ic :global(svg) { width: 21px; height: 21px; }
+  .txt { display: grid; gap: 2px; min-width: 0; }
+  .k { font-size: calc(12px * var(--fs)); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .v { color: var(--ink); font-size: calc(15.5px * var(--fs)); font-weight: 500; overflow-wrap: anywhere; }
+  .d { font-size: calc(13px * var(--fs)); color: var(--muted); }
+  .copy { position: absolute; top: 14px; right: 14px; font-size: calc(12px * var(--fs)); color: var(--soft); background: var(--paper);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .copy:hover { color: var(--green); border-color: var(--green); }
+  .term { margin-top: 56px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--plate);
+    box-shadow: 0 18px 40px -34px rgba(0, 0, 0, .6); }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+  .dot { width: 12px; height: 12px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+  .dot.r { background: #E06C60; } .dot.y { background: #E0B341; } .dot.g { background: #68B562; }
+  /* the glyph only shows on hover, the way it does on a real window */
+  .dot span { font: 600 9px/1 system-ui, sans-serif; color: rgba(0, 0, 0, .5); opacity: 0; transition: opacity .12s; }
+  .bar:hover .dot span { opacity: 1; }
+  .who { margin-left: 8px; font-size: calc(12px * var(--fs)); color: var(--muted); }
+  /* no proportional Korean fallback here: the columns have to line up */
+  .screen { font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    padding: 16px 18px 18px; height: 30em; overflow: hidden; font-size: calc(12.5px * var(--fs)); line-height: 1.5;
+    color: var(--soft); cursor: text; transition: height .2s; }
+  .term.big .screen { height: 42em; }
+  .term.rolled .screen { display: none; }
+  #out { margin: 0; font: inherit; white-space: pre; }
+  /* box-drawing needs the rows to touch */
+  #out.game { line-height: 1.06; }
+  #out :global(.g) { color: var(--green); }
+  #out :global(.p) { color: var(--ink); }
+  #out :global(.h) { color: var(--ink); font-weight: 500; }
+  #out :global(.m) { color: var(--muted); }
+  #out :global(.w) { color: #C2603F; }
+  .line { display: flex; gap: 8px; align-items: baseline; }
+  /* a display rule outranks the UA's [hidden] */
+  .line[hidden] { display: none; }
+  .ps1 { color: var(--green); white-space: nowrap; }
+  #cmd { flex: 1; min-width: 0; border: 0; padding: 0; background: none; font: inherit; color: var(--ink); caret-color: var(--green); }
+  #cmd:focus { outline: none; }
+  .dock { display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 8px auto 40px; padding: 10px 16px;
+    border: 0; background: none; color: var(--muted); cursor: pointer; font-size: calc(11.5px * var(--fs));
+    opacity: .5; transition: opacity .18s, color .18s; }
+  .dock:hover, .dock.on { opacity: 1; color: var(--green); }
+  .dock svg { width: 50px; height: 34px; }
+  .copy.done { color: var(--green); border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, var(--paper)); }
+</style>

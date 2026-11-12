@@ -1,0 +1,38 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, u } from '../../lib'
+// the notes that carry the background for this page
+const READING = [
+  { id: 'sasp', t: 'Senescence and SASP: the cells that stop dividing but keep signalling', d: 'what the secretory phenotype is, why there is no single marker, and the gene sets used to score it' },
+  { id: 'de-tools', t: 'Differential expression tools: DESeq2, PyDESeq2, MAST', d: 'the tests behind the comparison above' },
+]
+const lipid = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p => p.title.startsWith('Lipid'))!
+---
+<Project slug="lipid"
+  lede="Senescent cells accumulate lipid, and they signal. The question is whether the first has anything to do with the second."
+  facts={[
+    { k: 'status', v: 'manuscript in preparation' },
+    { k: 'collaboration', v: 'Mayo Clinic' },
+    { k: 'corresponding', v: 'Dr. Diana Jurk' },
+    { k: 'alongside', v: `<a href="${u('projects/masld/')}">Aging-related MASLD</a>` },
+  ]}>
+  <figure slot="plate" class="plate">
+    <img src={u('assets/fig/lipid-volcano.png')} alt="A volcano plot of lipid-high against lipid-low senescent cells. Almost everything significant moves up in the lipid-high cells, and the labelled genes are cytokines and chemokines — CXCL8, CXCL1, CXCL6, IL1A, IL1B, C3, NAMPT." width="1700" height="954" loading="eager">
+    <figcaption><span>Lipid-high against lipid-low senescent cells</span><span>in vitro bulk RNA-seq · the labelled genes are SASP factors</span></figcaption>
+  </figure>
+
+  <h2>The project</h2>
+  <p>This is a collaboration with Mayo Clinic on how much lipid a senescent cell carries and how loudly it signals — the senescence-associated secretory phenotype, or SASP. Senescent cells differ from one another in lipid content, so the lipid-high and lipid-low populations can be separated and sequenced. Almost everything that differs between them shifts in one direction, and the genes that shift furthest are the secreted ones.</p>
+  <p><span class="role">My role</span> the transcriptomic analysis across the public, <i>in vitro</i> and <i>in vivo</i> senescence data.</p>
+  <p class="note">The manuscript is in preparation. The figure above is an example of the analysis, not a figure from it.</p>
+
+  <h2>The paper</h2>
+  <div class="paper cell"><p class="t">{lipid.title}</p><p class="a" set:html={authors(lipid.authors)} /><p class="v">{lipid.status} · {lipid.org}</p></div>
+  <p class="note">The lipid processes this work approaches from the cell side also come out of public liver data — <a href={u('projects/masld/')}>Aging-related MASLD</a>.</p>
+
+  <h2>Background, in the notes</h2>
+  <ul class="reading">
+    {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}><span class="t">{r.t}</span><span class="d">{r.d}</span></a></li>)}
+  </ul>
+</Project>

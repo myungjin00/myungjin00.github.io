@@ -1,0 +1,133 @@
+---
+import Base from './Base.astro'
+import { u } from '../lib'
+import { projects } from '../data/projects'
+
+const { slug, lede, facts = [] } = Astro.props
+const p = projects.find(x => x.slug === slug)!
+const i = projects.indexOf(p)
+const next = projects[(i + 1) % projects.length]
+---
+<Base title={p.title} description={p.line}>
+  <article class="wrap page">
+    <!-- two columns from the top, as on a note: the work on the left, its facts and contents pinned on the right -->
+    <div class="body">
+      <div class="main">
+        <h1>{p.title}</h1>
+        <p class="lede" set:html={lede} />
+        <slot name="plate" />
+        <div class="text"><slot /></div>
+      </div>
+      <aside>
+        <div class="pin">
+          <dl>
+            <dt>role</dt><dd>{p.role}</dd>
+            <dt>period</dt><dd>{p.period}</dd>
+            {facts.map((f: any) => <><dt>{f.k}</dt><dd set:html={f.v} /></>)}
+          </dl>
+          <div class="toc">
+            <p class="toc-title mono">on this page</p>
+            <nav aria-label="Sections on this page" id="ptoc"></nav>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="pager mono" aria-label="More projects">
+      <a href={u('research/#projects')}>← research</a>
+      <a href={u(`projects/${next.slug}/`)}>{next.title} →</a>
+    </nav>
+  </article>
+</Base>
+
+<script>
+  // the side contents list the page's own section headings, and follow the reading position
+  const heads = [...document.querySelectorAll<HTMLElement>('.text h2')]
+  const nav = document.getElementById('ptoc')
+  if (nav && heads.length) {
+    heads.forEach((h, i) => {
+      h.id ||= 's-' + (h.textContent ?? String(i)).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      const a = Object.assign(document.createElement('a'), { href: '#' + h.id, textContent: h.textContent })
+      nav.append(a)
+    })
+    const links = [...nav.querySelectorAll('a')]
+    // a clicked entry stays current, as on the contents bar, until the reader scrolls
+    let pinned = -1
+    links.forEach((a, i) => a.addEventListener('click', () => { pinned = i; mark() }))
+    for (const ev of ['wheel', 'touchmove', 'keydown']) addEventListener(ev, () => { pinned = -1 }, { passive: true })
+    const mark = () => {
+      if (pinned >= 0) return links.forEach((a, i) => a.classList.toggle('on', i === pinned))
+      const line = (document.querySelector('.top')?.getBoundingClientRect().bottom ?? 0) + 40
+      let on = 0
+      heads.forEach((h, i) => { if (h.getBoundingClientRect().top <= line) on = i })
+      // at the very bottom the last section is the one being read, even if its heading never reaches the line
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) on = heads.length - 1
+      links.forEach((a, i) => a.classList.toggle('on', i === on))
+    }
+    addEventListener('scroll', mark, { passive: true }); mark()
+  }
+</script>
+
+<style>
+  .page { padding-block: 32px 24px; }
+  h1 { font-weight: 600; font-size: calc(clamp(34px, 4.6vw, 46px) * var(--fs)); line-height: 1; letter-spacing: -.02em; margin: 0; }
+  /* the same size as the other serif introductions, on home and in the notes */
+  .lede { font-family: var(--serif); font-size: calc(18px * var(--fs)); line-height: 1.55; margin: 16px 0 28px; }
+
+  .body { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 48px; align-items: start; padding-bottom: 36px; }
+  @media (max-width: 960px) { .body { grid-template-columns: 1fr; gap: 26px; } .toc { display: none; } }
+  .main { min-width: 0; }
+  .text { font-size: calc(16.5px * var(--fs)); line-height: 1.75; margin-top: 32px; }
+  .text :global(h2) { font: 500 calc(13px * var(--fs))/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--green); margin: 32px 0 10px; }
+  .text :global(h2:first-child) { margin-top: 0; }
+  .text :global(h2) { scroll-margin-top: calc(var(--head-h, 108px) + 16px); }
+  .text :global(p) { margin: 0 0 16px; }
+  .text :global(ul) { padding-left: 20px; margin: 0 0 16px; }
+  .text :global(.paper) { border-left: 3px solid var(--green); padding: 2px 0 2px 16px; margin: 0 0 18px; }
+  .text :global(.paper.cell) { border-color: var(--blue); }
+  .text :global(details .t) { color: var(--ink); font-weight: 500; margin: 12px 0 0; }
+  .text :global(.role) { font: 500 calc(12px * var(--fs))/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--green); background: color-mix(in srgb, var(--green) 15%, transparent); padding: 3px 6px; border-radius: 3px; margin-right: 6px; }
+  .text :global(.paper .t) { font-size: calc(15.5px * var(--fs)); font-weight: 500; line-height: 1.45; margin: 0; }
+  .text :global(.paper .a), .text :global(.paper .v) { font-size: calc(14px * var(--fs)); color: var(--muted); margin: 2px 0 0; }
+  .text :global(details) { border-top: 1px solid var(--line); padding: 10px 0; }
+  .text :global(summary) { font: calc(12.5px * var(--fs)) var(--mono); color: var(--soft); cursor: pointer; }
+  .text :global(details p) { font-size: calc(14px * var(--fs)); color: var(--soft); margin: 10px 0 0; }
+  /* a few headline numbers, as small cards */
+  .text :global(.stats) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 4px 0 20px; }
+  @media (max-width: 560px) { .text :global(.stats) { grid-template-columns: 1fr; } }
+  .text :global(.stat) { border: 1px solid var(--line); border-radius: 8px; background: var(--plate); padding: 14px 16px; line-height: 1.35; }
+  .text :global(.stat b) { display: block; font-size: calc(26px * var(--fs)); font-weight: 600; color: var(--green); letter-spacing: -.01em; }
+  .text :global(.stat span) { display: block; font-size: calc(13px * var(--fs)); color: var(--soft); margin-top: 4px; }
+  .text :global(.talks) { list-style: none; margin: 0; padding: 0; }
+  .text :global(.talks li) { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 14px; align-items: baseline;
+    border-top: 1px solid var(--line); padding: 11px 0; }
+  .text :global(.talks .when) { font-size: calc(12.5px * var(--fs)); color: var(--muted); white-space: nowrap; }
+  .text :global(.talks .t) { display: block; font-size: calc(15.5px * var(--fs)); font-weight: 500; line-height: 1.45; }
+  .text :global(.talks .where) { display: block; font-size: calc(14px * var(--fs)); color: var(--muted); margin-top: 2px; }
+  .text :global(figure.inline) { margin: 0 0 18px; }
+  /* a short reading list: each note as a line, its summary beneath */
+  .text :global(.reading) { list-style: none; margin: 0; padding: 0; }
+  .text :global(.reading li) { border-top: 1px solid var(--line); }
+  .text :global(.reading a) { display: block; padding: 11px 0; text-decoration: none; }
+  .text :global(.reading .t) { display: block; font-size: calc(15.5px * var(--fs)); font-weight: 500; color: var(--ink); line-height: 1.45; }
+  .text :global(.reading a:hover .t) { color: var(--green); }
+  .text :global(.reading .d) { display: block; font-size: calc(14px * var(--fs)); color: var(--muted); line-height: 1.5; margin-top: 2px; }
+  .text :global(.note) { font-size: calc(14px * var(--fs)); color: var(--muted); border-left: 2px solid var(--line); padding-left: 12px; }
+
+  /* clears the sticky header, like the contents on a note */
+  .pin { position: sticky; top: calc(var(--head-h, 108px) + 18px); display: grid; gap: 26px; padding-top: 6px; }
+  @media (max-width: 960px) { .pin { position: static; border-top: 1px solid var(--line); padding-top: 20px; } }
+  aside dl { margin: 0; display: grid; gap: 3px; }
+  .toc-title { font-size: calc(12px * var(--fs)); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .toc nav { display: grid; gap: 2px; border-left: 1px solid var(--line); }
+  .toc nav :global(a) { font-size: calc(13.5px * var(--fs)); color: var(--muted); text-decoration: none; padding: 3px 0 3px 12px; margin-left: -1px; border-left: 2px solid transparent; }
+  .toc nav :global(a:hover) { color: var(--soft); }
+  .toc nav :global(a.on) { color: var(--green); border-left-color: var(--green); }
+  aside dt { font: 500 calc(12px * var(--fs))/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+  aside dt:first-child { margin-top: 0; }
+  aside dd { margin: 0; font-size: calc(14px * var(--fs)); }
+
+  .pager { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); padding-block: 20px; font-size: calc(12.5px * var(--fs)); }
+  .pager a { text-decoration: none; color: var(--soft); }
+  .pager a:hover { color: var(--green); }
+</style>

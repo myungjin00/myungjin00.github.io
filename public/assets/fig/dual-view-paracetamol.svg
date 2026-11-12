@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 300" role="img" aria-label="Atom graph and junction tree of the same molecule">
+<text x="36" y="26" font-family="ui-monospace,monospace" font-size="12" fill="#C2703C">atom-level graph</text>
+<text x="36" y="44" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873">11 nodes &#183; 11 edges &#183; node = atom, edge = bond</text>
+<text x="366" y="26" font-family="ui-monospace,monospace" font-size="12" fill="#1E4A39">junction tree</text>
+<text x="366" y="44" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873">7 nodes &#183; 6 edges &#183; node = ring or bond</text>
+<line x1="326" y1="60" x2="326" y2="268" stroke="#D3D8CE" stroke-width="1"/>
+<line x1="36.0" y1="146.4" x2="79.6" y2="134.7" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="79.6" y1="134.7" x2="91.3" y2="91.1" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="82.1" y1="135.4" x2="93.8" y2="91.8" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="79.6" y1="134.7" x2="111.5" y2="166.7" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="111.5" y1="166.7" x2="155.2" y2="155.0" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="155.2" y1="155.0" x2="166.8" y2="111.3" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="166.8" y1="111.3" x2="210.5" y2="99.7" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="210.5" y1="99.7" x2="242.4" y2="131.6" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="242.4" y1="131.6" x2="286.0" y2="119.9" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="242.4" y1="131.6" x2="230.7" y2="175.2" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="230.7" y1="175.2" x2="187.1" y2="186.9" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<line x1="187.1" y1="186.9" x2="155.2" y2="155.0" stroke="#C2703C" stroke-width="1.6" opacity=".55"/>
+<circle cx="36.0" cy="146.4" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="36.0" y="149.6" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="79.6" cy="134.7" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="79.6" y="137.9" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="91.3" cy="91.1" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="91.3" y="94.3" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">O</text>
+<circle cx="111.5" cy="166.7" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="111.5" y="169.9" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">N</text>
+<circle cx="155.2" cy="155.0" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="155.2" y="158.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="166.8" cy="111.3" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="166.8" y="114.5" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="210.5" cy="99.7" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="210.5" y="102.9" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="242.4" cy="131.6" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="242.4" y="134.8" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="286.0" cy="119.9" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="286.0" y="123.1" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">O</text>
+<circle cx="230.7" cy="175.2" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="230.7" y="178.4" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="187.1" cy="186.9" r="7.5" fill="#FFFFFF" stroke="#C2703C" stroke-width="1.6"/>
+<text x="187.1" y="190.1" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<line x1="392" y1="96" x2="452" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<line x1="392" y1="196" x2="452" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<line x1="516" y1="146" x2="574" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<line x1="516" y1="146" x2="452" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<line x1="574" y1="146" x2="624" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<line x1="624" y1="86" x2="624" y2="146" stroke="#1E4A39" stroke-width="1.4" opacity=".5"/>
+<circle cx="392" cy="96" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="392" y="99.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">C–C</text>
+<circle cx="392" cy="196" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="392" y="199.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">C=O</text>
+<circle cx="452" cy="146" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="452" y="149.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#1C2421">C</text>
+<circle cx="516" cy="146" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="516" y="149.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">C–N</text>
+<circle cx="574" cy="146" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="574" y="149.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">N–C</text>
+<circle cx="624" cy="146" r="15" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="624" y="149.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">ring</text>
+<circle cx="624" cy="86" r="11" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.8"/>
+<text x="624" y="89.2" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#1C2421">C–O</text>
+<text x="366" y="258" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873">the six-membered ring collapses to one node</text>
+<text x="36" y="258" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873">paracetamol &#183; CC(=O)Nc1ccc(O)cc1</text>
+</svg>
