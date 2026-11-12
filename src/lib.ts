@@ -1,4 +1,4 @@
-// Prefix a site path with the configured base ("/site-lab/" here, "/" on the real site).
+// Prefix a site path with the configured base — "/" here, a sub-path when ASTRO_BASE is set.
 export const u = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`
 
 // Tiny inline markup used in cv.ts: **bold**, _italic_, [label](url), and line breaks.

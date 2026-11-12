@@ -4,10 +4,9 @@ Personal research site for **Myungjin Lee** — molecular machine learning and o
 Built with [Astro](https://astro.build), deployed to GitHub Pages.
 
 - **Live:** https://myungjin00.github.io
-- **Staging:** https://myungjin00.github.io/site-lab/
 
-The same source builds both. The base path comes from `ASTRO_BASE`, which defaults to
-`/site-lab` here and is set to `/` on the live site.
+The base path comes from `ASTRO_BASE` and defaults to `/`, so the same source can also be
+served from a sub-path.
 
 ## Layout
 
@@ -24,7 +23,7 @@ scripts/          the self-checks (figure generation lives alongside, untracked)
 
 ```sh
 npm install
-npm run dev        # http://localhost:4321/site-lab/
+npm run dev        # http://localhost:4321/
 npm run build      # -> dist/
 node scripts/check-scenes.mjs   # the molecular scenes stay well-formed
 node scripts/check-seoul.mjs    # the clock's day/night and season logic
