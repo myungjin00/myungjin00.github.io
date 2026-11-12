@@ -17,3 +17,6 @@ incoming/
 _raw/
 MJ_증명사진.jpg
 /*.pdf
+
+# one-off figure generation; the SVGs it produces are committed, the scripts carry local paths
+scripts/figures/

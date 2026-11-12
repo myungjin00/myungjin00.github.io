@@ -17,7 +17,7 @@ src/layouts/      Base (header, nav, search, footer) and Project
 src/data/         cv.ts is the single source for the CV, news and project data
 src/content/blog/ the notes, in English and Korean, paired by `group`
 src/scripts/      the canvas scenes, the contact terminal, the seasonal layer
-scripts/          figure generation (Python) and the self-checks
+scripts/          the self-checks (figure generation lives alongside, untracked)
 ```
 
 ## Develop
