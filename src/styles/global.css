@@ -1,0 +1,203 @@
+:root {
+  /* reading-size multiplier, set by the A-/A+ control */
+  --fs: 1;
+  --paper: #F5F5EF;
+  --plate: rgba(255, 255, 255, .42);
+  --ink: #1C2421;
+  --soft: #46524D;
+  --muted: #5F6A64;        /*  5.1:1 — was 4.2:1, under the 4.5 floor */
+  --line: #D3D8CE;
+
+  /* green = identity and links, blue = cells and omics, orange = atoms inside figures */
+  --green: #1E4A39;
+  --green-hover: #2F6A52;
+  --blue: #2E5878;
+  --atom: #984E1B;         /*  5.6:1, and 4.7:1 on its own pill tint — #A3561F fell to 4.2 there */
+  --bio: #8A3B4A;          /*  6.8:1 — rose; no purple on this site */
+  --ref: #19636E;          /*  6.3:1 — the reference shelf, which was grey */
+
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --measure: 1060px;
+  color-scheme: light;
+}
+
+/* Dark theme. The figures are the constraint: every generated SVG is dark strokes on a
+   transparent background, so they are kept on a light plate rather than inverted — an
+   inverted plot is a different plot, and the paper figures could not be inverted anyway. */
+:root[data-theme="dark"] {
+  --paper: #14181A;
+  --plate: rgba(255, 255, 255, .055);
+  --ink: #ECEFE8;          /* 15.4:1 */
+  --soft: #C3CBC3;         /* 10.8:1 */
+  --muted: #9BA59B;        /*  7.0:1 — was 4.9:1, which read as switched off */
+  --line: #363E38;
+  --green: #79C9A2;        /*  9.1:1 */
+  --green-hover: #99DCBB;
+  --blue: #88B8E0;         /*  8.5:1 */
+  --atom: #E8A277;         /*  8.4:1 */
+  --bio: #E39AA8;          /*  8.0:1 */
+  --ref: #78C8D6;          /*  9.4:1 */
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  /* type scale: 15.5 body · 14 secondary · 13 notes · 12.5 mono labels · 11 mono chips */
+  font: calc(15.5px * var(--fs))/1.65 var(--sans);
+  background: var(--paper);
+  /* break Korean at word boundaries, never mid-word; same for English */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+}
+/* only code, URLs and identifiers may break anywhere, or they overflow the column */
+code, pre, kbd, samp, .mono { word-break: normal; overflow-wrap: anywhere; }
+a { color: var(--green); text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--green) 40%, transparent); }
+a:hover { color: var(--green-hover); text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+img { max-width: 100%; }
+
+.wrap { max-width: var(--measure); margin: 0 auto; padding-inline: 26px; }
+@media (max-width: 520px) { .wrap { padding-inline: 16px; } }
+.mono { font-family: var(--mono); }
+
+/* Emphasis, one job each:
+   ink (darkest)   what is read first: titles, names of things, the one result worth noticing
+   soft            prose and descriptions
+   muted (lightest) metadata: dates, venues, other authors, labels, tags, notes
+   bold            ink + 600, at most one run per description; never for labels
+   accent colour   identity: section headings, model names, links, the "my role" tag
+   marker          me: my name in author lists; on home, what I work on
+   italic          titles of works, venues, Latin (in vitro)
+   pill            status only */
+b, strong { font-weight: 600; color: var(--ink); }
+.me { font-weight: 600; color: var(--ink); padding: 0 2px;
+      background: linear-gradient(transparent 55%, color-mix(in srgb, var(--green) 24%, transparent) 55%); }
+.pill { display: inline-block; font: calc(12px * var(--fs))/1 var(--mono); padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+        color: var(--t); background: color-mix(in srgb, var(--t) 12%, transparent); }
+.t-blue { --t: var(--blue); }
+.t-green { --t: var(--green); }
+.t-atom { --t: var(--atom); }
+.t-muted { --t: var(--muted); background: none; box-shadow: inset 0 0 0 1px var(--line); }
+
+/* section heading, written the way a note is headed */
+h2.sec { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: calc(23px * var(--fs));
+         line-height: 1.22; letter-spacing: -.015em; color: var(--green); margin: 0 0 16px; text-transform: capitalize;
+         padding-bottom: 10px; border-bottom: 2px solid currentColor; }
+
+/* each shelf gets its own colour so the eye can tell them apart while scrolling:
+   the three categories on the index, and the four topics inside a category */
+#review h2.sec { color: var(--green); }
+#concept h2.sec { color: var(--blue); }
+#tutorial h2.sec { color: var(--atom); }
+#reference h2.sec { color: var(--ref); }
+/* the reference pages themselves, so entering one keeps the colour it was listed under */
+#libs h2.sec, #plots h2.sec, #dbs h2.sec, #shell h2.sec { color: var(--ref); }
+#machine-learning h2.sec { color: var(--blue); }
+#graphs h2.sec { color: var(--green); }
+#cheminformatics h2.sec { color: var(--atom); }
+#bioinformatics h2.sec { color: var(--bio); }
+#linux h2.sec { color: var(--atom); }
+#git h2.sec { color: var(--ref); }
+#python h2.sec { color: var(--blue); }
+#r h2.sec { color: var(--bio); }
+/* the heading row carries the same accent, so its rule matches the title */
+#review .cat-head { color: var(--green); }
+#concept .cat-head { color: var(--blue); }
+#tutorial .cat-head { color: var(--atom); }
+#reference .cat-head { color: var(--ref); }
+#shell .cat-head { color: var(--ref); }
+#machine-learning .cat-head { color: var(--blue); }
+#graphs .cat-head { color: var(--green); }
+#cheminformatics .cat-head { color: var(--atom); }
+#bioinformatics .cat-head { color: var(--bio); }
+#linux .cat-head { color: var(--atom); }
+#git .cat-head { color: var(--ref); }
+#python .cat-head { color: var(--blue); }
+#r .cat-head { color: var(--bio); }
+
+
+/* a few words washed in with a dry brush */
+.hl {
+  font-weight: 500;
+  color: var(--green);
+  padding: 0 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M1 13 C 18 9, 64 8, 104 9.5 C 140 10.5, 176 7, 199 10 L 197.5 17 C 171 20, 133 18.5, 97 20 C 61 21.5, 23 19.5, 2.5 20.5 Z' fill='%234E8C68' fill-opacity='.3'/%3E%3C/svg%3E") center 74% / 100% 70% no-repeat;
+}
+.hl.blue {
+  color: var(--blue);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M1 12 C 22 8.5, 70 9, 108 10 C 146 11, 178 8, 199 11 L 198 17.5 C 168 20.5, 128 18.5, 92 20 C 56 21.5, 20 19, 2 20 Z' fill='%23467AAA' fill-opacity='.26'/%3E%3C/svg%3E");
+}
+
+/* a framed plate, the way a figure is pasted into a notebook */
+.plate { margin: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--plate); overflow: hidden; }
+.plate > img, .plate > canvas { display: block; width: 100%; }
+.plate figcaption {
+  font: calc(12px * var(--fs))/1.5 var(--mono); color: var(--muted);
+  padding: 9px 12px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+}
+
+/* tables of work, posts, anything with a year and a status */
+table.rows { width: 100%; border-collapse: collapse; }
+table.rows th {
+  font: 500 calc(12px * var(--fs))/1.3 var(--mono); text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--ink);
+}
+table.rows td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.rows tr:hover td { background: color-mix(in srgb, var(--green) 7%, transparent); }
+td.y { font: calc(12.5px * var(--fs))/1.6 var(--mono); color: var(--muted); width: 62px; white-space: nowrap; }
+td.k { width: 92px; }
+td.k span { font: calc(12px * var(--fs))/1 var(--mono); padding: 3px 7px; border-radius: 3px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); white-space: nowrap; }
+td.k span.c { background: color-mix(in srgb, var(--blue) 14%, transparent); color: var(--blue); }
+td.k span.n { background: color-mix(in srgb, var(--soft) 12%, transparent); color: var(--soft); }
+td.s { font: calc(12.5px * var(--fs))/1.6 var(--mono); color: var(--soft); white-space: nowrap; text-align: right; }
+td.s.done { color: var(--green); }
+td a { color: var(--ink); text-decoration: none; }
+tr:hover td a { color: var(--green); }
+.sub { display: block; font-size: calc(14px * var(--fs)); color: var(--muted); }
+.sub b { color: var(--soft); font-weight: 600; }
+@media (max-width: 660px) { td.k, th.k { display: none; } td.s { white-space: normal; text-align: left; } }
+
+/* terminal caret cursor (fine pointers only; see scripts/cursor.js) */
+html.caret-on, html.caret-on * { cursor: none !important; }
+.caret {
+  position: fixed; left: 0; top: 0;
+  width: 2px; height: 19px;
+  margin: -9.5px 0 0 -1px;
+  background: var(--green);
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transition: height .12s, margin .12s, opacity .15s, background-color .15s;
+}
+.caret.on { opacity: .85; animation: caret-blink 1.1s steps(1, end) infinite; }
+.caret.link { animation: none; opacity: 1; width: 3px; height: 22px; margin: -11px 0 0 -1.5px; }
+.caret.down { height: 9px; margin: -4.5px 0 0 -1px; }
+@keyframes caret-blink { 0%, 55% { opacity: .85; } 56%, 100% { opacity: .12; } }
+@media (prefers-reduced-motion: reduce) { .caret.on { animation: none; } }
+
+/* the <mark> wash is a fixed-fill SVG, so on a dark page it is raised with a flat tint
+   underneath rather than being redrawn */
+:root[data-theme="dark"] .hl { background-color: color-mix(in srgb, var(--green) 16%, transparent); }
+:root[data-theme="dark"] .hl.blue { background-color: color-mix(in srgb, var(--blue) 16%, transparent); }
+
+/* per-shelf paging: a shelf shows five rows and carries its own pager, so every topic
+   stays on the page instead of being cut off by a whole-page page break */
+tr.pg-off { display: none !important; }
+.shelf-pager { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.shelf-pager button {
+  min-width: 30px; padding: 5px 9px; font: calc(13px * var(--fs)) var(--mono);
+  color: var(--soft); background: var(--paper); border: 1px solid var(--line);
+  border-radius: 4px; cursor: pointer; line-height: 1.4;
+}
+.shelf-pager button:hover:not(:disabled) { color: var(--green); border-color: var(--green); }
+.shelf-pager button[aria-current="page"] { background: var(--green); border-color: var(--green); color: var(--paper); }
+.shelf-pager button:disabled { opacity: .3; cursor: default; }

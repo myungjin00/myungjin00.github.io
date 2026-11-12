@@ -78,7 +78,7 @@ export const news: NewsItem[] = [
   },
   {
     date: 'Sep 2024',
-    text: '🌱 Awarded a Master’s Student Research Grant from the National Research Foundation of Korea (NRF) as Principal Investigator.',
+    text: '🌱 Awarded a Master’s Student Research Grant from the Ministry of Science and ICT (MSIT) as Principal Investigator.',
   },
   {
     date: 'Jan 2024',
@@ -127,7 +127,7 @@ export const projectGroups: ProjectGroup[] = [
         title: 'MAGNET: Cross-view structural consensus for interpretable molecular property prediction',
         authors: 'Mo J., Lee M., Lee S., Lim S.*',
         status: 'Under review',
-        desc: 'Molecular graph learning framework integrating BRICS, junction-tree, and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph, with multi-objective self-supervised pretraining (graph contrastive learning, descriptor prediction, graph–SMILES alignment); best performance on seven of ten molecular property benchmarks.',
+        desc: 'Molecular graph learning framework integrating BRICS, junction-tree, and Murcko scaffold decompositions through explicit fragment correspondences in a unified meta-graph, with multi-objective self-supervised pretraining (graph contrastive learning, descriptor prediction, graph–SMILES alignment); **best performance on seven of ten** molecular property benchmarks.\n**My role:** figures and interpretation analyses, supporting code, and manuscript review.',
         tags: ['Molecular graphs', 'Multi-view', 'ADMET', 'Self-supervised'],
         links: [{ label: 'GitHub', href: 'https://github.com/sslim-aidrug/MAGNET' }],
       },
@@ -137,7 +137,7 @@ export const projectGroups: ProjectGroup[] = [
         authors: 'Lee G., Byeon S.K., Olaleye O.E., Han Y., Lee M., Vizioli M.G., Ogrodnik M., Pirius N., Sales Gomez L., Victorelli S., Khosla S., Pandey A., Passos J., Lim S., Jurk D.*',
         org: 'Collaboration with Mayo Clinic',
         status: 'In preparation',
-        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.\n**My role:** transcriptomic analysis of public, in vitro, and in vivo senescence data (differential expression, gene-set enrichment).',
+        desc: 'Lipid accumulation and lysophosphatidylcholine signaling drive the senescence-associated secretory phenotype through LPA receptor-dependent p38/JNK MAPK activation; fatty acid synthase inhibition suppresses senescence-associated inflammation and improves frailty in aged mice.\n**My role:** transcriptomic analysis of public, _in vitro_, and _in vivo_ senescence data (differential expression, gene-set enrichment).',
         tags: ['Senescence', 'SASP', 'Lipidomics', 'Aging'],
       },
     ],
@@ -195,8 +195,8 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Sep 2024 – Aug 2025',
-        title: '석사과정생 연구장려금지원사업',
-        org: 'Ministry of Education (MOE) · National Research Foundation of Korea (NRF)',
+        title: '석사과정생 연구장려금지원사업 (Research Subsidies for Master’s Students)',
+        org: 'Ministry of Science and ICT (MSIT) · Institute for Information & Communications Technology Planning & Evaluation (IITP) · No. S-2025-A0434-00016',
         role: 'Principal Investigator',
         status: 'PI',
         desc: 'Individual research grant awarded as Principal Investigator, funding my own research on functional-group junction-tree-based multi-task molecular graph representation learning — the direction developed into SJoINT.\nAdvisor: Dr. Sangsoo Lim.',
@@ -211,8 +211,8 @@ export const projectGroups: ProjectGroup[] = [
     items: [
       {
         period: 'Mar 2025 – Feb 2026',
-        title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증',
-        org: 'Individual Basic Research Program, NRF (MSIT)',
+        title: '멀티모달 AI 기반 노화연관 지방간질환(MASLD) 표적 발굴 및 약물 검증 (Multimodal AI-Based Target Discovery and Drug Validation for Aging-Related Metabolic Associated Steatotic Liver Disease (Aging-related MASLD))',
+        org: 'Individual Basic Research Program, NRF (MSIT) · No. RS-2025-00560523',
         pi: 'Dr. Sangsoo Lim (Dongguk University)',
         collab: 'Dr. Gung Lee (Mayo Clinic, USA)',
         status: 'Participating Researcher',
@@ -225,10 +225,10 @@ export const projectGroups: ProjectGroup[] = [
       {
         period: 'Jul 2025 – Aug 2026',
         title: '개방형 AI 신약개발·데이터 분석 플랫폼 개발센터',
-        org: 'Bio & Medical Technology Development Program, NRF (MSIT)',
+        org: 'Bio & Medical Technology Development Program, NRF (MSIT) · No. RS-2025-18732993',
         pi: 'Dr. Minho Lee (Dongguk University, host)',
         status: 'Participating Researcher',
-        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open AI drug-discovery platform on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
+        desc: 'Responsible for the drug-repurposing and ADMET-prediction tracks of an open-access AI drug-discovery platform on KISTI HPC.\nParticipated through PRISM Lab (Advisor: Dr. Sangsoo Lim).',
         abstract:
           'Drug repurposing: curated drug–disease–protein data from PrimeKG and built a standardized benchmark and unified experimental environment to evaluate five repurposing models (TxGNN, DREAMWalk, DRHGCN, AMDGT, SVGA) under identical conditions across 190 diseases and 3,379 drugs (case study: hypertension). Developed DC-VGAE — incorporating disease similarity and clinical drug–disease relationships — and a performance-based ensemble to improve prediction accuracy and stability.\nADMET: benchmarked 13 AI models for physicochemical-property and toxicity prediction on nine MoleculeNet datasets, and developed an interpretable ADMET-prediction model that decomposes molecules into substructures (junction tree, Murcko scaffold, BRICS) and integrates these views via cross-attention, validated on MoleculeNet ADMET datasets and MoleculeACE activity-cliff targets with atom- and substructure-level interpretability.\nDeployment: packaged the drug-repurposing model as a Docker image and registered it, together with the ADMET benchmark, on the national bio-data platform (KBDI).',
         moreLabel: 'Details',
@@ -245,7 +245,7 @@ export const projectGroups: ProjectGroup[] = [
         title: '2024 Samsung AI Challenge — Machine Learning Force Fields',
         org: 'Samsung Electronics SAIT · DACON',
         status: 'Top 10% (11th)',
-        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces — with uncertainty quantification — for semiconductor-material simulation, replacing costly DFT calculations. Ranked 11th overall (top 10%) as team DAI.',
+        desc: 'Built machine-learning force fields (MLFF) to predict atomic energies and forces — with uncertainty quantification — for semiconductor-material simulation, replacing costly DFT calculations. **Ranked 11th overall (top 10%)** as team DAI.',
         tags: ['MLFF', 'Uncertainty', 'Simulation'],
         links: [
           { label: 'Competition', href: 'https://dacon.io/competitions/official/236322/overview/description' },
@@ -311,7 +311,7 @@ export const vitae: VitaeSection[] = [
         period: 'Mar 2024 – Aug 2026',
         title: 'M.E. in Computer Science and Artificial Intelligence',
         detail:
-          'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction',
+          'Dongguk University, Seoul, Korea · Advisor: Dr. Sangsoo Lim · Major: AI in Healthcare and Medicine · GPA 4.04/4.5\n**Thesis:** _Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction_',
       },
       {
         period: 'Mar 2023 – Feb 2024',
@@ -333,7 +333,7 @@ export const vitae: VitaeSection[] = [
         period: 'Jan 2024 – Present',
         title: 'PRISM Lab, Dongguk University',
         detail:
-          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; co-author _MAGNET_); a drug-repurposing model developed and registered to the national bio-data platform (KBDI); and bulk / single-cell RNA-seq analysis of cellular senescence and aging-related MASLD with Mayo Clinic collaborators.',
+          '**Position:** Master’s Researcher (Sep 2026 – Present) · Graduate Researcher (Jan 2024 – Aug 2026)\n**Advisor:** [Dr. Sangsoo Lim](https://scholar.google.com/citations?user=d19A738AAAAJ) · Seoul, Korea\n**Role:** Molecular graph representation learning and explainable AI for drug discovery — interpretable ADMET prediction from molecular substructures (first-author _SJoINT_; second-author _MAGNET_); a drug-repurposing model developed and registered on the national bio-data platform (KBDI); and bulk / single-cell RNA-seq analysis of cellular senescence and aging-related MASLD with Mayo Clinic collaborators.',
       },
     ],
   },

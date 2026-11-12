@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro'
+import { u } from '../../lib'
+import { DB_GROUPS } from '../../data/databases'
+
+const subnav = DB_GROUPS.map(g => ({ label: g.key, href: `#${g.key}` }))
+const total = DB_GROUPS.reduce((n, g) => n + g.dbs.length, 0)
+---
+<Base title="Databases" description={`${total} databases and resources — what each one is, what scale it is, and whether I have used it.`} subnav={subnav}>
+  <section class="wrap page" id="dbs" data-lang="en">
+    <div class="head">
+      <div class="head-main">
+        <p class="crumb mono"><a href={u('blog/')}>notes</a> / <a href={u('blog/tutorials/')}>guides</a> / databases</p>
+        <h1><span data-l="en">Databases</span><span data-l="ko">데이터베이스</span></h1>
+        <p class="lede">
+          <span data-l="en">What each resource is, how big it is, and whether it has been through my own hands. Counts for the first group were read off the files, not quoted.</span>
+          <span data-l="ko">각 데이터베이스가 무엇이고 얼마나 크고 내가 직접 써 봤는지. 맨 앞 그룹의 수치는 인용이 아니라 파일에서 직접 센 것이다.</span>
+        </p>
+        <p class="count mono">{total} resources · {DB_GROUPS.length} groups</p>
+      </div>
+      <div class="toggle" role="group" aria-label="Language">
+        <button type="button" data-set="en" aria-pressed="true">EN</button>
+        <button type="button" data-set="ko" aria-pressed="false">KO</button>
+      </div>
+    </div>
+
+    {DB_GROUPS.map(g => (
+      <section class="grp" id={g.key}>
+        <h2 class="sec"><span data-l="en">{g.en}</span><span data-l="ko">{g.ko}</span></h2>
+        <p class="grp-note"><span data-l="en">{g.noteEn}</span><span data-l="ko">{g.noteKo}</span></p>
+        <div class="cards">
+          {g.dbs.map(d => (
+            <article class="card">
+              <p class="name">
+                <a href={d.url} rel="noopener">{d.name}</a>
+                {d.tag && <span class={`tag mono t-${d.tag.replace(' ', '-')}`}>{d.tag}</span>}
+              </p>
+              {d.scale && <p class="scale mono">{d.scale}</p>}
+              <p class="what"><span data-l="en">{d.en}</span><span data-l="ko">{d.ko}</span></p>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <p class="foot">
+      <span data-l="en">Getting data out of GEO is covered in <a href={u('blog/geo-fastq-en/')}>its own note</a>; what an enrichment result is computed against is in <a href={u('blog/gene-sets-en/')}>gene sets</a>.</span>
+      <span data-l="ko">GEO에서 데이터를 꺼내는 법은 <a href={u('blog/geo-fastq-ko/')}>따로 쓴 글</a>에, enrichment 분석이 무엇을 상대로 계산되는지는 <a href={u('blog/gene-sets-ko/')}>유전자 집합</a>에 있다.</span>
+    </p>
+  </section>
+</Base>
+
+<script>
+  const root = document.getElementById('dbs')!
+  const apply = (lang: string) => {
+    root.dataset.lang = lang
+    root.querySelectorAll<HTMLButtonElement>('.toggle button').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.set === lang)))
+    try { localStorage.setItem('notes-lang', lang) } catch {}
+  }
+  root.querySelectorAll<HTMLButtonElement>('.toggle button').forEach(b =>
+    b.addEventListener('click', () => apply(b.dataset.set!)))
+  let saved: string | null = null
+  try { saved = localStorage.getItem('notes-lang') } catch {}
+  apply(saved ?? (navigator.language?.startsWith('ko') ? 'ko' : 'en'))
+</script>
+
+<style>
+  .page { padding-block: 32px 24px; }
+  .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+  .head-main { max-width: 640px; min-width: 0; }
+  .crumb { font-size: calc(13px * var(--fs)); color: var(--muted); margin: 0 0 16px; }
+  .crumb a { text-decoration: none; color: var(--soft); }
+  h1 { font-weight: 600; font-size: calc(clamp(34px, 4.6vw, 46px) * var(--fs)); line-height: 1; letter-spacing: -.02em; margin: 0; }
+  .lede { font-family: var(--serif); font-size: calc(18px * var(--fs)); line-height: 1.55; color: var(--soft); margin: 16px 0 0; }
+  .count { font-size: calc(12.5px * var(--fs)); color: var(--muted); margin: 12px 0 0; }
+
+  .toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; flex: none; }
+  .toggle button { font: calc(12px * var(--fs)) var(--mono); color: var(--soft); background: var(--paper); border: 0; padding: 7px 12px; cursor: pointer; white-space: nowrap; line-height: 1.4; }
+  .toggle button + button { border-left: 1px solid var(--line); }
+  .toggle button[aria-pressed="true"] { background: var(--green); color: var(--paper); }
+
+  [data-l] { display: none; }
+  [data-lang="en"] [data-l="en"], [data-lang="ko"] [data-l="ko"] { display: revert; }
+
+  .grp { margin-bottom: 52px; scroll-margin-top: 20px; }
+  .grp-note { font-size: calc(14px * var(--fs)); color: var(--soft); margin: 0 0 22px; max-width: 60ch; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .card { margin: 0; border: 1px solid var(--line); border-radius: 6px; padding: 15px 17px 14px; background: var(--paper); }
+  .scale { font-size: calc(12px * var(--fs)); color: var(--muted); margin: -2px 0 8px; }
+  .t-used { color: var(--green); border-color: var(--green); }
+  .t-registration { color: var(--atom); border-color: var(--atom); }
+  .t-not-yet { color: var(--muted); font-style: italic; }
+  .name { margin: 0 0 6px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .name a { font-weight: 600; font-size: calc(15.5px * var(--fs)); text-decoration: none; }
+  .name a:hover { text-decoration: underline; }
+  .tag { font-size: calc(10.5px * var(--fs)); letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .what { font-size: calc(14px * var(--fs)); line-height: 1.55; color: var(--soft); margin: 0; }
+
+  .foot { font-size: calc(14px * var(--fs)); color: var(--soft); border-left: 2px solid var(--line); padding-left: 14px; margin: 8px 0 0; }
+
+  @media (max-width: 560px) { .head { flex-direction: column-reverse; align-items: flex-start; gap: 18px; } }
+</style>

@@ -1,0 +1,33 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, md } from '../../lib'
+const masld = projectGroups.find(x => x.heading === 'Funded Research Projects')!.items.find(i => i.title.includes('MASLD'))!
+const lipid = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p => p.title.startsWith('Lipid'))!
+const [summary, role] = (lipid.desc ?? '').split('\n')
+---
+<Project slug="aging"
+  lede="Molecules are only half the story. I also follow cells through aging and liver disease, using bulk and single-cell transcriptomes."
+  facts={[
+    { k: 'project', v: 'Aging-related MASLD, NRF (MSIT)' },
+    { k: 'pi', v: 'Dr. Sangsoo Lim' },
+    { k: 'collaborator', v: 'Dr. Gung Lee, Mayo Clinic' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" aria-label="A schematic single-cell map of liver cells with a senescence score."></canvas>
+    <figcaption><span>schematic, not data</span><span>orange marks a high senescence score · hover a cluster</span></figcaption>
+  </figure>
+
+  <h2>aging-related masld</h2>
+  <p>{masld.abstract}</p>
+
+  <h2>lipids and the sasp</h2>
+  <div class="paper cell"><p class="t">{lipid.title}</p><p class="a" set:html={authors(lipid.authors)} /><p class="v">{lipid.status} · {lipid.org}</p></div>
+  <p>{summary}</p>
+  <p set:html={md(role).replace('<b>My role:</b>', '<span class="role">My role</span>')} />
+</Project>
+<style>#scene { aspect-ratio: 16 / 7; }</style>
+<script>
+  import { cellAtlas } from '../../scripts/scenes/cell-atlas.js'
+  cellAtlas(document.getElementById('scene') as HTMLCanvasElement)
+</script>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 318" role="img" aria-label="docker-host">
+<defs>
+<marker id="ar0" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#D3D8CE"/></marker>
+<marker id="ar1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#1E4A39"/></marker>
+<marker id="ar2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#C2703C"/></marker>
+<marker id="ar3" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#2E5878"/></marker>
+</defs>
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">what the container shares with the machine, and what it does not</text>
+<rect x="26" y="46" width="236" height="210" rx="5" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="144" y="68" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#6E7873" font-weight="500">the machine (host)</text>
+<rect x="42" y="86" width="204" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="144" y="105" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">Linux kernel</text>
+<rect x="42" y="122" width="204" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="144" y="141" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">NVIDIA driver</text>
+<rect x="42" y="158" width="204" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="144" y="177" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">/data on disk</text>
+<rect x="42" y="194" width="204" height="28" rx="5" fill="#FFFFFF" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="144" y="213" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#1C2421" font-weight="normal">port 8888</text>
+<rect x="396" y="46" width="238" height="210" rx="5" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.4"/>
+<text x="515" y="68" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#2E5878" font-weight="500">the container</text>
+<rect x="414" y="86" width="202" height="28" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="515" y="105" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#1C2421" font-weight="normal">its own filesystem</text>
+<rect x="414" y="122" width="202" height="28" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="515" y="141" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#1C2421" font-weight="normal">its own python, libs, CUDA runtime</text>
+<rect x="414" y="158" width="202" height="28" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="515" y="177" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#1C2421" font-weight="normal">its own process tree</text>
+<rect x="414" y="194" width="202" height="28" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="515" y="213" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#1C2421" font-weight="normal">its own network namespace</text>
+<line x1="266" y1="100" x2="392" y2="100" stroke="#6E7873" stroke-width="1.2" marker-end="url(#ar0)"/>
+<text x="329.0" y="94.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6E7873" font-weight="normal">shared</text>
+<line x1="266" y1="136" x2="392" y2="136" stroke="#C2703C" stroke-width="1.4" marker-end="url(#ar0)"/>
+<text x="329.0" y="130.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#C2703C" font-weight="normal">--gpus all</text>
+<line x1="266" y1="172" x2="392" y2="172" stroke="#C2703C" stroke-width="1.4" marker-end="url(#ar0)"/>
+<text x="329.0" y="166.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#C2703C" font-weight="normal">-v /data:/data</text>
+<line x1="266" y1="208" x2="392" y2="208" stroke="#C2703C" stroke-width="1.4" marker-end="url(#ar0)"/>
+<text x="329.0" y="202.0" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#C2703C" font-weight="normal">-p 8888:8888</text>
+<text x="26" y="286" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">The kernel is always shared &#8212; that is why a container is light and a VM is not.</text>
+<text x="26" y="302" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#C2703C" font-weight="normal">Everything else has to be handed in on purpose, with a flag.</text>
+</svg>

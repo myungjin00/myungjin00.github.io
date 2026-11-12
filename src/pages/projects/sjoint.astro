@@ -1,0 +1,39 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, u } from '../../lib'
+const g = (h: string) => projectGroups.find(x => x.heading === h)?.items ?? []
+const sjoint = g('Manuscripts').find(p => p.title.startsWith('SJoINT'))!
+const kcc = g('Publications')[0]
+const posters = g('Presentations').filter(p => !p.title.startsWith('Weighted') === false || true)
+const grant = g('Grants')[0]
+---
+<Project slug="sjoint"
+  lede="A molecule can be read as atoms, or as the rings and groups they form. SJoINT reads it both ways at once, and lets each atom exchange information only with the substructures it belongs to."
+  facts={[
+    { k: 'status', v: 'manuscript under review' },
+    { k: 'code', v: '<a href="https://github.com/sslim-aidrug/SJoINT">sslim-aidrug/SJoINT</a>' },
+    { k: 'paper', v: '<a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12929290">KCC 2026</a>' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <img src={u('assets/fig/sjoint-overview.svg')} alt="SJoINT overview: dual-view pre-training, fine-tuning, and the structure-constrained cross-attention block." width="2216" height="857">
+    <figcaption><span>SJoINT framework</span><span>a pre-training · b fine-tuning · c structure-constrained CA</span></figcaption>
+  </figure>
+
+  <h2>the idea</h2>
+  <p>Each molecule is given two views: an atom-level molecular graph, and a junction tree whose nodes are rings, bonds and functional groups. Two encoders read the two views, and a bidirectional cross-attention connects them.</p>
+  <p>The attention is masked by membership. A substructure attends only to its own atoms, and an atom only to the substructures that contain it. That mask is the constraint the name refers to, and it is what makes the resulting attention readable as chemistry rather than as an arbitrary weighting.</p>
+  <p>Pre-training needs no augmentation: the two views of the same molecule already form a positive pair, so contrastive learning runs directly on ZINC250k. The encoder is then fine-tuned on ADMET tasks from MoleculeNet and on the activity-cliff targets of MoleculeACE.</p>
+
+  <h2>papers</h2>
+  <div class="paper"><p class="t">{sjoint.title}</p><p class="a" set:html={authors(sjoint.authors)} /><p class="v">{sjoint.status}</p></div>
+  <div class="paper"><p class="t">{kcc.title}</p><p class="a" set:html={authors(kcc.authors)} /><p class="v">{kcc.org}</p></div>
+
+  <h2>talks</h2>
+  {posters.map(p => (
+    <details><summary>{p.period} · {p.org?.replace('Poster · ', '')}</summary><p class="t">{p.title}</p><p>{p.abstract}</p></details>
+  ))}
+
+  <h2>where it started</h2>
+  <p>The direction began as an MSIT Research Subsidy for Master's Students on junction-tree based multi-task molecular graph learning ({grant.period}), which I led as principal investigator, and became my master's thesis, <i>Graph Substructure-Based Junction Tree Modeling for Drug ADMET Prediction</i>.</p>
+</Project>

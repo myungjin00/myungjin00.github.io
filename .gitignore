@@ -16,3 +16,4 @@ MJ_증명사진.jpg
 
 # raw source uploads (optimized copies live in public/assets)
 _raw/
+.astro

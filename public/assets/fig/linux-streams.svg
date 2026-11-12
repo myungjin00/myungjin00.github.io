@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 336" role="img" aria-label="linux-streams">
+<defs>
+<marker id="ar0" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#D3D8CE"/></marker>
+<marker id="ar1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#1E4A39"/></marker>
+<marker id="ar2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#C2703C"/></marker>
+<marker id="ar3" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#2E5878"/></marker>
+</defs>
+<text x="18" y="22" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#6E7873" font-weight="normal">every command has one way in and two ways out</text>
+<rect x="250" y="56" width="140" height="46" rx="5" fill="#FFFFFF" stroke="#1E4A39" stroke-width="1.4"/>
+<text x="320" y="84" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="#1C2421" font-weight="500">command</text>
+<line x1="110" y1="79" x2="244" y2="79" stroke="#D3D8CE" stroke-width="1.4" marker-end="url(#ar0)"/>
+<text x="112" y="70" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">stdin  (0)</text>
+<line x1="396" y1="68" x2="530" y2="68" stroke="#1E4A39" stroke-width="1.4" marker-end="url(#ar1)"/>
+<text x="400" y="59" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#1E4A39" font-weight="normal">stdout (1)</text>
+<line x1="396" y1="94" x2="530" y2="94" stroke="#C2703C" stroke-width="1.4" marker-end="url(#ar2)"/>
+<text x="400" y="112" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#C2703C" font-weight="normal">stderr (2)</text>
+<text x="536" y="72" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">the result</text>
+<text x="536" y="98" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">the complaints</text>
+<text x="18" y="146" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">they are separate, which is why this still prints errors to the screen:</text>
+<rect x="40" y="158" width="280" height="30" rx="5" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="56" y="178" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="normal">python train.py &gt; train.log</text>
+<text x="336" y="178" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">&#8594;  stdout to the file, stderr still on screen</text>
+<rect x="40" y="198" width="280" height="30" rx="5" fill="#F7F7F3" stroke="#D3D8CE" stroke-width="1.4"/>
+<text x="56" y="218" text-anchor="start" font-family="ui-monospace,monospace" font-size="11" fill="#1C2421" font-weight="normal">python train.py &gt; train.log 2&gt;&amp;1</text>
+<text x="336" y="218" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#C2703C" font-weight="normal">&#8594;  both to the file  (order matters)</text>
+<text x="18" y="268" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">a pipe wires one command&#8217;s stdout into the next one&#8217;s stdin</text>
+<rect x="40.0" y="286" width="60.0" height="32" rx="5" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.4"/>
+<text x="70" y="307" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="normal">ls -l</text>
+<rect x="159.6" y="286" width="100.8" height="32" rx="5" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.4"/>
+<text x="210" y="307" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="normal">sort -k5 -n</text>
+<rect x="333.2" y="286" width="73.6" height="32" rx="5" fill="#FFFFFF" stroke="#2E5878" stroke-width="1.4"/>
+<text x="370" y="307" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10.5" fill="#1C2421" font-weight="normal">tail -5</text>
+<line x1="100" y1="302" x2="162" y2="302" stroke="#2E5878" stroke-width="1.4" marker-end="url(#ar3)"/>
+<text x="140" y="295" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="#2E5878" font-weight="normal">|</text>
+<line x1="258" y1="302" x2="338" y2="302" stroke="#2E5878" stroke-width="1.4" marker-end="url(#ar3)"/>
+<text x="300" y="295" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="#2E5878" font-weight="normal">|</text>
+<text x="448" y="306" text-anchor="start" font-family="ui-monospace,monospace" font-size="10" fill="#6E7873" font-weight="normal">read it as a sentence</text>
+</svg>

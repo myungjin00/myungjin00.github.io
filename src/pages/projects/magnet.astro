@@ -1,0 +1,26 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+import { authors, u } from '../../lib'
+const magnet = projectGroups.find(x => x.heading === 'Manuscripts')!.items.find(p => p.title.startsWith('MAGNET'))!
+---
+<Project slug="magnet"
+  lede="There is more than one sensible way to cut a molecule into fragments. MAGNET keeps three of them and links their fragments into a single meta-graph, so the model can compare the views instead of committing to one."
+  facts={[
+    { k: 'status', v: 'manuscript under review' },
+    { k: 'code', v: '<a href="https://github.com/sslim-aidrug/MAGNET">sslim-aidrug/MAGNET</a>' },
+    { k: 'my part', v: 'figures, interpretation analyses, code support, manuscript review' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <img src={u('assets/fig/magnet-overview.jpg')} alt="MAGNET overview: molecular fragmentation, meta-graph construction, pre-training and fine-tuning." width="1800" height="1316">
+    <figcaption><span>MAGNET framework</span><span>a fragmentation · b meta-graph · c pre-training · d fine-tuning</span></figcaption>
+  </figure>
+
+  <h2>the idea</h2>
+  <p>BRICS breaks a molecule at synthetically meaningful bonds, a junction tree splits it into rings and bonds, and a Murcko decomposition separates the scaffold from its side chains. Each view sees a different structure, and each is defensible.</p>
+  <p>MAGNET builds a meta-graph in which fragments from all three decompositions become nodes, connected wherever they share atoms. Those overlaps are explicit correspondences, so the model can reason across the three views rather than averaging them.</p>
+  <p>The encoder is pre-trained with three objectives at once — graph contrastive learning, property prediction, and graph–SMILES alignment against ChemBERTa embeddings — and achieves the best performance on seven of ten molecular property benchmarks.</p>
+
+  <h2>paper</h2>
+  <div class="paper"><p class="t">{magnet.title}</p><p class="a" set:html={authors(magnet.authors)} /><p class="v">{magnet.status}</p></div>
+</Project>

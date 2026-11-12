@@ -1,0 +1,31 @@
+---
+import Project from '../../layouts/Project.astro'
+import { projectGroups } from '../../data/cv'
+const p = projectGroups.find(x => x.heading === 'Funded Research Projects')!.items.find(i => i.title.startsWith('개방형'))!
+const up = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+const [rep, admet, deploy] = (p.abstract ?? '').split('\n').map(s => up(s.replace(/^[^:]+:\s*/, '')))
+---
+<Project slug="repurposing"
+  lede="Old drugs can find new uses. I built a level testing ground for the models that propose them, and shipped one as a service on the national bio-data platform."
+  facts={[
+    { k: 'project', v: 'Open-access AI drug-discovery platform, NRF (MSIT)' },
+    { k: 'pi', v: 'Dr. Minho Lee, Dongguk University' },
+    { k: 'platform', v: '<a href="https://kbdi.re.kr/main/mainVw.do">KBDI</a>' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" aria-label="A schematic graph of drugs, proteins and diseases, with a proposed new link."></canvas>
+    <figcaption><span>schematic, not data</span><span>green drugs · ring proteins · blue diseases · dashed a proposed use</span></figcaption>
+  </figure>
+
+  <h2>drug repurposing</h2>
+  <p>{rep}</p>
+  <h2>admet</h2>
+  <p>{admet}</p>
+  <h2>deployment</h2>
+  <p>{deploy}</p>
+</Project>
+<style>#scene { aspect-ratio: 16 / 7; }</style>
+<script>
+  import { knowledgeGraph } from '../../scripts/scenes/knowledge-graph.js'
+  knowledgeGraph(document.getElementById('scene') as HTMLCanvasElement)
+</script>

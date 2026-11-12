@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro'
+import { u } from '../../lib'
+import { SHELL_GROUPS } from '../../data/shell'
+
+const subnav = SHELL_GROUPS.map(g => ({ label: g.key, href: `#${g.key}` }))
+const total = SHELL_GROUPS.reduce((n, g) => n + g.cmds.length, 0)
+---
+<Base title="Shell reference" description={`${total} commands worth keeping to hand — navigation, files, pipes, tmux, GPUs, aliases and ssh.`} subnav={subnav}>
+  <section class="wrap page" id="shell" data-lang="en">
+    <div class="head">
+      <div class="head-main">
+        <p class="crumb mono"><a href={u('blog/')}>notes</a> / <a href={u('blog/tutorials/')}>guides</a> / shell</p>
+        <h1><span data-l="en">Shell reference</span><span data-l="ko">셸 명령 모음</span></h1>
+        <p class="lede">
+          <span data-l="en">The commands I look up again anyway. The reasoning behind them is in the <a href={u('blog/tutorials/')}>Linux series</a>; this page is the part you keep open in another tab.</span>
+          <span data-l="ko">결국 다시 찾아보게 되는 명령들. 왜 그런지는 <a href={u('blog/tutorials/')}>리눅스 시리즈</a>에 있고, 이 페이지는 다른 탭에 띄워 두는 쪽이다.</span>
+        </p>
+        <p class="count mono">{total} commands · {SHELL_GROUPS.length} groups</p>
+      </div>
+      <div class="toggle" role="group" aria-label="Language">
+        <button type="button" data-set="en" aria-pressed="true">EN</button>
+        <button type="button" data-set="ko" aria-pressed="false">KO</button>
+      </div>
+    </div>
+
+    {SHELL_GROUPS.map(g => (
+      <section class="grp" id={g.key}>
+        <h2 class="sec"><span data-l="en">{g.en}</span><span data-l="ko">{g.ko}</span></h2>
+        <p class="grp-note"><span data-l="en">{g.noteEn}</span><span data-l="ko">{g.noteKo}</span></p>
+        <dl class="cmds">
+          {g.cmds.map(c => (
+            <div class="row">
+              <dt><code>{c.cmd}</code></dt>
+              <dd><span data-l="en">{c.en}</span><span data-l="ko">{c.ko}</span></dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))}
+
+    <p class="foot">
+      <span data-l="en">Deleting and killing are the two that cannot be undone. On a shared machine, list before you remove and verify a PID (process ID) before you kill it.</span>
+      <span data-l="ko">되돌릴 수 없는 것은 삭제와 kill 둘이다. 공용 장비에서는 지우기 전에 목록을 보고, kill 하기 전에 PID (process ID)를 확인한다.</span>
+    </p>
+  </section>
+</Base>
+
+<script>
+  const root = document.getElementById('shell')!
+  const apply = (lang: string) => {
+    root.dataset.lang = lang
+    root.querySelectorAll<HTMLButtonElement>('.toggle button').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.set === lang)))
+    try { localStorage.setItem('notes-lang', lang) } catch {}
+  }
+  root.querySelectorAll<HTMLButtonElement>('.toggle button').forEach(b =>
+    b.addEventListener('click', () => apply(b.dataset.set!)))
+  let saved: string | null = null
+  try { saved = localStorage.getItem('notes-lang') } catch {}
+  apply(saved ?? (navigator.language?.startsWith('ko') ? 'ko' : 'en'))
+</script>
+
+<style>
+  .page { padding-block: 32px 24px; }
+  .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+  .head-main { max-width: 640px; min-width: 0; }
+  .crumb { font-size: calc(13px * var(--fs)); color: var(--muted); margin: 0 0 16px; }
+  .crumb a { text-decoration: none; color: var(--soft); }
+  h1 { font-weight: 600; font-size: calc(clamp(34px, 4.6vw, 46px) * var(--fs)); line-height: 1; letter-spacing: -.02em; margin: 0; }
+  .lede { font-family: var(--serif); font-size: calc(18px * var(--fs)); line-height: 1.55; color: var(--soft); margin: 16px 0 0; }
+  .count { font-size: calc(12.5px * var(--fs)); color: var(--muted); margin: 12px 0 0; }
+
+  .toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; flex: none; }
+  .toggle button { font: calc(12px * var(--fs)) var(--mono); color: var(--soft); background: var(--paper); border: 0; padding: 7px 12px; cursor: pointer; white-space: nowrap; line-height: 1.4; }
+  .toggle button + button { border-left: 1px solid var(--line); }
+  .toggle button[aria-pressed="true"] { background: var(--green); color: var(--paper); }
+
+  [data-l] { display: none; }
+  [data-lang="en"] [data-l="en"], [data-lang="ko"] [data-l="ko"] { display: revert; }
+
+  .grp { margin-bottom: 44px; scroll-margin-top: 20px; }
+  .grp-note { font-size: calc(14px * var(--fs)); color: var(--soft); margin: 0 0 18px; max-width: 62ch; }
+
+  .cmds { margin: 0; }
+  .row { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px;
+         align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); }
+  .row:last-child { border-bottom: 1px solid var(--line); }
+  dt { margin: 0; min-width: 0; }
+  dt code { font-size: calc(12.5px * var(--fs)); color: var(--green); background: var(--plate); border: 1px solid var(--line);
+            border-radius: 4px; padding: 2px 6px; overflow-wrap: anywhere; white-space: pre-wrap; }
+  dd { margin: 0; font-size: calc(14px * var(--fs)); line-height: 1.55; color: var(--soft); }
+
+  .foot { font-size: calc(14px * var(--fs)); color: var(--soft); border-left: 2px solid var(--line); padding-left: 14px; margin: 8px 0 0; }
+
+  @media (max-width: 680px) { .row { grid-template-columns: minmax(0, 1fr); gap: 6px; } }
+  @media (max-width: 560px) { .head { flex-direction: column-reverse; align-items: flex-start; gap: 18px; } }
+</style>
