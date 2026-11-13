@@ -5,7 +5,7 @@
 // off); the pick is remembered in this browser.
 import { seoulNow, season as seoulSeason } from './seoul.js'
 import { addRing, inMargin, burstInMargin, popAt } from './ripple.js'
-import { cat, squirrel, santa, penguin, pickCoat } from './critters.js'
+import { cat, squirrel, santa, penguin, pickCoat, present, nutcracker } from './critters.js'
 
 const KEY = 'season'
 export const SEASONS = ['spring', 'summer', 'autumn', 'winter']
@@ -89,6 +89,40 @@ function clearer(ctx, c, t, H, dpr, kind) {
   else cat(ctx, t, c.coat ??= pickCoat(), rim, c.jump && t - c.jump < 0.45 ? (t - c.jump) / 0.45 : 0)
 }
 
+// December, in the right margin: a present turns up, the lid goes, and a nutcracker marches out of
+// it and off the page. One visit every minute or so; the rest of the time there is nothing there.
+let gift = null
+export const resetGift = () => { gift = null }
+function giftScene(ctx, t, dt, right, H, dpr, rim) {
+  if (!gift) gift = { phase: 'wait', until: t + 8 + Math.random() * 12, x: 0, mx: 0, t0: 0 }
+  const g = gift
+  const at = (x, y = 0) => ctx.setTransform(dpr, 0, 0, dpr, x * dpr, (H - 2 + y) * dpr)
+  ctx.globalAlpha = 1
+  if (g.phase === 'wait') {
+    if (t < g.until) return
+    g.x = right + 30 + Math.random() * 18
+    g.phase = 'sit'; g.until = t + 2.4
+  }
+  if (g.phase === 'sit') {
+    at(g.x); present(ctx, 0, rim)
+    if (t >= g.until) { g.phase = 'open'; g.t0 = t }
+  } else if (g.phase === 'open') {
+    const p = Math.min(1, (t - g.t0) / 0.7)
+    at(g.x); present(ctx, p * p * 30, rim)
+    if (p === 1) { g.phase = 'rise'; g.t0 = t }
+  } else if (g.phase === 'rise') {
+    const p = Math.min(1, (t - g.t0) / 0.9)
+    at(g.x, 36 * (1 - p)); nutcracker(ctx, t, rim)     // he comes up from inside, so draw him first
+    at(g.x); present(ctx, null, rim)                   // and the open box in front of his legs
+    if (p === 1) { g.phase = 'march'; g.mx = g.x }
+  } else if (g.phase === 'march') {
+    g.mx += 46 * dt
+    at(g.x); present(ctx, null, rim)
+    at(g.mx); nutcracker(ctx, t, rim)
+    if (g.mx > innerWidth + 40) gift = null
+  }
+}
+
 // what has landed: a small drift along the bottom of each margin, shared with the click effects
 let pile = [], heights = new Map(), sweepers = [], flung = [], floorH = 0
 const BUCKET_W = 10
@@ -127,7 +161,7 @@ export function seasonFall() {
   const size = () => {
     dpr = devicePixelRatio || 1; W = innerWidth; H = innerHeight
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr)
-    pile = []; heights = new Map(); sweepers = []; flung = []; floorH = H   // a new size, a clean floor
+    pile = []; heights = new Map(); sweepers = []; flung = []; floorH = H; resetGift()   // a new size, a clean floor
     const n = formsFor(kind).length ? Math.round(Math.min(18, Math.max(8, (W * H) / 90000))) : 0   // fewer, now that each is larger
     while (bits.length < n) bits.push(spawn(false))
     bits.length = n
@@ -210,6 +244,11 @@ export function seasonFall() {
       ctx.globalAlpha = full * (1 - f.age / 0.9); ctx.fillStyle = cols[f.paint] ??= css(f.paint)
       shape(ctx, f.form, f.s); ctx.fill()
     }
+    // December's own, on the dark theme as the tree is: a present in the right margin, and the
+    // nutcracker who marches out of it
+    if (kind === 'winter' && seoulNow().month === 12 && darkTheme() && W - right > 80)
+      giftScene(ctx, now / 1000, dt, right, H, dpr, 'rgba(255,255,255,.32)')
+    else if (gift) resetGift()
     // the summer night: a small firework now and then, up in a margin
     if (kind === 'summer' && summerMode() === 'night' && now > nextBurst) { burstInMargin(); nextBurst = now + 3500 + Math.random() * 4000 }
     raf = requestAnimationFrame(frame)

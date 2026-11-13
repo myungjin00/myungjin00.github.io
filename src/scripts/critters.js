@@ -187,3 +187,71 @@ export function penguin(ctx, t, rim, sliding) {
   P(ctx, () => ctx.arc(4.1, -21.2, 0.85, 0, Math.PI * 2)); fill(ctx, black)
   P(ctx, () => { ctx.moveTo(6.8, -20.4); ctx.lineTo(10.6, -19.4); ctx.lineTo(6.8, -18.4); ctx.closePath() }); fill(ctx, orange)
 }
+
+// A present that sits in the right margin through December until its lid goes, drawn from its
+// base at the origin. `lid` is how far the lid has risen, 0 while the box is still shut, and
+// null once it is gone — the open box is what the nutcracker then climbs out of.
+export function present(ctx, lid, rim) {
+  const red = '#C62F2A', gold = '#E2B33C', paper = '#2E5878'
+  ctx.lineCap = 'butt'; ctx.lineJoin = 'round'
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.2
+  P(ctx, () => ctx.roundRect(-9.5, -16, 19, 16, 1.4)); ctx.stroke(); fill(ctx, paper)
+  ctx.strokeStyle = gold; ctx.lineWidth = 2.2                       // the ribbon, down and across
+  P(ctx, () => { ctx.moveTo(0, -16); ctx.lineTo(0, 0); ctx.moveTo(-9.5, -9); ctx.lineTo(9.5, -9) }); ctx.stroke()
+  if (lid === null) return
+  ctx.save()                                                        // the lid, and the bow riding on it
+  ctx.translate(0, -16 - lid); ctx.rotate(lid * 0.05)
+  ctx.lineCap = 'round'
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.2
+  P(ctx, () => ctx.roundRect(-11.4, -5, 22.8, 5.4, 1.4)); ctx.stroke(); fill(ctx, red)
+  ctx.strokeStyle = gold; ctx.lineWidth = 2
+  P(ctx, () => { ctx.moveTo(0, -5); ctx.lineTo(0, 0.4) }); ctx.stroke()
+  P(ctx, () => { ell(ctx, -3.2, -7, 3.2, 2.3, -0.5); ell(ctx, 3.2, -7, 3.2, 2.3, 0.5) }); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, gold)
+  P(ctx, () => ctx.arc(0, -6.4, 1.3, 0, Math.PI * 2)); fill(ctx, '#C9972A')
+  ctx.restore()
+}
+
+// The nutcracker who marches out of it: stiff legs, a sword arm, and a jaw that works as he goes.
+export function nutcracker(ctx, t, rim) {
+  const red = '#C62F2A', black = '#1E1B1A', white = '#FBFAF6', gold = '#E2B33C', skin = '#F0C9A6', blue = '#2E5878'
+  const step = Math.sin(t * 7) * 2.6, bob = Math.abs(Math.sin(t * 7)) * 0.5
+  const jaw = Math.max(0, Math.sin(t * 3.5)) * 1.4
+  ctx.translate(0, -bob); ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  // legs, knees locked, and black boots
+  const leg = (x, sw) => {
+    ctx.strokeStyle = white; ctx.lineWidth = 2.6
+    P(ctx, () => { ctx.moveTo(x, -11); ctx.lineTo(x + sw * 0.6, -3.4) }); ctx.stroke()
+    P(ctx, () => ctx.roundRect(x + sw * 0.6 - 2, -3.6, 4.4, 3.6, 1)); fill(ctx, black)
+  }
+  leg(-2.4, -step); leg(2.4, step)
+  // the tunic, with a gold belt and a row of buttons
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ctx.roundRect(-6, -24, 12, 13.4, 1.4)); ctx.stroke(); fill(ctx, red)
+  ctx.fillStyle = gold; ctx.fillRect(-6.2, -15.6, 12.4, 1.8)
+  ctx.fillStyle = gold
+  for (const y of [-22, -19.4, -16.8]) { P(ctx, () => ctx.arc(0, y, 0.75, 0, Math.PI * 2)); ctx.fill() }
+  // epaulettes, the free arm, and a sword held upright
+  P(ctx, () => { ell(ctx, -6.4, -22.6, 2.2, 1.3); ell(ctx, 6.4, -22.6, 2.2, 1.3) }); fill(ctx, gold)
+  ctx.strokeStyle = red; ctx.lineWidth = 2.4
+  P(ctx, () => { ctx.moveTo(-5.4, -21.4); ctx.lineTo(-6.6 + step * 0.3, -14.4) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(5.4, -21.4); ctx.lineTo(7.4, -16.6) }); ctx.stroke()
+  ctx.strokeStyle = '#B9BEC4'; ctx.lineWidth = 1.3
+  P(ctx, () => { ctx.moveTo(7.6, -17.4); ctx.lineTo(7.6, -30) }); ctx.stroke()
+  ctx.strokeStyle = gold; ctx.lineWidth = 1.6
+  P(ctx, () => { ctx.moveTo(6.2, -17.6); ctx.lineTo(9, -17.6) }); ctx.stroke()
+  // head, beard, and the working jaw
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ctx.roundRect(-4.4, -33.4, 8.8, 9.6, 1.2)); ctx.stroke(); fill(ctx, skin)
+  ctx.fillStyle = black
+  for (const x of [-1.9, 1.9]) { P(ctx, () => ctx.arc(x, -30.6, 0.8, 0, Math.PI * 2)); ctx.fill() }
+  ctx.strokeStyle = black; ctx.lineWidth = 1; P(ctx, () => { ctx.moveTo(-3.4, -32.2); ctx.lineTo(-0.8, -32.6) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(3.4, -32.2); ctx.lineTo(0.8, -32.6) }); ctx.stroke()
+  P(ctx, () => ctx.roundRect(-3.6, -26.4 + jaw, 7.2, 2.6, 0.8)); fill(ctx, white)   // the jaw drops as he walks
+  P(ctx, () => { ell(ctx, -4.6, -27.4, 1.6, 2.4); ell(ctx, 4.6, -27.4, 1.6, 2.4) }); fill(ctx, white)
+  // the shako: tall, black, a gold band and a plume
+  P(ctx, () => ctx.roundRect(-4.6, -43, 9.2, 9.8, 1)); ctx.strokeStyle = rim; ctx.lineWidth = 1.1; ctx.stroke(); fill(ctx, black)
+  ctx.fillStyle = gold; ctx.fillRect(-4.8, -35.4, 9.6, 1.8)
+  P(ctx, () => ctx.arc(0, -38.4, 1.5, 0, Math.PI * 2)); fill(ctx, gold)
+  ctx.strokeStyle = blue; ctx.lineWidth = 2
+  P(ctx, () => { ctx.moveTo(0, -43); ctx.quadraticCurveTo(1.6, -47.4, -1, -49.4) }); ctx.stroke()
+}
