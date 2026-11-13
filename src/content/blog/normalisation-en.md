@@ -1,7 +1,7 @@
 ---
 title: "Counting and normalising: why raw counts are not comparable"
 date: 2026-11-13
-description: "Two things make a count large that have nothing to do with biology · CPM, FPKM and TPM, and which one is safe to average · why a few loud genes break library-size scaling · what a DESeq2 size factor does instead · and why a differential-expression tool wants raw counts"
+description: "Two things make a count large that have nothing to do with biology · CPM, FPKM and TPM, and which one is comparable between samples · why a few loud genes break library-size scaling · what a DESeq2 size factor does instead · and why a differential-expression tool wants raw counts"
 category: concept
 updated: 2026-11
 lang: en
@@ -29,7 +29,7 @@ Most differential expression is the first case. That is worth remembering, becau
 
 ## CPM, FPKM, TPM
 
-The three names you meet, from the least corrected to the most:
+The three names you meet:
 
 - **CPM** (counts per million) — divide by library size. Corrects depth only.
 - **RPKM**, and **FPKM** for paired-end data — divide by library size, then by gene length in kilobases. Corrects both.
@@ -50,7 +50,7 @@ Scaling by total counts assumes the total is a fair measure of depth. It stops b
 
 Consider two samples sequenced identically. In the second, one gene is enormously induced and takes 30% of the reads. Every other gene now has a smaller share of the total, so dividing by the total makes **every other gene look lower** — an artefact produced entirely by one gene's success. Any composition like this breaks the assumption: a dominant gene, rRNA or globin-mRNA contamination, a highly expressed cell type present in one sample.
 
-This is a real problem in practice rather than a theoretical one, and it is the reason the DE tools do not use CPM.
+This is a real problem in practice rather than a theoretical one, and it is the reason the DE tools do not scale by the total alone.
 
 ## What a size factor does instead
 

@@ -64,7 +64,7 @@ A read in a FASTQ is a string with no address. After alignment it has one, plus 
 - **MAPQ** — confidence that the position is the right one
 - **flags** — paired, mate's position, reverse strand, duplicate
 
-MAPQ is worth one caution: the aligners do not agree on a scale. STAR writes 255 for a uniquely mapped read — a value the SAM spec reserves for “mapping quality unavailable” — while BWA-MEM's maximum is 60 and 0 means the read mapped equally well in more than one place. A filter copied from one pipeline into another can quietly discard everything.
+MAPQ is worth one caution: the aligners do not agree on a scale. STAR writes 255 for a uniquely mapped read — a value the SAM spec reserves for "mapping quality unavailable" — while BWA-MEM's maximum is 60 and 0 means the read mapped equally well in more than one place. A filter copied from one pipeline into another can quietly discard everything.
 
 ## Why a read might not be counted
 
@@ -79,7 +79,7 @@ These counts are reported, and they are worth reading. A sample where a large fr
 
 ## Summary
 
-- A **reference genome** is a consensus sequence in FASTA; its **assembly version** is part of any result, and coordinates do not transfer between versions
+- A **reference genome** is a haploid mosaic sequence in FASTA; its **assembly version** is part of any result, and coordinates do not transfer between versions
 - The reference does not say where genes are — that is a separate **annotation** file, usually GTF, and its source and version change the counts
 - GENCODE and Ensembl carry the same gene set; RefSeq is curated separately. Gene identifiers differ between them, and converting between them loses genes silently
 - **BED is 0-based and end-exclusive; GTF is 1-based and end-inclusive**

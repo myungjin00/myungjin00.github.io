@@ -43,7 +43,7 @@ A gene is not a clean run of protein-coding letters. In humans the parts that su
 
 Splicing is not fixed. The same gene can keep different combinations of exons and produce different proteins — **isoforms**. So "one gene, one protein" is not true: roughly twenty thousand protein-coding genes give rise to many more distinct proteins.
 
-This is also why RNA-seq counts are usually reported per gene rather than per isoform. Telling isoforms apart requires reads that span the junctions between exons, and [short reads](../sequencing-en/) often cannot.
+This is also why RNA-seq counts are usually reported per gene rather than per isoform. Telling isoforms apart requires linking several exon junctions within one read, and a [short read](../sequencing-en/) spans one or two at most.
 
 ## Comparing two sequences
 
@@ -52,8 +52,8 @@ Two sequences from related species are similar but not identical. **Aligning** t
 ```
 Human   M K T A Y I A K Q R Q I S F V K
 Mouse   M K T A Y I A K Q R Q I - F I K
-                                ↑   ↑
-                              gap   substitution
+                                ^   ^
+                                gap substitution
 ```
 
 Two scoring choices make an alignment:
