@@ -91,6 +91,10 @@ img { max-width: 100%; height: auto; }   /* keep the aspect when the width shrin
 img, canvas { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; user-drag: none;
   -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
 
+/* dragging over text should look like the rest of the page, not like the browser's default blue */
+::selection { background: color-mix(in srgb, var(--green) 26%, transparent); color: var(--ink); }
+::-moz-selection { background: color-mix(in srgb, var(--green) 26%, transparent); color: var(--ink); }
+
 /* a section reached from the contents bar glows briefly, so a short page still shows where it went */
 .toc-flash { animation: toc-flash 1.4s ease-out; border-radius: 6px; }
 @keyframes toc-flash { from { background: color-mix(in srgb, var(--green) 14%, transparent); } to { background: transparent; } }
