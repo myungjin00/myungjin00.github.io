@@ -30,6 +30,11 @@ Because fragmentation is random, the same position gets read by several differen
 | **Depth** | how many reads cover one position |
 | **Coverage** | what fraction of the target was read at all |
 
+<figure>
+<img src="/assets/fig/depth-coverage.svg" alt="A molecule broken into random fragments, the reads stacked beneath it, the depth profile below that, and one window that no read covers" loading="lazy" />
+<figcaption><b>Depth is not coverage.</b> Fragmentation is random, so a position is read by several fragments and the depth varies along the molecule. The dashed window is covered by nothing at all — an average depth computed over the whole molecule would not show it. Drawn for this note.</figcaption>
+</figure>
+
 They are often used interchangeably, and "30× coverage" usually means average depth. The distinction matters when a region is missed entirely — high average depth does not mean nothing was missed.
 
 For RNA-seq the number people quote is **library size**: total reads per sample, typically 20–50 million. It is not a measure of quality on its own. A sample with many reads that all came from a handful of highly expressed genes has less information than the number suggests, which is why [normalisation](../normalisation-en/) exists.

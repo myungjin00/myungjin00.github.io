@@ -32,6 +32,11 @@ Two consequences worth holding onto:
 - Because the code is redundant, **a DNA change need not change the protein**. A substitution that lands on the third letter of a codon often leaves the amino acid as it was.
 - Because translation reads in threes, **inserting or deleting one or two letters shifts every codon after it**. Everything downstream becomes a different protein. That is a frameshift, and it is usually catastrophic where a substitution would not be.
 
+<figure>
+<img src="/assets/fig/frameshift.svg" alt="The same bases read as codons, and again with one base deleted, where every codon after the deletion is different" loading="lazy" />
+<figcaption><b>Why an indel is not a substitution.</b> The first two codons survive; everything after the lost base is read in a new frame, so every amino acid downstream changes. A substitution at the same position would have changed at most one. Drawn for this note.</figcaption>
+</figure>
+
 ## What a gene actually hands you
 
 A gene is not a clean run of protein-coding letters. In humans the parts that survive splicing (**exons**) are interrupted by stretches removed from the RNA (**introns**) before translation. Exons are not the same as coding sequence — they include the untranslated ends, and a non-coding gene has exons with no coding content at all.
@@ -64,6 +69,11 @@ A **multiple sequence alignment** does the same for many related sequences at on
 
 - a column where nearly every species has the same residue is **conserved**. Evolution has not been allowed to change it, which usually means it is doing something — catalysis, binding, or holding the structure together
 - a column that varies freely is tolerant, and probably not doing anything delicate
+
+<figure>
+<img src="/assets/fig/msa-coevolution.svg" alt="A multiple sequence alignment with one column fixed across all species, and two further columns whose residues swap together" loading="lazy" />
+<figcaption><b>Reading an alignment down, not across.</b> One column never changes — evolution was not allowed to touch it. Two others change constantly, but never alone: where one is E the other is K. The usual reading of that pattern is that the two residues touch in three dimensions. Drawn for this note.</figcaption>
+</figure>
 
 And then the part that is less obvious. Consider two columns that both vary — but *together*. Whenever one changes, the other changes as if compensating. That is **coevolution**, and the usual reading is that the two residues touch each other in three dimensions: a change at one is tolerated only when the other adjusts. The reading only holds once the indirect correlations are divided out — if A pairs with B and B with C, A and C will appear to covary without ever touching — which is what direct-coupling methods do.
 

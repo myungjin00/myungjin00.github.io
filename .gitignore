@@ -20,3 +20,4 @@ MJ_증명사진.jpg
 
 # one-off figure generation; the SVGs it produces are committed, the scripts carry local paths
 scripts/figures/
+!scripts/figures/fig_seqbasics.py

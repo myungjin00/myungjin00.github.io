@@ -30,6 +30,11 @@ tags: [sequencing, NGS, FASTQ, reads, coverage]
 | **Depth (깊이)** | 한 위치를 몇 개의 read가 덮는가 |
 | **Coverage (커버리지)** | 대상 중 얼마만큼이 읽히기는 했는가 |
 
+<figure>
+<img src="/assets/fig/depth-coverage.svg" alt="분자가 무작위 조각으로 쪼개지고, 그 아래 read가 쌓이고, 다시 그 아래 depth 분포가 그려져 있으며, 어떤 read도 덮지 않는 구간이 하나 있다" loading="lazy" />
+<figcaption><b>Depth는 coverage가 아니다.</b> 조각내기가 무작위라서 한 위치는 여러 조각에 의해 읽히고 depth는 분자를 따라 들쭉날쭉하다. 점선 구간은 아무것도 덮지 않는다 — 분자 전체로 계산한 평균 depth로는 보이지 않는다. 이 글을 위해 그렸다.</figcaption>
+</figure>
+
 둘은 자주 섞여 쓰이고, "30× coverage"는 보통 평균 depth를 뜻한다. 구분이 중요해지는 건 어떤 구간이 아예 안 읽혔을 때다 — **평균 depth가 높아도 빠진 데가 없다는 뜻은 아니다.**
 
 RNA-seq에서 사람들이 말하는 숫자는 **library size**, 즉 시료당 총 read 수이고 보통 2천만~5천만이다. 이 숫자 자체는 품질 지표가 아니다. read는 많은데 전부 소수의 고발현 유전자에서 나왔다면 숫자가 말하는 것보다 정보가 적다. [정규화](../normalisation-ko/)가 있는 이유다.

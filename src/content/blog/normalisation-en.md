@@ -43,6 +43,11 @@ Use TPM when you want to say "this gene is more abundant than that gene" or to h
 
 Scaling by total counts assumes the total is a fair measure of depth. It stops being fair when a handful of genes take up most of the library.
 
+<figure>
+<img src="/assets/fig/composition-effect.svg" alt="Two samples as bar charts of each gene's share of the library; in the second one gene takes thirty percent and every other bar is lower" loading="lazy" />
+<figcaption><b>Why dividing by the total fails.</b> Only one gene changed. Because shares must sum to one, every other gene's share falls — and any method that scales by total counts will report them as down. This is the artefact size factors exist to avoid. Drawn for this note.</figcaption>
+</figure>
+
 Consider two samples sequenced identically. In the second, one gene is enormously induced and takes 30% of the reads. Every other gene now has a smaller share of the total, so dividing by the total makes **every other gene look lower** — an artefact produced entirely by one gene's success. Any composition like this breaks the assumption: a dominant gene, rRNA or globin-mRNA contamination, a highly expressed cell type present in one sample.
 
 This is a real problem in practice rather than a theoretical one, and it is the reason the DE tools do not use CPM.
