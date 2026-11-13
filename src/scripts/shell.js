@@ -89,24 +89,26 @@ export function shell(el, D) {
   }
 
   const CMD = {
-    help() {
-      say('commands', 'h')
-      for (const [k, v] of [
-        ['ls [dir]', 'list a directory'],
-        ['cd <dir>', 'go there — .. and / work'],
-        ['cat <file>', 'read a file'],
-        ['pwd', 'where you are'],
-        ['tree', 'the whole thing at once'],
-        ['open [path]', 'open the matching page in the browser'],
-        ['whoami', 'short version'],
-        ['date', 'the time in Seoul — `date 12-25` looks at another day'],
-        ['tetris', 'a game — arrows and space'],
-        ['scores', 'the high-score table'],
-        ['clear', 'clear the screen'],
-        ['exit', 'close the window'],
-      ]) say('  ' + k.padEnd(13) + v)
+    // A short card rather than a wall: four groups of names, and `help <name>` for the detail.
+    help(arg) {
+      const a = (arg || '').trim().toLowerCase()
+      if (a) {
+        const d = DETAIL[ALIAS[a] ?? a]
+        if (!d) return say(`help: ${a}: no such command`, 'w')
+        say(d[0], 'h')
+        for (const l of d.slice(1)) say(l)
+        return
+      }
+      for (const [group, names] of [
+        ['look around', 'ls · cd · pwd · tree · cat · open'],
+        ['about me', 'whoami · vitae'],
+        ['the calendar', 'date · calendar'],
+        ['for fun', 'tetris · scores'],
+        ['this window', 'clear · exit'],
+      ]) say('  ' + group.padEnd(14) + names, group === 'the calendar' ? 'g' : '')
       say()
-      say('tab completes · ↑ ↓ for history', 'm')
+      say('`help <name>` says what one of them does.', 'm')
+      say('tab completes · ↑ ↓ walk history', 'm')
     },
     ls(arg) {
       const n = at(resolve(arg))
@@ -167,11 +169,58 @@ export function shell(el, D) {
       }
       setDay(a)
     },
+    // The window holds about a dozen lines before it starts dropping them off the top, so the
+    // year goes in two columns and the rules move to `help calendar`.
+    calendar() {
+      say('what each month puts in the margins', 'h')
+      const L = [['Jan', 'snow, a snowman'], ['Feb', 'plum blossom, a skier'], ['Mar', 'forsythia, aurora'],
+                 ['Apr', 'cherry blossom'], ['May', 'roses, dandelion seeds'], ['Jun', 'hydrangea, bubbles']]
+      const R = [['Jul', 'sun or rain, the Milky Way'], ['Aug', 'the sea, a whale'], ['Sep', 'acorns, a full moon'],
+                 ['Oct', 'maple, silver grass'], ['Nov', 'dry leaves, a dog'], ['Dec', 'snow, a tree, Santa']]
+      for (let i = 0; i < 6; i++)
+        say('  ' + (L[i][0] + '  ' + L[i][1]).padEnd(29) + R[i][0] + '  ' + R[i][1])
+      say()
+      say('christmas · newyear · halloween · hangul — days you can ask for by name', 'm')
+      say('`date 3-15` to stand in a month · `date auto` to come back', 'm')
+    },
+    vitae() { for (const l of D.vitae) say(l); say('→ ' + D.base + 'vitae/', 'm') },
     scores() { board() },
     clear() { out.textContent = '' },
     exit() { close() },
   }
-  const ALIAS = { dir: 'ls', ll: 'ls', about: 'whoami', who: 'whoami', man: 'help', '?': 'help', quit: 'exit', x: 'exit', pwd: 'pwd' }
+  const ALIAS = { dir: 'ls', ll: 'ls', about: 'whoami', who: 'whoami', man: 'help', '?': 'help', quit: 'exit', x: 'exit', pwd: 'pwd',
+    cv: 'vitae', year: 'calendar', months: 'calendar', seasons: 'calendar' }
+
+  // what `help <name>` prints: a line of what it is, then how it is used
+  const DETAIL = {
+    ls: ['ls [dir]', 'List what is in a directory. With no argument, the one you are in.'],
+    cd: ['cd <dir>', 'Move into a directory. `..` goes up, `/` or `~` goes home.'],
+    pwd: ['pwd', 'Print where you are.'],
+    tree: ['tree', 'Print the whole structure at once.'],
+    cat: ['cat <file>', 'Read a file. Most of them end with a link to the real page.'],
+    open: ['open [path]', 'Leave the terminal and open the matching page in the browser.'],
+    whoami: ['whoami', 'The short version of who I am.'],
+    vitae: ['vitae', 'Education, positions and the rest — `cat vitae` reads it here,', '`open vitae` opens the full page.'],
+    date: ['date [day]', 'With nothing, the time in Seoul, and then it asks which day you',
+           'would like to see. With a day, the whole site moves to it — the',
+           'season, the sky, and whatever is drifting in the margins.',
+           '', '  date 12-25 · date 2027-01-01 · date christmas · date auto',
+           '', 'A summer day asks whether it rained, because the forecast has',
+           'nothing to say about a day that is not today. The day you pick',
+           'lasts as long as this tab does.'],
+    calendar: ['calendar', 'What each month of the year puts in the margins, and which days',
+               'you can ask for by name.', '',
+               'Night is not a second set of things but the same month after dark:',
+               'what falls keeps falling, and something is lit above it.', '',
+               'June, July and August follow the weather in Seoul — if it is',
+               'raining there, it rains here. A rainy night is overcast, so',
+               'nothing is in the sky at all, not even the moon.'],
+    tetris: ['tetris', 'A game. Arrows move, up rotates, space drops, q quits.'],
+    scores: ['scores', 'The high-score table. It is kept in this browser only.'],
+    clear: ['clear', 'Empty the screen.'],
+    exit: ['exit', 'Close the window. The laptop at the foot of the page opens it again.'],
+    help: ['help [name]', 'The list of commands, or what one of them does.'],
+  }
 
   const board = (highlight) => { for (const [line, cls] of table(read(), highlight)) say(line, cls) }
 

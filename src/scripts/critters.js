@@ -255,3 +255,307 @@ export function nutcracker(ctx, t, rim) {
   ctx.strokeStyle = blue; ctx.lineWidth = 2
   P(ctx, () => { ctx.moveTo(0, -43); ctx.quadraticCurveTo(1.6, -47.4, -1, -49.4) }); ctx.stroke()
 }
+
+// --- the rest of the year's visitors ------------------------------------------------------
+// All of them stand on the origin and are drawn upward in -y, like the cat above, so the
+// margin sweeper can place them without knowing which one it has.
+
+const legs = (ctx, t, col, w = 2.2, y = 0, spread = 2.6) => {
+  const step = Math.sin(t * 9) * spread
+  ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'
+  P(ctx, () => { ctx.moveTo(-1.6, y - 7); ctx.lineTo(-1.6 - step, y - 0.6) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(1.6, y - 7); ctx.lineTo(1.6 + step, y - 0.6) }); ctx.stroke()
+}
+
+// A skier, knees bent, poles trailing, leaving a thin track
+export function skier(ctx, t, rim) {
+  const lean = Math.sin(t * 2.2) * 0.12
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  const red = '#C62F2A', dark = '#2E3A44', skin = '#F0C9A6', ski = '#E2B33C'
+  ctx.rotate(lean)
+  ctx.strokeStyle = ski; ctx.lineWidth = 2
+  P(ctx, () => { ctx.moveTo(-13, -1); ctx.lineTo(11, -1); ctx.moveTo(-12, -3.4); ctx.lineTo(12, -3.4) }); ctx.stroke()
+  ctx.strokeStyle = dark; ctx.lineWidth = 3
+  P(ctx, () => { ctx.moveTo(-1, -12); ctx.lineTo(-3.4, -4) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(2, -12); ctx.lineTo(1.2, -4) }); ctx.stroke()
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ctx.roundRect(-5, -24, 10, 12.4, 2)); ctx.stroke(); fill(ctx, red)
+  ctx.strokeStyle = red; ctx.lineWidth = 2.6
+  P(ctx, () => { ctx.moveTo(-3.6, -21); ctx.lineTo(-9, -17) }); ctx.stroke()
+  ctx.strokeStyle = '#9AA3AC'; ctx.lineWidth = 1.1
+  P(ctx, () => { ctx.moveTo(-9, -17); ctx.lineTo(-16, -2) }); ctx.stroke()
+  P(ctx, () => ell(ctx, 0.6, -28, 4, 3.8)); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, skin)
+  P(ctx, () => { ctx.moveTo(-4, -29.6); ctx.quadraticCurveTo(0.6, -34, 5, -29.6); ctx.closePath() }); fill(ctx, dark)
+  P(ctx, () => { ctx.moveTo(-1.4, -27.4); ctx.lineTo(5.6, -27.4); ctx.lineTo(5, -29.4); ctx.lineTo(-1.4, -29.2); ctx.closePath() }); fill(ctx, '#7CC4F5')
+}
+
+// A snowboarder, sideways on the board, arms out for balance
+export function boarder(ctx, t, rim) {
+  const sway = Math.sin(t * 1.8) * 0.16
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  const blue = '#2E5878', dark = '#2E3A44', skin = '#F0C9A6'
+  ctx.rotate(sway)
+  ctx.strokeStyle = rim; ctx.lineWidth = 1
+  P(ctx, () => ctx.roundRect(-14, -3.2, 28, 3.2, 1.6)); ctx.stroke(); fill(ctx, '#C2703C')
+  ctx.strokeStyle = dark; ctx.lineWidth = 3.2
+  P(ctx, () => { ctx.moveTo(-5, -12); ctx.lineTo(-7.5, -3.6) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(4, -12); ctx.lineTo(7, -3.6) }); ctx.stroke()
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ctx.roundRect(-5.4, -23, 10.8, 11.6, 2)); ctx.stroke(); fill(ctx, blue)
+  ctx.strokeStyle = blue; ctx.lineWidth = 2.6
+  P(ctx, () => { ctx.moveTo(-4.4, -20.4); ctx.lineTo(-11.4, -23.4 + Math.sin(t * 1.8) * 2) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(4.4, -20.4); ctx.lineTo(11.4, -17.4 - Math.sin(t * 1.8) * 2) }); ctx.stroke()
+  P(ctx, () => ell(ctx, 0, -27, 4, 3.8)); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, skin)
+  P(ctx, () => { ctx.moveTo(-4.4, -28.6); ctx.quadraticCurveTo(0, -33.4, 4.4, -28.6); ctx.closePath() }); fill(ctx, '#C62F2A')
+  P(ctx, () => ctx.arc(0, -33.4, 1.5, 0, Math.PI * 2)); fill(ctx, '#FBFAF6')
+}
+
+// A dog, nose down, ploughing through whatever has piled up
+export function dog(ctx, t, rim) {
+  const coat = '#C98A4B', dark = '#8C5A31', tongue = '#E8827E'
+  const step = Math.sin(t * 10) * 2.4, bob = Math.abs(Math.sin(t * 10)) * 0.8
+  ctx.translate(0, -bob); ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.strokeStyle = dark; ctx.lineWidth = 2.4
+  P(ctx, () => { ctx.moveTo(-5, -8); ctx.lineTo(-5 - step, -0.8); ctx.moveTo(5, -8); ctx.lineTo(5 + step, -0.8) }); ctx.stroke()
+  P(ctx, () => { ctx.moveTo(-3, -8); ctx.lineTo(-3 + step, -0.8); ctx.moveTo(7, -8); ctx.lineTo(7 - step, -0.8) }); ctx.stroke()
+  ctx.strokeStyle = coat; ctx.lineWidth = 2.6                                  // a tail that never stops
+  P(ctx, () => { ctx.moveTo(7.4, -12); ctx.quadraticCurveTo(12.6, -14 + Math.sin(t * 16) * 4, 13.4, -19 + Math.sin(t * 16) * 3) }); ctx.stroke()
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ell(ctx, 1, -11.4, 8.4, 4.6)); ctx.stroke(); fill(ctx, coat)
+  ctx.save(); ctx.translate(-8.4, -12.6); ctx.rotate(0.5)                      // head down, into the leaves
+  P(ctx, () => ell(ctx, 0, 0, 5, 4.2)); ctx.strokeStyle = rim; ctx.lineWidth = 1.1; ctx.stroke(); fill(ctx, coat)
+  P(ctx, () => { ctx.moveTo(-4.6, -1.6); ctx.lineTo(-8.4, 0.6); ctx.lineTo(-4.4, 2) ; ctx.closePath() }); fill(ctx, coat)
+  P(ctx, () => ctx.arc(-7.4, 0.9, 1.2, 0, Math.PI * 2)); fill(ctx, '#1E1B1A')
+  P(ctx, () => ctx.arc(-2.4, -1.4, 0.8, 0, Math.PI * 2)); fill(ctx, '#1E1B1A')
+  P(ctx, () => { ctx.moveTo(2.4, -3.4); ctx.quadraticCurveTo(6.4, -1, 3.4, 3.4); ctx.closePath() }); fill(ctx, dark)
+  P(ctx, () => { ctx.moveTo(-5.4, 2.2); ctx.quadraticCurveTo(-7, 4.4, -4.2, 4.2); ctx.closePath() }); fill(ctx, tongue)
+  ctx.restore()
+}
+
+// A duck, with ducklings strung out behind her
+export function duck(ctx, t, rim) {
+  const body = '#8C7A5E', head = '#1E4A39', bill = '#E2B33C'
+  const one = (x, k, wob) => {
+    ctx.save(); ctx.translate(x, -wob)
+    ctx.strokeStyle = bill; ctx.lineWidth = 1.6 * k; ctx.lineCap = 'round'
+    const st = Math.sin(t * 11 + x) * 1.6 * k
+    P(ctx, () => { ctx.moveTo(-1 * k, -5 * k); ctx.lineTo(-1 * k - st, -0.6) }); ctx.stroke()
+    P(ctx, () => { ctx.moveTo(1.4 * k, -5 * k); ctx.lineTo(1.4 * k + st, -0.6) }); ctx.stroke()
+    ctx.strokeStyle = rim; ctx.lineWidth = 1
+    P(ctx, () => ell(ctx, 0, -8.4 * k, 7 * k, 4.6 * k)); ctx.stroke(); fill(ctx, k > 0.7 ? body : bill)
+    P(ctx, () => { ctx.moveTo(5.6 * k, -10 * k); ctx.quadraticCurveTo(9.4 * k, -7 * k, 6.6 * k, -5.6 * k); ctx.closePath() }); fill(ctx, k > 0.7 ? body : bill)
+    P(ctx, () => ell(ctx, -5.4 * k, -14.4 * k, 3.4 * k, 3.2 * k)); ctx.strokeStyle = rim; ctx.stroke(); fill(ctx, k > 0.7 ? head : bill)
+    P(ctx, () => { ctx.moveTo(-8.4 * k, -14.4 * k); ctx.lineTo(-12.4 * k, -13.4 * k); ctx.lineTo(-8.4 * k, -12.4 * k); ctx.closePath() }); fill(ctx, bill)
+    P(ctx, () => ctx.arc(-6.2 * k, -15.2 * k, 0.7 * k, 0, Math.PI * 2)); fill(ctx, '#1E1B1A')
+    ctx.restore()
+  }
+  one(0, 1, Math.abs(Math.sin(t * 11)) * 0.5)
+  for (let i = 1; i <= 3; i++) one(i * 11.5, 0.52, Math.abs(Math.sin(t * 11 - i * 0.7)) * 0.4)
+}
+
+// A swallow, skimming the margin rather than walking it
+export function swallow(ctx, t, rim) {
+  const blue = '#2E3A58', cream = '#F0DFC4', rust = '#C2703C'
+  ctx.translate(0, -26 - Math.sin(t * 2.4) * 9)
+  ctx.rotate(Math.sin(t * 2.4) * 0.22)
+  const beat = Math.sin(t * 13)
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  P(ctx, () => { ctx.moveTo(-1, 0); ctx.quadraticCurveTo(-9, 4 * beat - 3, -15, 7 * beat); ctx.quadraticCurveTo(-8, 2 * beat, -1, 2) }); fill(ctx, blue)
+  P(ctx, () => { ctx.moveTo(1, 0); ctx.quadraticCurveTo(9, -4 * beat - 3, 15, -7 * beat); ctx.quadraticCurveTo(8, -2 * beat, 1, 2) }); fill(ctx, blue)
+  P(ctx, () => ell(ctx, 0, 1, 5.4, 2.8)); ctx.strokeStyle = rim; ctx.lineWidth = 0.9; ctx.stroke(); fill(ctx, blue)
+  P(ctx, () => { ctx.moveTo(-4.6, 1.6); ctx.lineTo(-11, -1.4); ctx.lineTo(-7.4, 2.2); ctx.lineTo(-11, 4.6); ctx.closePath() }); fill(ctx, blue)
+  P(ctx, () => ell(ctx, 3.4, 0.2, 2.6, 2.2)); fill(ctx, blue)
+  P(ctx, () => ell(ctx, 3.4, 2.2, 2, 1.3)); fill(ctx, rust)
+  P(ctx, () => ell(ctx, 1, 2.6, 3, 1.6)); fill(ctx, cream)
+  P(ctx, () => { ctx.moveTo(5.8, 0.4); ctx.lineTo(8.6, 1.2); ctx.lineTo(5.8, 1.8); ctx.closePath() }); fill(ctx, '#1E1B1A')
+  P(ctx, () => ctx.arc(4.4, -0.6, 0.6, 0, Math.PI * 2)); fill(ctx, '#1E1B1A')
+}
+
+// A sparrow, hopping rather than walking
+export function sparrow(ctx, t, rim) {
+  const brown = '#A3764A', dark = '#5E4428', cream = '#EDE3D2'
+  const hop = Math.max(0, Math.sin(t * 5)) * 7
+  ctx.translate(0, -hop)
+  ctx.strokeStyle = '#C9A06A'; ctx.lineWidth = 1.4; ctx.lineCap = 'round'
+  P(ctx, () => { ctx.moveTo(-1.4, -5); ctx.lineTo(-1.4, -0.6); ctx.moveTo(1.6, -5); ctx.lineTo(1.6, -0.6) }); ctx.stroke()
+  P(ctx, () => ell(ctx, 0, -9.6, 6.2, 5.2)); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, brown)
+  P(ctx, () => ell(ctx, 0.6, -8, 4.4, 3.2)); fill(ctx, cream)
+  P(ctx, () => { ctx.moveTo(-4.4, -11.4); ctx.quadraticCurveTo(-9, -9.4, -4.6, -7.6); ctx.closePath() }); fill(ctx, dark)
+  P(ctx, () => { ctx.moveTo(-5.6, -11); ctx.lineTo(-11.4, -13.4); ctx.lineTo(-5.6, -8.6); ctx.closePath() }); fill(ctx, dark)
+  P(ctx, () => ell(ctx, 4.6, -14, 3.6, 3.4)); ctx.strokeStyle = rim; ctx.stroke(); fill(ctx, brown)
+  P(ctx, () => { ctx.moveTo(7.6, -14.4); ctx.lineTo(11, -13.2); ctx.lineTo(7.6, -12.2); ctx.closePath() }); fill(ctx, '#3A3027')
+  P(ctx, () => ctx.arc(5.4, -15, 0.75, 0, Math.PI * 2)); fill(ctx, '#1E1B1A')
+}
+
+// A whale, surfacing in the August margin, with a spout that comes and goes
+export function whale(ctx, t, rim) {
+  const slate = '#3C5A72', belly = '#CFE0EA'
+  const rise = Math.sin(t * 0.9) * 3
+  ctx.translate(0, -8 + rise); ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  P(ctx, () => { ctx.moveTo(-17, 0); ctx.bezierCurveTo(-14, -9, 10, -11, 17, -2)
+    ctx.bezierCurveTo(10, 3, -8, 4, -17, 0) }); ctx.strokeStyle = rim; ctx.lineWidth = 1.1; ctx.stroke(); fill(ctx, slate)
+  P(ctx, () => { ctx.moveTo(-6, 1.6); ctx.bezierCurveTo(0, 3.6, 8, 2.6, 13, -0.6)
+    ctx.bezierCurveTo(6, 1.6, 0, 2.6, -6, 1.6) }); fill(ctx, belly)
+  P(ctx, () => { ctx.moveTo(-16, -0.6); ctx.lineTo(-24, -7); ctx.lineTo(-22, -0.2); ctx.lineTo(-24, 4); ctx.closePath() }); fill(ctx, slate)
+  P(ctx, () => ctx.arc(11.5, -3.4, 0.9, 0, Math.PI * 2)); fill(ctx, '#17202A')
+  const blow = (Math.sin(t * 0.9) + 1) / 2                    // the spout breathes with the rise
+  if (blow > 0.55) {
+    ctx.strokeStyle = belly; ctx.lineWidth = 1.6; ctx.globalAlpha = (blow - 0.55) / 0.45
+    for (const a of [-0.45, 0, 0.45])
+      P(ctx, () => { ctx.moveTo(4, -9); ctx.quadraticCurveTo(4 + a * 10, -17, 4 + a * 19, -22) }), ctx.stroke()
+    ctx.globalAlpha = 1
+  }
+}
+
+// A dolphin, clear of the water at the top of its arc
+export function dolphin(ctx, t, rim) {
+  const grey = '#6E8CA3', belly = '#E6EEF3'
+  const k = (Math.sin(t * 1.6) + 1) / 2
+  ctx.translate(0, -10 - k * 26); ctx.rotate(Math.cos(t * 1.6) * 0.5)
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  P(ctx, () => { ctx.moveTo(-13, 0); ctx.bezierCurveTo(-9, -6, 8, -7, 15, -1)
+    ctx.bezierCurveTo(8, 3, -8, 4, -13, 0) }); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, grey)
+  P(ctx, () => { ctx.moveTo(-5, 1.6); ctx.bezierCurveTo(1, 3, 7, 2, 11, 0); ctx.bezierCurveTo(5, 1.4, 0, 2.4, -5, 1.6) }); fill(ctx, belly)
+  P(ctx, () => { ctx.moveTo(-1, -5.4); ctx.lineTo(3, -12); ctx.lineTo(4, -4.8); ctx.closePath() }); fill(ctx, grey)
+  P(ctx, () => { ctx.moveTo(-12.4, -0.4); ctx.lineTo(-19, -5); ctx.lineTo(-17.4, 0); ctx.lineTo(-19, 4.4); ctx.closePath() }); fill(ctx, grey)
+  P(ctx, () => { ctx.moveTo(13.6, -1.4); ctx.lineTo(18.4, -0.4); ctx.lineTo(13.6, 0.8); ctx.closePath() }); fill(ctx, grey)
+  P(ctx, () => ctx.arc(10, -2.6, 0.8, 0, Math.PI * 2)); fill(ctx, '#17202A')
+}
+
+// Geese crossing the September sky in a V, small and high up
+export function geese(ctx, t, x, y, col, a) {
+  ctx.globalAlpha = a; ctx.strokeStyle = col; ctx.lineWidth = 1.2; ctx.lineCap = 'round'
+  const beat = Math.sin(t * 6)
+  const one = (gx, gy, k) => {
+    ctx.beginPath()
+    ctx.moveTo(gx - 4 * k, gy - beat * 1.6 * k)
+    ctx.lineTo(gx, gy + 1.2 * k)
+    ctx.lineTo(gx + 4 * k, gy - beat * 1.6 * k)
+    ctx.stroke()
+  }
+  one(x, y, 1.1)
+  for (let i = 1; i <= 3; i++) { one(x - i * 11, y + i * 7, 1 - i * 0.12); one(x + i * 11, y + i * 7, 1 - i * 0.12) }
+  ctx.globalAlpha = 1
+}
+
+// A snowman, built out of what has settled, and dressed one click at a time
+export function snowman(ctx, rim, bits) {
+  const snow = '#F6F9FB', coal = '#23282C', carrot = '#E07A2F', wool = '#C62F2A', stick = '#8C5A31'
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ctx.arc(0, -9, 9.4, 0, Math.PI * 2)); ctx.stroke(); fill(ctx, snow)
+  P(ctx, () => ctx.arc(0, -22.5, 6.8, 0, Math.PI * 2)); ctx.stroke(); fill(ctx, snow)
+  ctx.fillStyle = coal
+  for (const [x, y] of [[-2.4, -24.2], [2.4, -24.2]]) { P(ctx, () => ctx.arc(x, y, 0.95, 0, Math.PI * 2)); ctx.fill() }
+  for (const [x, y] of [[-3, -19.6], [0, -18.8], [3, -19.6]]) { P(ctx, () => ctx.arc(x, y, 0.7, 0, Math.PI * 2)); ctx.fill() }
+  if (bits > 3) {                                                  // arms of bare twig
+    ctx.strokeStyle = stick; ctx.lineWidth = 1.5
+    P(ctx, () => { ctx.moveTo(-8.6, -12); ctx.lineTo(-17, -17); ctx.moveTo(-13.4, -14.6); ctx.lineTo(-14.6, -18.4) }); ctx.stroke()
+    P(ctx, () => { ctx.moveTo(8.6, -12); ctx.lineTo(17, -17); ctx.moveTo(13.4, -14.6); ctx.lineTo(14.6, -18.4) }); ctx.stroke()
+  }
+  if (bits > 0) {                                                  // a scarf, first of all
+    P(ctx, () => ctx.roundRect(-7.2, -17.4, 14.4, 3, 1.4)); fill(ctx, wool)
+    P(ctx, () => { ctx.moveTo(4.4, -15.2); ctx.lineTo(7.8, -8.4); ctx.lineTo(4, -8.8); ctx.closePath() }); fill(ctx, wool)
+  }
+  if (bits > 1) {                                                  // then a hat
+    P(ctx, () => ctx.roundRect(-8, -29.4, 16, 2.4, 1.2)); ctx.strokeStyle = rim; ctx.lineWidth = 1; ctx.stroke(); fill(ctx, coal)
+    P(ctx, () => ctx.roundRect(-5.2, -37.4, 10.4, 8.4, 1)); ctx.stroke(); fill(ctx, coal)
+    ctx.fillStyle = wool; ctx.fillRect(-5.4, -31.2, 10.8, 1.8)
+  }
+  if (bits > 2) {                                                  // and last the nose
+    P(ctx, () => { ctx.moveTo(0, -23.2); ctx.lineTo(8.6, -21.6); ctx.lineTo(0, -20.8); ctx.closePath() }); fill(ctx, carrot)
+  }
+}
+
+// --- things that stand in a margin all month ----------------------------------------------
+// Drawn from the floor at the origin, like the visitors, but they do not go anywhere.
+
+// A hydrangea: a bush of four-petalled florets, blue where the soil is sour
+export function hydrangea(ctx, rim, seed) {
+  const leaf = '#3E6B45', blues = ['#6E8FC9', '#8E7FC2', '#7FA7D4', '#A58CC6']
+  const r = (n) => { let s = seed * 9301 + n * 49297; return ((s % 233280) / 233280) }
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.strokeStyle = leaf; ctx.lineWidth = 2
+  for (const dx of [-7, 0, 7]) { P(ctx, () => { ctx.moveTo(dx * 0.4, 0); ctx.lineTo(dx, -17) }); ctx.stroke() }
+  for (const [x, y, a] of [[-11, -8, -0.6], [11, -9, 0.6], [-4, -5, -0.3], [6, -4, 0.4]]) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(a)
+    P(ctx, () => { ctx.moveTo(0, 0); ctx.quadraticCurveTo(-5, -4, 0, -9); ctx.quadraticCurveTo(5, -4, 0, 0) }); fill(ctx, leaf)
+    ctx.restore()
+  }
+  // three heads, each a cluster of small crosses
+  for (const [hx, hy, k, i0] of [[-7, -20, 1, 0], [7, -22, 0.95, 7], [0, -27, 1.05, 14]]) {
+    const col = blues[Math.floor(r(i0) * blues.length)]
+    for (let i = 0; i < 11; i++) {
+      const a = i * 1.9, rad = 1.6 + r(i0 + i) * 4.6
+      const fx = hx + Math.cos(a) * rad * k, fy = hy + Math.sin(a) * rad * 0.8 * k
+      ctx.fillStyle = col
+      for (let q = 0; q < 4; q++) {
+        const b = q * 1.5708
+        P(ctx, () => ell(ctx, fx + Math.cos(b) * 1.5 * k, fy + Math.sin(b) * 1.5 * k, 1.5 * k, 1.2 * k, b))
+        ctx.fill()
+      }
+      ctx.fillStyle = '#F2E9C8'
+      P(ctx, () => ctx.arc(fx, fy, 0.55 * k, 0, Math.PI * 2)); ctx.fill()
+    }
+  }
+}
+
+// A persimmon branch: the leaves gone, the fruit left for the magpies
+export function persimmon(ctx, rim) {
+  const wood = '#6B4A32', fruit = '#D9661E', cap = '#4E6B3C'
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.strokeStyle = wood; ctx.lineWidth = 2.6
+  P(ctx, () => { ctx.moveTo(0, 0); ctx.quadraticCurveTo(-2, -22, 3, -40) }); ctx.stroke()
+  ctx.lineWidth = 1.6
+  for (const [x1, y1, x2, y2] of [[1, -16, -11, -24], [2, -26, 13, -31], [3, -34, -7, -41]])
+    { P(ctx, () => { ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1 + x2) / 2, y1 - 3, x2, y2) }); ctx.stroke() }
+  for (const [x, y, k] of [[-11, -24, 1], [13, -31, 0.92], [-7, -41, 0.86], [3, -41, 0.7]]) {
+    ctx.strokeStyle = rim; ctx.lineWidth = 1
+    P(ctx, () => ell(ctx, x, y + 4.4 * k, 4.6 * k, 4.2 * k)); ctx.stroke(); fill(ctx, fruit)
+    ctx.fillStyle = cap
+    for (let q = 0; q < 4; q++) {
+      const b = q * 1.5708 + 0.78
+      P(ctx, () => ell(ctx, x + Math.cos(b) * 2 * k, y + 0.6 * k + Math.sin(b) * 1.2 * k, 2.1 * k, 1.1 * k, b))
+      ctx.fill()
+    }
+  }
+}
+
+// Silver grass, leaning all one way and catching what light there is
+export function silverGrass(ctx, t, rim, seed) {
+  const stalk = '#8A8468', plume = '#E4E0D2'
+  const r = (n) => { let s = seed * 7919 + n * 104729; return ((s % 233280) / 233280) }
+  ctx.lineCap = 'round'
+  for (let i = 0; i < 9; i++) {
+    const x = (r(i) - 0.5) * 34, h = 30 + r(i + 40) * 22
+    const lean = Math.sin(t * 0.8 + i) * 5 + 7
+    ctx.strokeStyle = stalk; ctx.lineWidth = 1.2
+    P(ctx, () => { ctx.moveTo(x, 0); ctx.quadraticCurveTo(x + lean * 0.4, -h * 0.6, x + lean, -h) }); ctx.stroke()
+    ctx.strokeStyle = plume; ctx.lineWidth = 1
+    ctx.globalAlpha = 0.75
+    for (let j = 0; j < 5; j++) {
+      const a = -1.1 + j * 0.34
+      P(ctx, () => { ctx.moveTo(x + lean, -h); ctx.lineTo(x + lean + Math.cos(a) * 9, -h + Math.sin(a) * 9 - 3) })
+      ctx.stroke()
+    }
+    ctx.globalAlpha = 1
+  }
+}
+
+// The shoreline: two or three lines of foam sliding up the margin and back
+export function surf(ctx, t, W, floorY, dark) {
+  const deep = dark ? 'rgba(90,150,185,.30)' : 'rgba(80,150,190,.26)'
+  const foam = dark ? 'rgba(226,240,248,.55)' : 'rgba(255,255,255,.75)'
+  for (let i = 0; i < 3; i++) {
+    const reach = 16 + i * 11, ph = t * 0.55 + i * 1.1
+    const y = floorY - (0.5 + 0.5 * Math.sin(ph)) * reach
+    ctx.fillStyle = deep
+    ctx.beginPath(); ctx.moveTo(0, floorY + 4)
+    for (let x = 0; x <= W; x += 16) ctx.lineTo(x, y + Math.sin(x / 55 + ph * 1.6) * 3)
+    ctx.lineTo(W, floorY + 4); ctx.closePath(); ctx.fill()
+    ctx.strokeStyle = foam; ctx.lineWidth = 1.3
+    ctx.beginPath()
+    for (let x = 0; x <= W; x += 16) ctx[x ? 'lineTo' : 'moveTo'](x, y + Math.sin(x / 55 + ph * 1.6) * 3)
+    ctx.stroke()
+  }
+}
