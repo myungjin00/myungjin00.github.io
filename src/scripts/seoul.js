@@ -30,11 +30,18 @@ const SUN = [
 ]
 const SUN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>'
 
+// Building a formatter costs far more than using one, and the margins ask what month it is on
+// every animation frame, so the formatter is built once and the answer is kept for the minute.
+const KST = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+let memo = { key: NaN, val: null }
+
 // month (1-12) and minutes after midnight in Seoul, whatever the reader's own time zone
 export function seoulNow(d = nowDate()) {
-  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
-    .formatToParts(d).map(x => [x.type, x.value]))
-  return { month: +p.month, day: +p.day, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute }
+  const key = Math.floor(+d / 60000)
+  if (key === memo.key) return memo.val
+  const p = Object.fromEntries(KST.formatToParts(d).map(x => [x.type, x.value]))
+  memo = { key, val: { month: +p.month, day: +p.day, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute } }
+  return memo.val
 }
 export const isDay = ({ month, mins }) => mins >= SUN[month - 1][0] && mins < SUN[month - 1][1]
 export const season = ({ month }) => ['winter', 'spring', 'summer', 'autumn'][Math.floor((month % 12) / 3)]
@@ -83,13 +90,15 @@ export function skySvg(d = nowDate()) {
     `<path d="M${cx - R} ${cy}A${R} ${R} 0 0 1 ${cx + R} ${cy}" fill="none" stroke="color-mix(in srgb, var(--muted) 55%, transparent)" stroke-width="1.2"/>${body}</svg>`
 }
 
+const DAY_LABEL = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'short', day: 'numeric' })
+
 export function seoulClock() {
   const foot = document.getElementById('seoul'), bar = document.getElementById('seoul-bar')
   const tick = () => {
     const d = nowDate(), now = seoulNow(d), day = isDay(now)
     const set = asOf()
     const t = set
-      ? `${new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'short', day: 'numeric' }).format(d)} ${now.hour}:${now.minute}`
+      ? `${DAY_LABEL.format(d)} ${now.hour}:${now.minute}`
       : `Seoul ${now.hour}:${now.minute}`
     // the chip stays short; the tooltip is where the time zone goes
     const title = (set ? 'A date set from the contact terminal — `date auto` puts it back. ' : '') +
