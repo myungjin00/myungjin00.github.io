@@ -4,6 +4,9 @@ import { u } from '../lib'
 import Monogram from '../components/Monogram.astro'
 import { GITHUB, LINKEDIN } from '../data/icons'
 
+// Google tag for the GA4 property; '' turns the tag off entirely
+const GA_ID = 'G-LX2JQ1VXS4'
+
 // footer marks: the two brand logos as their owners draw them; the CV says what it is in letters
 const FOOT = [
   { label: 'GitHub', href: 'https://github.com/myungjin00', svg: GITHUB },
@@ -71,6 +74,19 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
       const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
       if (dark) document.documentElement.dataset.theme = 'dark'
     } catch {}
+  </script>
+  <script is:inline define:vars={{ ga: GA_ID }}>
+    // measurement id is public by design; skipped on localhost so dev visits stay out
+    if (ga && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+      const s = document.createElement('script')
+      s.async = true
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga
+      document.head.appendChild(s)
+      window.dataLayer = window.dataLayer || []
+      window.gtag = function () { window.dataLayer.push(arguments) }
+      gtag('js', new Date())
+      gtag('config', ga)
+    }
   </script>
 </head>
 <body>
