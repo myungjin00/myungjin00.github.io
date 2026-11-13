@@ -76,8 +76,11 @@ const pageTitle = title === 'Myungjin Lee' ? title : `${title} · Myungjin Lee`
     } catch {}
   </script>
   <script is:inline define:vars={{ ga: GA_ID }}>
-    // measurement id is public by design; skipped on localhost so dev visits stay out
-    if (ga && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    // measurement id is public by design; skipped wherever the site is being served locally —
+    // loopback, a LAN address for checking a layout on a phone, or an mDNS name — so that
+    // development visits stay out of the numbers
+    var local = /^(localhost|\[::1\]|0\.0\.0\.0|127(\.\d{1,3}){3}|10(\.\d{1,3}){3}|192\.168(\.\d{1,3}){2}|172\.(1[6-9]|2\d|3[01])(\.\d{1,3}){2})$|\.local$/
+    if (ga && !local.test(location.hostname)) {
       const s = document.createElement('script')
       s.async = true
       s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga

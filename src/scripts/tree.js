@@ -2,7 +2,7 @@
 // The ornaments change character and colour every so often; that is the whole of the animation.
 // It leaves in January, when the margins become the penguin's.
 import { seoulNow } from './seoul.js'
-import { chosen, activeSeason } from './season.js'
+import { chosen, activeSeason, MARGIN_FOR_DECOR } from './season.js'
 
 // '@' marks an ornament, everything else is drawn as written
 const ART = [
@@ -54,7 +54,7 @@ export function decemberTree() {
   const fits = () => {
     const margin = (innerWidth - Math.min(innerWidth, 1060)) / 2
     const w = COLS * 7.3
-    if (margin < w + 28) return false
+    if (margin < MARGIN_FOR_DECOR) return false       // the same rule the present in the other margin uses
     el.style.left = `${Math.round((margin - w) / 2)}px`
     return true
   }
@@ -75,8 +75,9 @@ export function decemberTree() {
     if (!reduce) timer = setInterval(paint, 900)
   }
 
-  new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  new MutationObserver(() => sync()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
   addEventListener('asof', () => sync(true))
+  addEventListener('storage', e => { if (e.key === 'season') sync(true) })
   addEventListener('resize', () => sync())
   document.querySelectorAll('.season-select').forEach(p => p.addEventListener('change', () => sync(true)))
   // nothing twinkles in a background tab; coming back re-evaluates from scratch

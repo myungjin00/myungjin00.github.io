@@ -2,29 +2,33 @@
 // data, so `ls`/`cd`/`cat` walk the same structure the nav does.
 import { tetris } from './tetris.js'
 import { read, qualifies, save, table } from './scores.js'
-import { nowDate, seoulNow, setAsOf, asOf } from './seoul.js'
+import { nowDate, seoulNow, setAsOf, asOf, storageWorks } from './seoul.js'
 
-// days you can ask for by name rather than by number
+// days you can ask for by name rather than by number. Fixed dates only — Chuseok and Seollal
+// move with the lunar calendar, so a month and a day cannot stand for them.
 const NAMED = {
   christmas: [12, 25], xmas: [12, 25], newyear: [1, 1], 'new-year': [1, 1],
-  halloween: [10, 31], hangul: [10, 9], hangeul: [10, 9], chuseok: [9, 17],
+  halloween: [10, 31], hangul: [10, 9], hangeul: [10, 9],
 }
+const KST_OFFSET = 9 * 3600e3            // Seoul has had no daylight saving since 1988
+const daysIn = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate()
+
 // a date the reader typed: 2027-01-01, 12-25, 12/25, or one of the names above
 function parseDay(text) {
   const s = text.trim().toLowerCase().replace(/\s+/g, '')
-  if (NAMED[s]) { const [m, d] = NAMED[s]; return make(null, m, d) }
+  if (Object.hasOwn(NAMED, s)) return make(null, ...NAMED[s])
   const m = s.match(/^(?:(\d{4})[-/.])?(\d{1,2})[-/.](\d{1,2})$/)
-  if (!m) return null
-  return make(m[1] && +m[1], +m[2], +m[3])
+  return m ? make(m[1] ? +m[1] : null, +m[2], +m[3]) : null
 }
+// Build the instant from Seoul's own calendar rather than the browser's, or a reader in the
+// Seoul morning asks for Christmas and gets Boxing Day. The hour is kept, so a day chosen in
+// the evening is still an evening.
 function make(year, month, day) {
-  if (month < 1 || month > 12 || day < 1 || day > 31) return null
-  const now = nowDate()
-  // keep the hour, so a day chosen in the evening is still an evening
-  const d = new Date(Date.UTC(year ?? new Date().getUTCFullYear(), month - 1, day, 3, 0, 0))
-  d.setUTCHours(now.getUTCHours(), now.getUTCMinutes())
-  const got = seoulNow(d)
-  return got.month === month && got.day === day ? d : new Date(+d + 6 * 3600e3)
+  const now = seoulNow()
+  const y = year ?? now.year
+  if (y < 1000 || y > 9999) return null
+  if (month < 1 || month > 12 || day < 1 || day > daysIn(y, month)) return null
+  return new Date(Date.UTC(y, month - 1, day, +now.hour, +now.minute) - KST_OFFSET)
 }
 const SANTA = [
   '      ___       ', '    _/   \\_     ', "   ( o   o )    ", '    \\  ^  /     ',
@@ -56,7 +60,9 @@ export function shell(el, D) {
 
   const at = path => path.reduce((n, k) => (n && n.d ? n.c[k] : null), FS)
   const here = () => at(cwd)
-  const prompt = () => { ps1.textContent = `myungjin@contact:~${cwd.length ? '/' + cwd.join('/') : ''}$` }
+  const prompt = () => ask(`myungjin@contact:~${cwd.length ? '/' + cwd.join('/') : ''}$`, 'Type a command, or help')
+  // the visible prompt and the one a screen reader announces are the same prompt
+  const ask = (text, label) => { ps1.textContent = text; cmd.setAttribute('aria-label', label) }
 
   // every print is one span, so trimming the top is just removing the first child
   const say = (s = '', cls = '') => {
@@ -153,7 +159,7 @@ export function shell(el, D) {
         say('you can look at the site on another day — the background follows.', 'm')
         say('which day? (try 12-25, 2027-01-01, christmas, hangul — or auto)', 'm')
         pending = { kind: 'date' }
-        ps1.textContent = 'date >'
+        ask('date >', 'Which day? A date such as 12-25, or auto')
         return
       }
       if (['auto', 'now', 'today', 'reset'].includes(a)) {
@@ -173,8 +179,10 @@ export function shell(el, D) {
   // moving the date moves the season, the sky and whatever is drifting in the margins
   const setDay = (text) => {
     const d = parseDay(text)
-    if (!d) { say(`date: ${text}: cannot read that — try 12-25, 2027-01-01, christmas, or auto`, 'w'); return }
+    if (!d) { say(`date: ${text}: no such day — try 12-25, 2027-01-01, christmas, or auto`, 'w'); return }
     setAsOf(d)
+    // private browsing throws on every write, and saying nothing would be a lie
+    if (!asOf()) { say('this browser will not let the page remember anything,', 'w'); say('so the date cannot be moved here.', 'w'); return }
     const now = seoulNow(d)
     say('the site is now showing:', 'm')
     stamp()
@@ -183,7 +191,7 @@ export function shell(el, D) {
     if (now.month >= 6 && now.month <= 8) {
       say('was it raining that day, or clear?', 'm')
       pending = { kind: 'wx' }
-      ps1.textContent = 'rain / clear >'
+      ask('rain / clear >', 'Was that day rainy or clear?')
       return
     }
     greet(now)
@@ -216,9 +224,9 @@ export function shell(el, D) {
       say(`${over ? 'game over' : 'stopped'} \u2014 ${score} point${score === 1 ? '' : 's'}, ${rows} row${rows === 1 ? '' : 's'}`, 'h')
       say()
       if (qualifies(score)) {
-        pending = { score, rows }
+        pending = { kind: 'name', score, rows }
         say('that makes the table. who was it?', 'm')
-        ps1.textContent = 'name >'
+        ask('name >', 'Your name, for the high-score table')
       } else {
         board()
         prompt()
@@ -249,18 +257,23 @@ export function shell(el, D) {
     }
     if (pending && pending.kind === 'wx') {
       say(ps1.textContent + ' ' + raw, 'p'); cmd.value = ''; pending = null; prompt()
-      const wet = /^(r|rain|wet|비)/i.test(raw)
-      setAsOf(asOf(), wet ? 'rain' : 'sun')
-      say(wet ? 'raining, then.' : 'clear, then.', 'g')
+      const day = asOf()
+      // another tab may have put the date back while the question sat here
+      if (!day) say('the date went back to today while you were deciding.', 'w')
+      else {
+        const wet = /^(r|rain|wet|비)/i.test(raw)
+        setAsOf(day, wet ? 'rain' : 'sun')
+        say(wet ? 'raining, then.' : 'clear, then.', 'g')
+      }
       greet(seoulNow(nowDate()))
       fit(); return
     }
-    if (pending) {
+    if (pending && pending.kind === 'name') {
+      say(ps1.textContent + ' ' + raw, 'p')
       cmd.value = ''
-      const { list, entry } = save(raw, pending.score, pending.rows)
+      const { entry } = save(raw, pending.score, pending.rows)
       pending = null
       prompt()
-      say(ps1.textContent, 'p')
       say()
       board(entry)
       say()

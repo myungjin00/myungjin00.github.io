@@ -4,8 +4,10 @@
 // The site's date can be moved from the contact terminal. Everything that depends on the calendar
 // reads it from here, so one setting carries the season, the sky and the margins together.
 const AS_OF = 'asof', AS_OF_WX = 'asof-wx'
-const ls = k => { try { return localStorage.getItem(k) } catch { return null } }
-const put = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v) } catch {} }
+const ls = k => { try { return sessionStorage.getItem(k) } catch { return null } }
+const put = (k, v) => { try { v === null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v) } catch {} }
+// true when the write actually stuck, so a caller can tell the reader the truth in private mode
+export const storageWorks = () => { try { sessionStorage.setItem('t', '1'); sessionStorage.removeItem('t'); return true } catch { return false } }
 
 export function asOf() {
   const v = ls(AS_OF); if (!v) return null
@@ -32,7 +34,7 @@ const SUN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 
 // Building a formatter costs far more than using one, and the margins ask what month it is on
 // every animation frame, so the formatter is built once and the answer is kept for the minute.
-const KST = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+const KST = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
 let memo = { key: NaN, val: null }
 
 // month (1-12) and minutes after midnight in Seoul, whatever the reader's own time zone
@@ -40,7 +42,7 @@ export function seoulNow(d = nowDate()) {
   const key = Math.floor(+d / 60000)
   if (key === memo.key) return memo.val
   const p = Object.fromEntries(KST.formatToParts(d).map(x => [x.type, x.value]))
-  memo = { key, val: { month: +p.month, day: +p.day, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute } }
+  memo = { key, val: { year: +p.year, month: +p.month, day: +p.day, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute } }
   return memo.val
 }
 export const isDay = ({ month, mins }) => mins >= SUN[month - 1][0] && mins < SUN[month - 1][1]
@@ -101,7 +103,7 @@ export function seoulClock() {
       ? `${DAY_LABEL.format(d)} ${now.hour}:${now.minute}`
       : `Seoul ${now.hour}:${now.minute}`
     // the chip stays short; the tooltip is where the time zone goes
-    const title = (set ? 'A date set from the contact terminal — `date auto` puts it back. ' : '') +
+    const title = (set ? 'Showing a chosen day — pick auto in the season bar to come back. ' : '') +
       (day ? 'Daytime in Seoul · KST, UTC+9' : 'Night in Seoul · KST, UTC+9 · the moon tonight')
     // the footer keeps a single glyph; tonight's moon there too, in its real phase
     const glyph = day ? SUN_SVG : `<svg viewBox="0 0 24 24" aria-hidden="true">${moonSvg(moonPhase(d), 8, 12, 12, 'currentColor', 'color-mix(in srgb, currentColor 22%, transparent)')}</svg>`
@@ -111,4 +113,5 @@ export function seoulClock() {
   tick()
   setInterval(tick, 30_000)
   addEventListener('asof', tick)
+  addEventListener('storage', tick)
 }

@@ -12,13 +12,6 @@ export const SEASONS = ['spring', 'summer', 'autumn', 'winter']
 export function chosen() {
   try { const v = localStorage.getItem(KEY); return v && (v === 'off' || SEASONS.includes(v)) ? v : 'auto' } catch { return 'auto' }
 }
-// a season picked before the bar moved the date instead is converted the first time it is seen,
-// so the bar and what is on screen cannot disagree
-try {
-  const old = localStorage.getItem(KEY)
-  if (old && SEASONS.includes(old)) { localStorage.removeItem(KEY); setAsOf(dateInSeason(old)) }
-} catch {}
-
 // the season that colours things: the pick, or Seoul's own when the pick is auto or off
 export const activeSeason = () => { const c = chosen(); return SEASONS.includes(c) ? c : seoulSeason(seoulNow()) }
 
@@ -100,16 +93,16 @@ function clearer(ctx, c, t, H, dpr, kind) {
 }
 
 // December, in the right margin: a present turns up, the lid goes, and a nutcracker marches out of
-// it and off the page. One visit every minute or so; the rest of the time there is nothing there.
+// it and off the page, every half-minute or so; the rest of the time there is nothing there.
 let gift = null
 const resetGift = () => { gift = null }
-function giftScene(ctx, t, dt, right, H, dpr, rim) {
+function giftScene(ctx, t, dt, right, H, dpr, rim, dark) {
   if (!gift) gift = { phase: 'wait', until: t + 8 + Math.random() * 12, x: 0, mx: 0, t0: 0 }
   const g = gift
   const at = (x, y = 0) => ctx.setTransform(dpr, 0, 0, dpr, x * dpr, (H - 2 + y) * dpr)
   ctx.globalAlpha = 1
   if (g.phase === 'wait') {
-    if (t < g.until) return
+    if (t < g.until || !dark) return        // the theme is settled when a visit starts, not mid-stride
     g.x = right + 30 + Math.random() * 18
     g.phase = 'sit'; g.until = t + 2.4
   }
@@ -124,6 +117,9 @@ function giftScene(ctx, t, dt, right, H, dpr, rim) {
     const p = Math.min(1, (t - g.t0) / 0.9)
     at(g.x, 36 * (1 - p)); nutcracker(ctx, t, rim)     // he comes up from inside, so draw him first
     at(g.x); present(ctx, null, rim)                   // and the open box in front of his legs
+    ctx.globalAlpha = 1 - p                            // the lid carries on up and out of sight
+    at(g.x); present(ctx, 30 + p * 70, rim)
+    ctx.globalAlpha = 1
     if (p === 1) { g.phase = 'march'; g.mx = g.x }
   } else if (g.phase === 'march') {
     g.mx += 46 * dt
@@ -136,6 +132,7 @@ function giftScene(ctx, t, dt, right, H, dpr, rim) {
 // what has landed: a small drift along the bottom of each margin, shared with the click effects
 let pile = [], heights = new Map(), sweepers = [], flung = [], floorH = 0
 const BUCKET_W = 10
+export const MARGIN_FOR_DECOR = 150   // both December decorations appear together or not at all
 const heightAt = x => heights.get(Math.floor(x / BUCKET_W)) ?? 0
 export const floorAt = x => floorH - 3 - heightAt(x)
 export function settle(p) {
@@ -145,8 +142,35 @@ export function settle(p) {
   return true
 }
 
+// The bar is wired whatever else happens: a reader who asks for reduced motion still gets no
+// drifting shapes, but the control that puts the date back has to answer them.
+function seasonBar(redraw) {
+  const picks = [...document.querySelectorAll('.season-select')]
+  const showPick = () => {
+    const legacy = chosen()
+    const v = legacy === 'off' ? 'off' : SEASONS.includes(legacy) ? legacy : asOf() ? seoulSeason(seoulNow()) : 'auto'
+    picks.forEach(p => { p.value = v })
+  }
+  picks.forEach(pick => {
+    pick.addEventListener('change', () => {
+      const v = pick.value
+      try { v === 'off' ? localStorage.setItem(KEY, 'off') : localStorage.removeItem(KEY) } catch {}
+      // picking a season moves the date to the nearest month of it, and auto goes back to today;
+      // either way the asof listener below redraws. Off only stops things moving, so it leaves a
+      // chosen day alone and has to ask for the redraw itself.
+      if (v === 'off') redraw()
+      else setAsOf(SEASONS.includes(v) ? dateInSeason(v) : null)
+      showPick()
+    })
+  })
+  showPick()
+  addEventListener('asof', () => { showPick(); redraw() })
+  // a day chosen in one tab should not leave the others showing yesterday
+  addEventListener('storage', e => { if (e.key === 'season') { showPick(); redraw() } })
+}
+
 export function seasonFall() {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return seasonBar(() => {})
   const cv = document.createElement('canvas')
   cv.setAttribute('aria-hidden', 'true')
   Object.assign(cv.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', pointerEvents: 'none', zIndex: '0' })
@@ -256,19 +280,24 @@ export function seasonFall() {
     }
     // December's own, on the dark theme as the tree is: a present in the right margin, and the
     // nutcracker who marches out of it
-    if (kind === 'winter' && seoulNow().month === 12 && darkTheme() && W - right > 80)
-      giftScene(ctx, now / 1000, dt, right, H, dpr, 'rgba(255,255,255,.32)')
+    if (kind === 'winter' && seoulNow().month === 12 && W - right >= MARGIN_FOR_DECOR)
+      giftScene(ctx, now / 1000, dt, right, H, dpr, 'rgba(255,255,255,.32)', darkTheme())
     else if (gift) resetGift()
     // the summer night: a small firework now and then, up in a margin
     if (kind === 'summer' && summerMode() === 'night' && now > nextBurst) { burstInMargin(); nextBurst = now + 3500 + Math.random() * 4000 }
     raf = requestAnimationFrame(frame)
   }
-  let nextBurst = 0, nextStroll = 0
-  const stop = () => { cancelAnimationFrame(raf); raf = 0; floorH = 0; ctx.clearRect(0, 0, cv.width, cv.height) }
+  let nextBurst = 0, nextStroll = 0, wasWet = raining
+  // the last thing drawn left its own transform behind, and clearRect works in that transform,
+  // so the identity has to go back before the canvas can actually be emptied
+  const stop = () => {
+    cancelAnimationFrame(raf); raf = 0; floorH = 0
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height)
+  }
   const start = () => {
     stop()
     if (chosen() === 'off' || document.hidden) return
-    kind = activeSeason(); bits = []; size(); prev = performance.now(); raf = requestAnimationFrame(frame)
+    kind = activeSeason(); wasWet = raining; bits = []; size(); prev = performance.now(); raf = requestAnimationFrame(frame)
   }
   loadWeather().then(r => { if (r && kind === 'summer') start() })   // a wet day turns summer to rain once Seoul answers
   // switching theme switches a summer between fireworks and the daytime sky, there and then
@@ -276,23 +305,6 @@ export function seasonFall() {
   addEventListener('resize', () => { if (raf) size() })
   document.addEventListener('visibilitychange', start)   // nothing runs in a background tab
   start()
-
-  // the bar shows what is on screen: off, the season of a chosen day, or auto for today
-  const picks = [...document.querySelectorAll('.season-select')]
-  const showPick = () => {
-    const v = chosen() === 'off' ? 'off' : asOf() ? seoulSeason(seoulNow()) : 'auto'
-    picks.forEach(p => { p.value = v })
-  }
-  picks.forEach(pick => {
-    pick.addEventListener('change', () => {
-      const v = pick.value
-      try { v === 'off' ? localStorage.setItem(KEY, 'off') : localStorage.removeItem(KEY) } catch {}
-      // picking a season moves the date to the nearest month of it; auto and off go back to today
-      setAsOf(SEASONS.includes(v) ? dateInSeason(v) : null)
-      showPick()
-      start()
-    })
-  })
-  showPick()
-  addEventListener('asof', () => { showPick(); loadWeather().then(start) })
+  // redraw at once on what is already known, and again if the weather turns out to disagree
+  seasonBar(() => { start(); loadWeather().then(wet => { if (kind === 'summer' && wet !== wasWet) start() }) })
 }
