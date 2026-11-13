@@ -2,6 +2,34 @@
 // data, so `ls`/`cd`/`cat` walk the same structure the nav does.
 import { tetris } from './tetris.js'
 import { read, qualifies, save, table } from './scores.js'
+import { nowDate, seoulNow, setAsOf, asOf } from './seoul.js'
+
+// days you can ask for by name rather than by number
+const NAMED = {
+  christmas: [12, 25], xmas: [12, 25], newyear: [1, 1], 'new-year': [1, 1],
+  halloween: [10, 31], hangul: [10, 9], hangeul: [10, 9], chuseok: [9, 17],
+}
+// a date the reader typed: 2027-01-01, 12-25, 12/25, or one of the names above
+function parseDay(text) {
+  const s = text.trim().toLowerCase().replace(/\s+/g, '')
+  if (NAMED[s]) { const [m, d] = NAMED[s]; return make(null, m, d) }
+  const m = s.match(/^(?:(\d{4})[-/.])?(\d{1,2})[-/.](\d{1,2})$/)
+  if (!m) return null
+  return make(m[1] && +m[1], +m[2], +m[3])
+}
+function make(year, month, day) {
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null
+  const now = nowDate()
+  // keep the hour, so a day chosen in the evening is still an evening
+  const d = new Date(Date.UTC(year ?? new Date().getUTCFullYear(), month - 1, day, 3, 0, 0))
+  d.setUTCHours(now.getUTCHours(), now.getUTCMinutes())
+  const got = seoulNow(d)
+  return got.month === month && got.day === day ? d : new Date(+d + 6 * 3600e3)
+}
+const SANTA = [
+  '      ___       ', '    _/   \\_     ', "   ( o   o )    ", '    \\  ^  /     ',
+  "   {'-...-'}    ", '   /       \\    ', '  ~~~~~~~~~~~   ',
+]
 
 const dir = c => ({ d: true, c })
 const file = (lines, url) => ({ lines, url })
@@ -65,7 +93,7 @@ export function shell(el, D) {
         ['tree', 'the whole thing at once'],
         ['open [path]', 'open the matching page in the browser'],
         ['whoami', 'short version'],
-        ['date', 'the time in Seoul'],
+        ['date', 'the time in Seoul — `date 12-25` looks at another day'],
         ['tetris', 'a game — arrows and space'],
         ['scores', 'the high-score table'],
         ['clear', 'clear the screen'],
@@ -116,8 +144,22 @@ export function shell(el, D) {
       setTimeout(() => { location.href = url }, 400)
     },
     whoami() { for (const l of D.whoami) say(l) },
-    date() {
-      say(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', dateStyle: 'full', timeStyle: 'short' }).format(new Date()) + ' KST')
+    date(arg) {
+      const a = (arg || '').trim().toLowerCase()
+      if (!a) {
+        stamp()
+        if (asOf()) say('`date auto` puts it back to today.', 'm')
+        say()
+        say('you can look at the site on another day — the background follows.', 'm')
+        say('which day? (try 12-25, 2027-01-01, christmas, hangul — or auto)', 'm')
+        pending = { kind: 'date' }
+        ps1.textContent = 'date >'
+        return
+      }
+      if (['auto', 'now', 'today', 'reset'].includes(a)) {
+        setAsOf(null); say('back to today.', 'g'); stamp(); return
+      }
+      setDay(a)
     },
     scores() { board() },
     clear() { out.textContent = '' },
@@ -126,6 +168,36 @@ export function shell(el, D) {
   const ALIAS = { dir: 'ls', ll: 'ls', about: 'whoami', who: 'whoami', man: 'help', '?': 'help', quit: 'exit', x: 'exit', pwd: 'pwd' }
 
   const board = (highlight) => { for (const [line, cls] of table(read(), highlight)) say(line, cls) }
+
+  const stamp = () => say(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', dateStyle: 'full', timeStyle: 'short' }).format(nowDate()) + ' KST')
+  // moving the date moves the season, the sky and whatever is drifting in the margins
+  const setDay = (text) => {
+    const d = parseDay(text)
+    if (!d) { say(`date: ${text}: cannot read that — try 12-25, 2027-01-01, christmas, or auto`, 'w'); return }
+    setAsOf(d)
+    const now = seoulNow(d)
+    say('the site is now showing:', 'm')
+    stamp()
+    say()
+    // a summer day is rain or shine, and the reader is the one who knows which
+    if (now.month >= 6 && now.month <= 8) {
+      say('was it raining that day, or clear?', 'm')
+      pending = { kind: 'wx' }
+      ps1.textContent = 'rain / clear >'
+      return
+    }
+    greet(now)
+  }
+  // two days say something back
+  const greet = (now) => {
+    if (now.month === 12 && now.day === 25) {
+      SANTA.forEach(l => say(l, 'g')); say(); say('  merry christmas', 'h')
+    } else if (now.month === 1 && now.day === 1) {
+      say('  happy new year', 'h'); say('  the sun comes up over the margin today.', 'm')
+    }
+    say()
+    say('scroll up, or `open` to see the front page on that day.', 'm')
+  }
 
   // after a run that makes the table, the prompt takes a name instead of a command
   let pending = null, quitGame = null
@@ -170,6 +242,19 @@ export function shell(el, D) {
 
   const submit = () => {
     const raw = cmd.value.trim()
+    if (pending && pending.kind === 'date') {
+      say(ps1.textContent + ' ' + raw, 'p'); cmd.value = ''; pending = null; prompt()
+      if (raw) (['auto', 'now', 'today', 'reset'].includes(raw.toLowerCase()) ? (setAsOf(null), say('back to today.', 'g'), stamp()) : setDay(raw))
+      say(); fit(); return
+    }
+    if (pending && pending.kind === 'wx') {
+      say(ps1.textContent + ' ' + raw, 'p'); cmd.value = ''; pending = null; prompt()
+      const wet = /^(r|rain|wet|비)/i.test(raw)
+      setAsOf(asOf(), wet ? 'rain' : 'sun')
+      say(wet ? 'raining, then.' : 'clear, then.', 'g')
+      greet(seoulNow(nowDate()))
+      fit(); return
+    }
     if (pending) {
       cmd.value = ''
       const { list, entry } = save(raw, pending.score, pending.rows)

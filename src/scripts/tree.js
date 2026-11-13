@@ -62,9 +62,11 @@ export function decemberTree() {
   const dark = () => document.documentElement.dataset.theme === 'dark'
   const due = () => seoulNow().month === 12 && dark() && chosen() !== 'off' && activeSeason() === 'winter'
 
-  function sync() {
+  // `again` forces the work even when the answer has not changed, which is how a re-entry
+  // (a new date, or coming back to the tab) restarts the twinkling
+  function sync(again) {
     const on = due() && fits()
-    if (on === lit) return
+    if (on === lit && !again) return
     lit = on
     el.style.opacity = on ? '1' : '0'
     clearInterval(timer); timer = 0
@@ -74,11 +76,12 @@ export function decemberTree() {
   }
 
   new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-  addEventListener('resize', sync)
-  document.querySelectorAll('.season-select').forEach(p => p.addEventListener('change', sync))
+  addEventListener('asof', () => sync(true))
+  addEventListener('resize', () => sync())
+  document.querySelectorAll('.season-select').forEach(p => p.addEventListener('change', () => sync(true)))
   // nothing twinkles in a background tab; coming back re-evaluates from scratch
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { clearInterval(timer); timer = 0 } else { lit = false; sync() }
+    if (document.hidden) { clearInterval(timer); timer = 0 } else sync(true)
   })
   sync()
 }

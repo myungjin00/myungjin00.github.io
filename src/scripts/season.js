@@ -3,7 +3,7 @@
 // Things drift in the margins and only faintly across the text column, and what lands in a margin
 // piles up until a cat walks by. The season follows Seoul unless the reader picks one (or turns it
 // off); the pick is remembered in this browser.
-import { seoulNow, season as seoulSeason } from './seoul.js'
+import { seoulNow, season as seoulSeason, asOf, setAsOf, asOfWeather, dateInSeason } from './seoul.js'
 import { addRing, inMargin, burstInMargin, popAt } from './ripple.js'
 import { cat, squirrel, santa, penguin, pickCoat, present, nutcracker } from './critters.js'
 
@@ -12,12 +12,22 @@ export const SEASONS = ['spring', 'summer', 'autumn', 'winter']
 export function chosen() {
   try { const v = localStorage.getItem(KEY); return v && (v === 'off' || SEASONS.includes(v)) ? v : 'auto' } catch { return 'auto' }
 }
+// a season picked before the bar moved the date instead is converted the first time it is seen,
+// so the bar and what is on screen cannot disagree
+try {
+  const old = localStorage.getItem(KEY)
+  if (old && SEASONS.includes(old)) { localStorage.removeItem(KEY); setAsOf(dateInSeason(old)) }
+} catch {}
+
 // the season that colours things: the pick, or Seoul's own when the pick is auto or off
 export const activeSeason = () => { const c = chosen(); return SEASONS.includes(c) ? c : seoulSeason(seoulNow()) }
 
 // Seoul's weather, asked once and kept for half an hour; a failed ask counts as a dry day
 let raining = false
 export async function loadWeather() {
+  const set = asOfWeather()
+  if (set) return (raining = set === 'rain')          // the reader said what the day was like
+  if (asOf()) return (raining = false)                 // a chosen day with nothing said is a dry one
   try { const c = JSON.parse(sessionStorage.getItem('seoul-wx') || 'null'); if (c && Date.now() - c.t < 30 * 60e3) return (raining = c.r) } catch {}
   try {
     const j = await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.57&longitude=126.98&current=precipitation,weather_code')).json()
@@ -267,13 +277,22 @@ export function seasonFall() {
   document.addEventListener('visibilitychange', start)   // nothing runs in a background tab
   start()
 
+  // the bar shows what is on screen: off, the season of a chosen day, or auto for today
   const picks = [...document.querySelectorAll('.season-select')]
+  const showPick = () => {
+    const v = chosen() === 'off' ? 'off' : asOf() ? seoulSeason(seoulNow()) : 'auto'
+    picks.forEach(p => { p.value = v })
+  }
   picks.forEach(pick => {
-    pick.value = chosen()
     pick.addEventListener('change', () => {
-      try { pick.value === 'auto' ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, pick.value) } catch {}
-      picks.forEach(p => { p.value = pick.value })
+      const v = pick.value
+      try { v === 'off' ? localStorage.setItem(KEY, 'off') : localStorage.removeItem(KEY) } catch {}
+      // picking a season moves the date to the nearest month of it; auto and off go back to today
+      setAsOf(SEASONS.includes(v) ? dateInSeason(v) : null)
+      showPick()
       start()
     })
   })
+  showPick()
+  addEventListener('asof', () => { showPick(); loadWeather().then(start) })
 }

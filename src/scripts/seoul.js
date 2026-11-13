@@ -1,6 +1,26 @@
 // Seoul's local time in the footer, with a sun by day and a moon by night, so a reader abroad
 // can see at a glance whether it is a sensible hour to write.
 
+// The site's date can be moved from the contact terminal. Everything that depends on the calendar
+// reads it from here, so one setting carries the season, the sky and the margins together.
+const AS_OF = 'asof', AS_OF_WX = 'asof-wx'
+const ls = k => { try { return localStorage.getItem(k) } catch { return null } }
+const put = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v) } catch {} }
+
+export function asOf() {
+  const v = ls(AS_OF); if (!v) return null
+  const d = new Date(v); return isNaN(+d) ? null : d
+}
+// the instant the whole site is pretending it is
+export const nowDate = () => asOf() ?? new Date()
+// a chosen summer day is dry unless the reader says otherwise; a real one asks the weather service
+export const asOfWeather = () => (asOf() ? ls(AS_OF_WX) : null)
+export function setAsOf(d, wx = null) {
+  put(AS_OF, d ? d.toISOString() : null)
+  put(AS_OF_WX, d && wx ? wx : null)
+  dispatchEvent(new Event('asof'))
+}
+
 // sunrise and sunset in Seoul around the 15th of each month (KST, minutes after midnight).
 // ponytail: monthly values are within ~20 min of the true times; swap in a solar formula if
 // the icon ever needs to flip on the exact minute.
@@ -11,18 +31,29 @@ const SUN = [
 const SUN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>'
 
 // month (1-12) and minutes after midnight in Seoul, whatever the reader's own time zone
-export function seoulNow(d = new Date()) {
-  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+export function seoulNow(d = nowDate()) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
     .formatToParts(d).map(x => [x.type, x.value]))
-  return { month: +p.month, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute }
+  return { month: +p.month, day: +p.day, hour: p.hour, minute: p.minute, mins: +p.hour * 60 + +p.minute }
 }
 export const isDay = ({ month, mins }) => mins >= SUN[month - 1][0] && mins < SUN[month - 1][1]
 export const season = ({ month }) => ['winter', 'spring', 'summer', 'autumn'][Math.floor((month % 12) / 3)]
+export const MONTHS = { winter: [12, 1, 2], spring: [3, 4, 5], summer: [6, 7, 8], autumn: [9, 10, 11] }
+// picking a season from the bar moves the date to the nearest month of it, keeping the hour, so
+// the same pick always lands in the same place rather than somewhere new each time
+export function dateInSeason(name, from = new Date()) {
+  const here = seoulNow(from).month
+  const gap = m => { const g = Math.abs(m - here); return Math.min(g, 12 - g) }
+  const m = MONTHS[name].reduce((a, b) => (gap(b) < gap(a) ? b : a))
+  const d = new Date(from)
+  d.setMonth(m - 1, Math.min(d.getDate(), 28))
+  return d
+}
 
 // the moon's age as a fraction of its cycle: 0 new, 0.5 full. The phase is the same wherever you
 // stand; only the side that is lit flips between hemispheres, and Seoul is in the north.
 const SYNODIC = 29.530588853, NEW_MOON = Date.UTC(2000, 0, 6, 18, 14)
-export const moonPhase = (d = new Date()) => (((d - NEW_MOON) / 864e5 / SYNODIC) % 1 + 1) % 1
+export const moonPhase = (d = nowDate()) => (((d - NEW_MOON) / 864e5 / SYNODIC) % 1 + 1) % 1
 
 // the moon as Seoul sees it tonight: the dark disc faintly, and the lit part over it
 function moonSvg(phase, r, cx, cy, lit, dark) {
@@ -41,7 +72,7 @@ function arcProgress(now) {
   return ((m >= set ? m - set : m + 1440 - set)) / night
 }
 // a small sky for the contents bar: a half-circle path with the sun or the moon on it
-export function skySvg(d = new Date()) {
+export function skySvg(d = nowDate()) {
   const now = seoulNow(d), day = isDay(now), p = Math.min(1, Math.max(0, arcProgress(now)))
   const W = 60, H = 22, R = 21, cx = W / 2, cy = H - 1, a = Math.PI * (1 - p)   // the horizon sits inside, so a body on it stays whole
   const x = (cx + Math.cos(a) * R).toFixed(1), y = (cy - Math.sin(a) * R).toFixed(1)
@@ -55,9 +86,14 @@ export function skySvg(d = new Date()) {
 export function seoulClock() {
   const foot = document.getElementById('seoul'), bar = document.getElementById('seoul-bar')
   const tick = () => {
-    const d = new Date(), now = seoulNow(d), day = isDay(now), t = `Seoul ${now.hour}:${now.minute}`
+    const d = nowDate(), now = seoulNow(d), day = isDay(now)
+    const set = asOf()
+    const t = set
+      ? `${new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', month: 'short', day: 'numeric' }).format(d)} ${now.hour}:${now.minute}`
+      : `Seoul ${now.hour}:${now.minute}`
     // the chip stays short; the tooltip is where the time zone goes
-    const title = day ? 'Daytime in Seoul · KST, UTC+9' : 'Night in Seoul · KST, UTC+9 · the moon tonight'
+    const title = (set ? 'A date set from the contact terminal — `date auto` puts it back. ' : '') +
+      (day ? 'Daytime in Seoul · KST, UTC+9' : 'Night in Seoul · KST, UTC+9 · the moon tonight')
     // the footer keeps a single glyph; tonight's moon there too, in its real phase
     const glyph = day ? SUN_SVG : `<svg viewBox="0 0 24 24" aria-hidden="true">${moonSvg(moonPhase(d), 8, 12, 12, 'currentColor', 'color-mix(in srgb, currentColor 22%, transparent)')}</svg>`
     if (foot) foot.innerHTML = `${t} <span class="sky" title="${title}">${glyph}</span>`
@@ -65,4 +101,5 @@ export function seoulClock() {
   }
   tick()
   setInterval(tick, 30_000)
+  addEventListener('asof', tick)
 }
