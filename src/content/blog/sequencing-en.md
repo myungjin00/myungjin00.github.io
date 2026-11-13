@@ -32,7 +32,7 @@ Because fragmentation is random, the same position gets read by several differen
 
 They are often used interchangeably, and "30× coverage" usually means average depth. The distinction matters when a region is missed entirely — high average depth does not mean nothing was missed.
 
-For RNA-seq the number people quote is **library size**: total reads per sample, typically 20–50 million. It is not a measure of quality on its own. A sample with many reads that all came from a handful of highly expressed genes has less information than the number suggests, which is why [normalisation](../reading-de-en/) exists.
+For RNA-seq the number people quote is **library size**: total reads per sample, typically 20–50 million. It is not a measure of quality on its own. A sample with many reads that all came from a handful of highly expressed genes has less information than the number suggests, which is why [normalisation](../normalisation-en/) exists.
 
 ## Why reads come in pairs
 
@@ -45,14 +45,14 @@ Most of the bulk RNA-seq I work with is paired-end, and the pairing shows up as 
 
 ## Long reads, briefly
 
-A second family of machines — PacBio and Oxford Nanopore — reads whole fragments tens of thousands of bases long. That removes the reconstruction problem: a full transcript can be read in one piece, so isoforms are unambiguous. The trade is a higher per-base error rate and higher cost per sample, so short reads remain the default for counting.
+A second family of machines — PacBio and Oxford Nanopore — reads whole fragments tens of thousands of bases long. That removes the reconstruction problem: a full transcript can be read in one piece, so isoforms are unambiguous. The trade is cost per sample and, for raw PacBio CLR or Nanopore simplex reads, a higher per-base error rate — though PacBio HiFi and Nanopore duplex now reach Q30, so accuracy is no longer the dividing line it was. Short reads remain the default for counting.
 
 ## What a FASTQ file holds
 
 Four lines per read:
 
 ```
-@SRR1234567.1 1/1          ← the read's name
+@SRR1234567.1/1            ← the read's name
 GATTACAGATTACAGATTACA      ← the bases
 +
 IIIIIIIIIIIIIIIIIFFF:      ← one quality character per base
@@ -67,7 +67,7 @@ The fourth line is the part worth knowing. Each character encodes a **Phred scor
 | 30 | 1 in 1,000 | good |
 | 40 | 1 in 10,000 | very good |
 
-Quality falls off toward the end of a read — the chemistry degrades over cycles — which is why quality control plots are per-position, and why trimming the tail is a routine step.
+Quality tends to fall off toward the end of a read — the chemistry degrades over cycles — which is why quality control plots are per-position, and why trimming the tail is a routine step.
 
 ## Summary
 
@@ -83,5 +83,5 @@ Quality falls off toward the end of a read — the chemistry degrades over cycle
 
 - Goodwin et al., [Coming of age: ten years of next-generation sequencing technologies](https://doi.org/10.1038/nrg.2016.49), *Nat. Rev. Genet.* (2016)
 - Conesa et al., [A survey of best practices for RNA-seq data analysis](https://doi.org/10.1186/s13059-016-0881-8), *Genome Biol.* (2016)
-- Cock et al., [The Sanger FASTQ file format, and the Solexa/Illumina FASTQ variants](https://doi.org/10.1093/nar/gkp1137), *Nucleic Acids Res.* (2010)
+- Cock et al., [The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants](https://doi.org/10.1093/nar/gkp1137), *Nucleic Acids Res.* (2010)
 - Amarasinghe et al., [Opportunities and challenges in long-read sequencing data analysis](https://doi.org/10.1186/s13059-020-1935-5), *Genome Biol.* (2020)

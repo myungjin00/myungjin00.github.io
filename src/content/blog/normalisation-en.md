@@ -29,13 +29,13 @@ Most differential expression is the first case. That is worth remembering, becau
 
 ## CPM, FPKM, TPM
 
-The three names you meet, in the order they were invented:
+The three names you meet, from the least corrected to the most:
 
 - **CPM** (counts per million) — divide by library size. Corrects depth only.
-- **FPKM / RPKM** — divide by library size, then by gene length in kilobases. Corrects both, in that order.
+- **RPKM**, and **FPKM** for paired-end data — divide by library size, then by gene length in kilobases. Corrects both.
 - **TPM** (transcripts per million) — divide by gene length *first*, then by the total of those length-corrected values.
 
-TPM and FPKM use the same two corrections and differ only in order, which sounds pedantic and is not. Because TPM normalises last, **TPMs within a sample sum to one million**; FPKMs do not sum to anything fixed. That makes TPM comparable across samples in a way FPKM is not, and it is why TPM replaced FPKM for anything involving more than one sample.
+TPM and FPKM apply the same two corrections, and differ in **what the per-million step divides by**: FPKM by the total read count, TPM by the total of the length-corrected values. Because TPM normalises last, **TPMs within a sample sum to one million**; FPKMs do not sum to anything fixed. That makes TPM commensurable across samples where FPKM is not, and it is why TPM is preferred for anything involving more than one sample — though the fixed total is the same assumption the next section breaks. TPM corrects depth and length, never composition.
 
 Use TPM when you want to say "this gene is more abundant than that gene" or to hand numbers to a method that expects relative abundance. Do not use any of them as input to a differential-expression test.
 
@@ -43,7 +43,7 @@ Use TPM when you want to say "this gene is more abundant than that gene" or to h
 
 Scaling by total counts assumes the total is a fair measure of depth. It stops being fair when a handful of genes take up most of the library.
 
-Consider two samples sequenced identically. In the second, one gene is enormously induced and takes 30% of the reads. Every other gene now has a smaller share of the total, so dividing by the total makes **every other gene look lower** — an artefact produced entirely by one gene's success. Any composition like this breaks the assumption: a dominant gene, globoid rRNA contamination, a highly expressed cell type present in one sample.
+Consider two samples sequenced identically. In the second, one gene is enormously induced and takes 30% of the reads. Every other gene now has a smaller share of the total, so dividing by the total makes **every other gene look lower** — an artefact produced entirely by one gene's success. Any composition like this breaks the assumption: a dominant gene, rRNA or globin-mRNA contamination, a highly expressed cell type present in one sample.
 
 This is a real problem in practice rather than a theoretical one, and it is the reason the DE tools do not use CPM.
 
@@ -71,7 +71,7 @@ So: give the tool raw counts and let it compute its own size factors. Use TPM fo
 
 - Two non-biological things inflate a count: **library size** and **gene length**
 - Comparing the same gene across samples needs only the depth correction; length cancels
-- **CPM** corrects depth; **FPKM** and **TPM** correct both and differ in order — TPMs sum to a million, FPKMs do not, so TPM is the one that travels between samples
+- **CPM** corrects depth; **RPKM/FPKM** and **TPM** correct both and differ in what the per-million step divides by — TPMs sum to a million, FPKMs do not, so TPM is the one that is commensurable between samples. Neither corrects composition
 - Dividing by total counts fails when a few genes dominate the library, making everything else look lower
 - **Size factors** (DESeq2 median of ratios, edgeR TMM) use the *median* so that a loud gene cannot set the scale
 - They assume most genes are unchanged; when that is false, use spike-ins

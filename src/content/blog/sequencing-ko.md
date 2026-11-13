@@ -32,7 +32,7 @@ tags: [sequencing, NGS, FASTQ, reads, coverage]
 
 둘은 자주 섞여 쓰이고, "30× coverage"는 보통 평균 depth를 뜻한다. 구분이 중요해지는 건 어떤 구간이 아예 안 읽혔을 때다 — **평균 depth가 높아도 빠진 데가 없다는 뜻은 아니다.**
 
-RNA-seq에서 사람들이 말하는 숫자는 **library size**, 즉 시료당 총 read 수이고 보통 2천만~5천만이다. 이 숫자 자체는 품질 지표가 아니다. read는 많은데 전부 소수의 고발현 유전자에서 나왔다면 숫자가 말하는 것보다 정보가 적다. [정규화](../reading-de-ko/)가 있는 이유다.
+RNA-seq에서 사람들이 말하는 숫자는 **library size**, 즉 시료당 총 read 수이고 보통 2천만~5천만이다. 이 숫자 자체는 품질 지표가 아니다. read는 많은데 전부 소수의 고발현 유전자에서 나왔다면 숫자가 말하는 것보다 정보가 적다. [정규화](../normalisation-ko/)가 있는 이유다.
 
 ## read가 쌍으로 나오는 이유
 
@@ -45,14 +45,14 @@ RNA-seq에서 사람들이 말하는 숫자는 **library size**, 즉 시료당 �
 
 ## Long read, 짧게
 
-두 번째 계열인 PacBio와 Oxford Nanopore는 수만 염기짜리 조각을 통째로 읽는다. 재구성 문제가 사라진다 — 전사체 (transcript) 하나를 한 조각으로 읽을 수 있으니 isoform이 모호하지 않다. 대가는 염기 (base)당 오류율 (error rate)이 높고 시료당 비용이 비싸다는 것이라, 세는 작업에는 여전히 short read가 기본이다.
+두 번째 계열인 PacBio와 Oxford Nanopore는 수만 염기짜리 조각을 통째로 읽는다. 재구성 문제가 사라진다 — 전사체 (transcript) 하나를 한 조각으로 읽을 수 있으니 isoform이 모호하지 않다. 대가는 시료당 비용이고, PacBio CLR이나 Nanopore simplex 같은 원시 read에서는 염기 (base)당 오류율 (error rate)도 높다 — 다만 PacBio HiFi와 Nanopore duplex는 이제 Q30에 이르러서, 정확도는 예전만큼의 갈림길이 아니다. 세는 작업에는 여전히 short read가 기본이다.
 
 ## FASTQ 파일에 들어 있는 것
 
 read 하나당 네 줄이다.
 
 ```
-@SRR1234567.1 1/1          ← read 이름
+@SRR1234567.1/1            ← read 이름
 GATTACAGATTACAGATTACA      ← 염기
 +
 IIIIIIIIIIIIIIIIIFFF:      ← 염기 하나당 품질 문자 하나
@@ -67,7 +67,7 @@ IIIIIIIIIIIIIIIIIFFF:      ← 염기 하나당 품질 문자 하나
 | 30 | 1,000분의 1 | 좋음 |
 | 40 | 10,000분의 1 | 매우 좋음 |
 
-품질은 read의 뒤쪽으로 갈수록 떨어진다 — 사이클이 거듭될수록 화학반응이 나빠진다. 품질 검사 (quality control) 그림이 위치별로 그려지는 이유이고, 꼬리를 잘라내는 trimming (트리밍)이 상례인 이유다.
+품질은 read의 뒤쪽으로 갈수록 떨어지는 경향이 있다 — 사이클이 거듭될수록 화학반응이 나빠진다. 품질 검사 (quality control) 그림이 위치별로 그려지는 이유이고, 꼬리를 잘라내는 trimming (트리밍)이 상례인 이유다.
 
 ## 요약
 
@@ -83,5 +83,5 @@ IIIIIIIIIIIIIIIIIFFF:      ← 염기 하나당 품질 문자 하나
 
 - Goodwin et al., [Coming of age: ten years of next-generation sequencing technologies](https://doi.org/10.1038/nrg.2016.49), *Nat. Rev. Genet.* (2016)
 - Conesa et al., [A survey of best practices for RNA-seq data analysis](https://doi.org/10.1186/s13059-016-0881-8), *Genome Biol.* (2016)
-- Cock et al., [The Sanger FASTQ file format, and the Solexa/Illumina FASTQ variants](https://doi.org/10.1093/nar/gkp1137), *Nucleic Acids Res.* (2010)
+- Cock et al., [The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants](https://doi.org/10.1093/nar/gkp1137), *Nucleic Acids Res.* (2010)
 - Amarasinghe et al., [Opportunities and challenges in long-read sequencing data analysis](https://doi.org/10.1186/s13059-020-1935-5), *Genome Biol.* (2020)

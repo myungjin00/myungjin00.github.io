@@ -15,7 +15,9 @@ The [note on getting to a count matrix](../geo-fastq-en/) is the procedure: run 
 
 ## What a reference genome is
 
-A reference genome is one long string of A, C, G and T per chromosome, stored in a **FASTA** file. It is not any particular person's genome — it is a consensus assembled from several, and it exists so that everyone can describe a position the same way.
+A reference genome is one long string of A, C, G and T per chromosome, stored in a **FASTA** file. It is not any particular person's genome, and it is not an average of several either — it is a haploid **mosaic**, stitched together from clone libraries of a handful of anonymous donors, with one library supplying most of it. It exists so that everyone can describe a position the same way.
+
+The file holds more than the chromosomes: runs of `N` where the sequence is still unresolved, a tail of unplaced scaffolds, and alternate haplotypes for the most variable regions. Whether those extras are present is why two files both called GRCh38 can behave differently.
 
 References have **versions**, and the version is part of a result:
 
@@ -34,9 +36,8 @@ A GTF is a table: one line per feature, with the chromosome, the start and end c
 
 Counting needs both files. The aligner uses the reference to find where a read came from; the counter uses the annotation to decide which gene that position belongs to. Change the annotation and the counts change, even with identical reads — so, like the assembly, the annotation **source and version** are part of the method:
 
-- **GENCODE** — the fullest, including many non-coding transcripts; the usual choice for human and mouse
-- **Ensembl** — the same underlying models, different packaging and ID style
-- **RefSeq** — more conservative, fewer transcripts per gene
+- **GENCODE and Ensembl** — the same gene set. GENCODE ships it with extra attributes and is the usual choice for human and mouse; Ensembl packages it differently
+- **RefSeq** — curated independently, more conservative, fewer transcripts per gene
 
 Gene identifiers differ between them, and the identifier is what a downstream tool matches on. Converting between ID systems silently loses genes, which is a common and invisible way to lose results.
 
@@ -47,7 +48,7 @@ Gene identifiers differ between them, and the identifier is what a downstream to
 | **FASTA** | sequences — a genome, a transcriptome, a set of proteins | `>name` then the letters |
 | **FASTQ** | sequences *with* per-base quality — raw reads | four lines per read |
 | **SAM** | reads placed on the reference | text, one line per alignment |
-| **BAM** | the same thing, compressed and indexed | binary; what you actually keep |
+| **BAM** | the same thing, compressed — and indexable once coordinate-sorted | binary; what you actually keep |
 | **GTF / GFF** | where the genes are | one line per feature |
 | **BED** | plain intervals — peaks, regions, anything | chromosome, start, end |
 | **VCF** | variants — differences from the reference | one line per variant position |
@@ -59,11 +60,11 @@ One trap worth memorising: **BED counts from 0 and excludes the end; GTF counts 
 A read in a FASTQ is a string with no address. After alignment it has one, plus some bookkeeping. The parts worth recognising in a BAM:
 
 - **position** — chromosome and coordinate where the read starts
-- **CIGAR** — how the read lines up, as a compact string. `100M` means a hundred bases matched straight through; `50M200N50M` means fifty matched, two hundred skipped, fifty matched — and in RNA-seq that skip is an **intron**, so the read crossed a splice junction
+- **CIGAR** — how the read lines up, as a compact string. `100M` means a hundred bases aligned straight through with no indel — matches *or* mismatches, since only `=` and `X` tell those apart; `50M200N50M` means fifty matched, two hundred skipped, fifty matched — and in RNA-seq that skip is an **intron**, so the read crossed a splice junction
 - **MAPQ** — confidence that the position is the right one
 - **flags** — paired, mate's position, reverse strand, duplicate
 
-MAPQ is worth one caution: the aligners do not agree on a scale. STAR writes 255 for a uniquely mapped read, while BWA's maximum is 60 and 0 means the read mapped equally well in more than one place. A filter copied from one pipeline into another can quietly discard everything.
+MAPQ is worth one caution: the aligners do not agree on a scale. STAR writes 255 for a uniquely mapped read — a value the SAM spec reserves for “mapping quality unavailable” — while BWA-MEM's maximum is 60 and 0 means the read mapped equally well in more than one place. A filter copied from one pipeline into another can quietly discard everything.
 
 ## Why a read might not be counted
 
@@ -74,13 +75,13 @@ A read can survive alignment and still contribute nothing to the matrix:
 - **No feature** — it maps to the genome but to no annotated gene: intronic, intergenic, or a transcript this annotation does not include
 - **Unmapped** — it does not fit the reference at all: contamination, adapter, or a poor-quality read
 
-These counts are reported, and they are worth reading. A sample where a large fraction is "no feature" usually means genomic DNA contamination or the wrong annotation; a large "unmapped" fraction usually means the wrong organism or something upstream went wrong.
+These counts are reported, and they are worth reading. A sample where a large fraction is "no feature" usually means the strandedness setting is wrong — that alone can dump most reads into the bin with nothing else amiss — or genomic DNA contamination, or the wrong annotation; a large "unmapped" fraction usually means the wrong organism or something upstream went wrong.
 
 ## Summary
 
 - A **reference genome** is a consensus sequence in FASTA; its **assembly version** is part of any result, and coordinates do not transfer between versions
 - The reference does not say where genes are — that is a separate **annotation** file, usually GTF, and its source and version change the counts
-- Gene identifiers differ between GENCODE, Ensembl and RefSeq, and converting between them loses genes silently
+- GENCODE and Ensembl carry the same gene set; RefSeq is curated separately. Gene identifiers differ between them, and converting between them loses genes silently
 - **BED is 0-based and end-exclusive; GTF is 1-based and end-inclusive**
 - Alignment gives a read a position, a **CIGAR** string (where `N` in RNA-seq means a splice junction), a **MAPQ** and flags
 - MAPQ scales differ between aligners — STAR's unique is 255, BWA's maximum is 60
@@ -89,6 +90,6 @@ These counts are reported, and they are worth reading. A sample where a large fr
 ## References
 
 - Danecek et al., [Twelve years of SAMtools and BCFtools](https://doi.org/10.1093/gigascience/giab008), *GigaScience* (2021)
-- Frankish et al., [GENCODE: reference annotation for the human and mouse genomes](https://doi.org/10.1093/nar/gkaf181), *Nucleic Acids Res.* (2025)
+- Mudge et al., [GENCODE 2025: reference gene annotation for human and mouse](https://doi.org/10.1093/nar/gkae1078), *Nucleic Acids Res.* (2025)
 - Dobin et al., [STAR: ultrafast universal RNA-seq aligner](https://doi.org/10.1093/bioinformatics/bts635), *Bioinformatics* (2013)
 - Putri et al., [Analysing high-throughput sequencing data in Python with HTSeq 2.0](https://doi.org/10.1093/bioinformatics/btac166), *Bioinformatics* (2022)

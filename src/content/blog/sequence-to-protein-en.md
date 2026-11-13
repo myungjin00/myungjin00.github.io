@@ -17,7 +17,7 @@ tags: [sequence, central dogma, alignment, MSA, proteins]
 
 Biology writes in three alphabets:
 
-| | Alphabet | Length of a unit |
+| | Alphabet | Which copy it is |
 | --- | --- | --- |
 | **DNA** | A, T, G, C | the stored copy |
 | **RNA** | A, U, G, C | the working copy (T becomes U) |
@@ -25,7 +25,7 @@ Biology writes in three alphabets:
 
 The direction between them is the **central dogma**: DNA is *transcribed* into RNA, and RNA is *translated* into protein.
 
-Translation reads RNA three letters at a time. Each triplet is a **codon**, and each codon names one amino acid. Three letters from a four-letter alphabet gives 64 codons for 20 amino acids, so the code is redundant — several codons mean the same amino acid. Three codons mean *stop*, and one (AUG) means both *start* and methionine.
+Translation reads RNA three letters at a time. Each triplet is a **codon**, and each codon names one amino acid. Three letters from a four-letter alphabet gives 64 codons for 20 amino acids, so the code is redundant — several codons mean the same amino acid. Three codons mean *stop*, and one (AUG) encodes methionine — and, in the right sequence context, is also the signal to *start*.
 
 Two consequences worth holding onto:
 
@@ -34,7 +34,7 @@ Two consequences worth holding onto:
 
 ## What a gene actually hands you
 
-A gene is not a clean run of protein-coding letters. In humans the coding parts (**exons**) are interrupted by non-coding stretches (**introns**) that are spliced out of the RNA before translation.
+A gene is not a clean run of protein-coding letters. In humans the parts that survive splicing (**exons**) are interrupted by stretches removed from the RNA (**introns**) before translation. Exons are not the same as coding sequence — they include the untranslated ends, and a non-coding gene has exons with no coding content at all.
 
 Splicing is not fixed. The same gene can keep different combinations of exons and produce different proteins — **isoforms**. So "one gene, one protein" is not true: roughly twenty thousand protein-coding genes give rise to many more distinct proteins.
 
@@ -47,8 +47,8 @@ Two sequences from related species are similar but not identical. **Aligning** t
 ```
 Human   M K T A Y I A K Q R Q I S F V K
 Mouse   M K T A Y I A K Q R Q I - F I K
-                              ↑   ↑
-                            gap  substitution
+                                ↑   ↑
+                              gap   substitution
 ```
 
 Two scoring choices make an alignment:
@@ -60,12 +60,12 @@ The output is a percentage identity and, more usefully, a column-by-column corre
 
 ## Many at once: the MSA
 
-A **multiple sequence alignment** does the same for many related sequences at once — typically the same protein collected across hundreds of species. Its value is that you can now read *down* a column instead of across a row.
+A **multiple sequence alignment** does the same for many related sequences at once — typically thousands of homologues of the same protein, pulled from across the tree of life and from metagenomes. Its value is that you can now read *down* a column instead of across a row.
 
 - a column where nearly every species has the same residue is **conserved**. Evolution has not been allowed to change it, which usually means it is doing something — catalysis, binding, or holding the structure together
 - a column that varies freely is tolerant, and probably not doing anything delicate
 
-And then the part that is less obvious. Consider two columns that both vary — but *together*. Whenever one changes, the other changes as if compensating. That is **coevolution**, and the usual reading is that the two residues touch each other in three dimensions: a change at one is tolerated only when the other adjusts.
+And then the part that is less obvious. Consider two columns that both vary — but *together*. Whenever one changes, the other changes as if compensating. That is **coevolution**, and the usual reading is that the two residues touch each other in three dimensions: a change at one is tolerated only when the other adjusts. The reading only holds once the indirect correlations are divided out — if A pairs with B and B with C, A and C will appear to covary without ever touching — which is what direct-coupling methods do.
 
 So an alignment built purely from sequence carries a noisy map of which residues are near which in space. That is the signal modern structure prediction learned to read, and it is why those models take an MSA as input rather than a single sequence. A protein with few known relatives gives a shallow MSA and a weaker prediction.
 
