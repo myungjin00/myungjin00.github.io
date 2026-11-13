@@ -102,4 +102,4 @@ In the order I have actually hit them.
 
 - Radford et al., [Learning transferable visual models from natural language supervision](https://arxiv.org/abs/2103.00020) (ICML 2021) — CLIP, contrastive alignment of two modalities
 - Baltrušaitis et al., [Multimodal machine learning: a survey and taxonomy](https://arxiv.org/abs/1705.09406), *IEEE TPAMI* **41**(2) (2019) — where the fusion taxonomy comes from
-- Shen et al., [Complementary multi-modality molecular self-supervised learning via non-overlapping masking](https://doi.org/10.1093/bib/bbae256), *Brief. Bioinform.* **25**(4) (2024) — MoleSG, reviewed [here](../molesg-en/)
+- Shen et al., [Complementary multi-modality molecular self-supervised learning via non-overlapping masking](https://doi.org/10.1093/bib/bbae256), *Brief. Bioinform.* **25**(4) (2024) — MoleSG, [reviewed in its own note](../molesg-en/)

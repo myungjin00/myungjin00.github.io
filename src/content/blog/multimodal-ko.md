@@ -102,4 +102,4 @@ tags: [multimodal, fusion, cross-attention, representation learning]
 
 - Radford et al., [Learning transferable visual models from natural language supervision](https://arxiv.org/abs/2103.00020) (ICML 2021) — CLIP. 두 모달리티의 contrastive 정렬
 - Baltrušaitis et al., [Multimodal machine learning: a survey and taxonomy](https://arxiv.org/abs/1705.09406), *IEEE TPAMI* **41**(2) (2019) — fusion 분류가 여기서 나왔다
-- Shen et al., [Complementary multi-modality molecular self-supervised learning via non-overlapping masking](https://doi.org/10.1093/bib/bbae256), *Brief. Bioinform.* **25**(4) (2024) — MoleSG. [여기](../molesg-ko/)서 리뷰했다
+- Shen et al., [Complementary multi-modality molecular self-supervised learning via non-overlapping masking](https://doi.org/10.1093/bib/bbae256), *Brief. Bioinform.* **25**(4) (2024) — MoleSG. [따로 정리한 글](../molesg-ko/)이 있다

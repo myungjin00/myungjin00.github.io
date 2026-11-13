@@ -1,6 +1,5 @@
 // =============================================================================
 //  CV CONTENT — edit this file to update the site. Nothing else needs touching.
-//  Items marked  // TODO  are placeholders to fill in later.
 // =============================================================================
 
 export const profile = {

@@ -121,5 +121,5 @@ For representation work the trade-off reverses, which is why I use JT-VAE's deco
 ## References
 
 - Jin, Barzilay & Jaakkola, [Hierarchical generation of molecular graphs using structural motifs](https://arxiv.org/abs/2002.03230) (ICML 2020) — the paper reviewed here
-- Jin, Barzilay & Jaakkola, [Junction tree variational autoencoder](https://arxiv.org/abs/1802.04364) (ICML 2018) — the predecessor, reviewed [here](../jtvae-en/)
+- Jin, Barzilay & Jaakkola, [Junction tree variational autoencoder](https://arxiv.org/abs/1802.04364) (ICML 2018) — the predecessor, [reviewed in its own note](../jtvae-en/)
 - Liu et al., [Constrained graph variational autoencoders for molecule design](https://arxiv.org/abs/1805.09076) (NeurIPS 2018) — CG-VAE, the atom-based baseline

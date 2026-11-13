@@ -120,4 +120,4 @@ That turns out to matter for the vocabulary problem. A generative model is cripp
 
 - Jin, Barzilay & Jaakkola, [Junction tree variational autoencoder for molecular graph generation](https://arxiv.org/abs/1802.04364) (ICML 2018) — the paper reviewed here
 - Gómez-Bombarelli et al., [Automatic chemical design using a data-driven continuous representation of molecules](https://doi.org/10.1021/acscentsci.7b00572), *ACS Cent. Sci.* (2018) — the SMILES VAE it is measured against
-- Jin, Barzilay & Jaakkola, [Hierarchical generation of molecular graphs using structural motifs](https://arxiv.org/abs/2002.03230) (ICML 2020) — the successor, reviewed [here](../hiervae-en/)
+- Jin, Barzilay & Jaakkola, [Hierarchical generation of molecular graphs using structural motifs](https://arxiv.org/abs/2002.03230) (ICML 2020) — the successor, [reviewed in its own note](../hiervae-en/)
