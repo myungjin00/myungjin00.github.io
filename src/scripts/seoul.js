@@ -45,7 +45,7 @@ export function seoulNow(d = nowDate()) {
 }
 export const isDay = ({ month, mins }) => mins >= SUN[month - 1][0] && mins < SUN[month - 1][1]
 export const season = ({ month }) => ['winter', 'spring', 'summer', 'autumn'][Math.floor((month % 12) / 3)]
-export const MONTHS = { winter: [12, 1, 2], spring: [3, 4, 5], summer: [6, 7, 8], autumn: [9, 10, 11] }
+const MONTHS = { winter: [12, 1, 2], spring: [3, 4, 5], summer: [6, 7, 8], autumn: [9, 10, 11] }
 // picking a season from the bar moves the date to the nearest month of it, keeping the hour, so
 // the same pick always lands in the same place rather than somewhere new each time
 export function dateInSeason(name, from = new Date()) {

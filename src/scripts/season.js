@@ -102,7 +102,7 @@ function clearer(ctx, c, t, H, dpr, kind) {
 // December, in the right margin: a present turns up, the lid goes, and a nutcracker marches out of
 // it and off the page. One visit every minute or so; the rest of the time there is nothing there.
 let gift = null
-export const resetGift = () => { gift = null }
+const resetGift = () => { gift = null }
 function giftScene(ctx, t, dt, right, H, dpr, rim) {
   if (!gift) gift = { phase: 'wait', until: t + 8 + Math.random() * 12, x: 0, mx: 0, t0: 0 }
   const g = gift
