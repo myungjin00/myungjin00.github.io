@@ -34,16 +34,24 @@ export function decemberTree() {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
   let timer = 0, lit = false
 
-  // one ornament in four is dark, so the tree reads as lit rather than studded
-  const bauble = () => Math.random() < 0.25
-    ? '<i style="color:var(--muted);opacity:.55">.</i>'
+  // The tree arrives on the first with a few lights and gains one a day, so that the
+  // twenty-fifth is a day the tree arrives at rather than one more day of December.
+  const litShare = () => {
+    const d = seoulNow().day
+    return d >= 25 ? 1 : Math.min(1, (4 + d) / 26)
+  }
+  const bauble = (on) => !on
+    ? '<i style="color:var(--muted);opacity:.5">.</i>'
     : `<i style="color:var(${PAINT[Math.floor(Math.random() * PAINT.length)]})">${BAUBLE[Math.floor(Math.random() * BAUBLE.length)]}</i>`
 
   const paint = () => {
+    const share = litShare()
     el.innerHTML = ART.map((row, i) =>
       [...row].map(ch =>
-        ch === '@' ? bauble()
-        : ch === '*' ? '<i style="color:var(--ginkgo);font-weight:600">*</i>'
+        ch === '@' ? bauble(Math.random() < share)
+        : ch === '*' ? (seoulNow().day >= 25
+            ? '<i style="color:var(--ginkgo);font-weight:600">*</i>'
+            : '<i style="color:var(--muted);opacity:.45">*</i>')
         : ch === '|' || ch === '=' ? `<i style="color:var(--maple);opacity:.8">${ch}</i>`
         : ch === ' ' ? ch : `<i style="color:var(--leaf);opacity:.75">${ch}</i>`
       ).join('')
@@ -72,7 +80,7 @@ export function decemberTree() {
     clearInterval(timer); timer = 0
     if (!on) return
     paint()
-    if (!reduce) timer = setInterval(paint, 900)
+    if (!reduce) timer = setInterval(paint, seoulNow().day === 25 ? 450 : 900)
   }
 
   new MutationObserver(() => sync()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })

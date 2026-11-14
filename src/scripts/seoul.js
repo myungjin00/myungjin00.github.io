@@ -64,14 +64,19 @@ export function dateInSeason(name, from = new Date()) {
 const SYNODIC = 29.530588853, NEW_MOON = Date.UTC(2000, 0, 6, 18, 14)
 export const moonPhase = (d = nowDate()) => (((d - NEW_MOON) / 864e5 / SYNODIC) % 1 + 1) % 1
 
-// the moon as Seoul sees it tonight: the dark disc faintly, and the lit part over it
-function moonSvg(phase, r, cx, cy, lit, dark) {
+// the outline of the lit part, as SVG path data — shared so the bar and the margins agree
+export function moonPath(phase, r, cx, cy) {
   const k = (1 - Math.cos(2 * Math.PI * phase)) / 2, waxing = phase < 0.5   // k: how much of the face is lit
   const rx = r * Math.abs(1 - 2 * k)
   const outer = waxing ? 1 : 0, term = waxing ? (k < 0.5 ? 0 : 1) : (k < 0.5 ? 1 : 0)
+  return `M${cx} ${cy - r}A${r} ${r} 0 0 ${outer} ${cx} ${cy + r}A${rx} ${r} 0 0 ${term} ${cx} ${cy - r}Z`
+}
+
+// the moon as Seoul sees it tonight: the dark disc faintly, and the lit part over it
+function moonSvg(phase, r, cx, cy, lit, dark) {
   // a faint rim around the whole disc, so even a thin crescent reads as the moon
   return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${dark}" stroke="${lit}" stroke-opacity=".45" stroke-width="${(r / 6).toFixed(2)}"/>` +
-    `<path d="M${cx} ${cy - r}A${r} ${r} 0 0 ${outer} ${cx} ${cy + r}A${rx} ${r} 0 0 ${term} ${cx} ${cy - r}Z" fill="${lit}"/>`
+    `<path d="${moonPath(phase, r, cx, cy)}" fill="${lit}"/>`
 }
 // how far through today's daylight (or tonight's dark) Seoul is, 0 at rise and 1 at set
 function arcProgress(now) {

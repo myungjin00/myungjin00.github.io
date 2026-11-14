@@ -1,7 +1,7 @@
 // What is up there on a given night, drawn into the margins of the season canvas.
 // The rule the whole calendar follows: by day things fall, by night something is lit. A rainy
 // night is overcast, so nothing in here is drawn at all — no moon, no stars.
-import { seoulNow, moonPhase } from './seoul.js'
+import { seoulNow, moonPhase, moonPath } from './seoul.js'
 
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim()
 const rnd = (seed) => { let s = seed; return () => (s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296 }
@@ -38,20 +38,17 @@ function constellation(ctx, pts, lines, x, y, k, col, a) {
   }
 }
 
-// The moon in its real phase, as a disc with the unlit part cut away
+// The moon in its real phase, drawn from the same path the bar icon uses so the two cannot
+// disagree about what tonight looks like.
 function moon(ctx, x, y, r, phase, col, a) {
-  const k = (1 - Math.cos(2 * Math.PI * phase)) / 2, waxing = phase < 0.5
-  const rx = r * Math.abs(1 - 2 * k)
-  const outer = waxing ? 1 : 0, term = waxing ? (k < 0.5 ? 0 : 1) : (k < 0.5 ? 1 : 0)
-  ctx.globalAlpha = a * 0.18; ctx.fillStyle = col
-  ctx.beginPath(); ctx.arc(x, y, r * 1.9, 0, Math.PI * 2); ctx.fill()        // a soft halo
-  ctx.globalAlpha = a * 0.3
+  ctx.globalAlpha = a * 0.16; ctx.fillStyle = col
+  ctx.beginPath(); ctx.arc(x, y, r * 2.1, 0, Math.PI * 2); ctx.fill()        // a soft halo
+  ctx.globalAlpha = a * 0.22
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()              // the dark disc, faintly
-  ctx.globalAlpha = a; ctx.beginPath()
-  ctx.moveTo(x, y - r)
-  ctx.arc(x, y, r, -Math.PI / 2, Math.PI / 2, !outer)
-  ctx.ellipse(x, y, rx, r, 0, Math.PI / 2, -Math.PI / 2, !term)
-  ctx.closePath(); ctx.fill()
+  ctx.globalAlpha = a * 0.4; ctx.strokeStyle = col; ctx.lineWidth = Math.max(0.8, r / 7)
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke()            // a rim, so a sliver still reads
+  ctx.globalAlpha = a
+  ctx.fill(new Path2D(moonPath(phase, r, x, y)))
 }
 
 // Aurora: thin ribbons that slide and breathe, green through to teal with violet only at the
@@ -187,10 +184,10 @@ export function drawSky(ctx, want, { W, H, t, dt, left, right, dark }) {
     }
   }
   if (want.includes('winterstars') && left > 70) {
-    constellation(ctx, ORION, ORION_LINES, left * 0.3, H * 0.16, Math.min(26, left / 4), col, A)
+    constellation(ctx, ORION, ORION_LINES, left * 0.3, Math.max(190, H * 0.24), Math.min(26, left / 4), col, A)
   }
   if (want.includes('summerstars') && W - right > 70) {
-    constellation(ctx, TRIANGLE, TRIANGLE_LINES, right + (W - right) * 0.25, H * 0.14, Math.min(30, (W - right) / 4), col, A)
+    constellation(ctx, TRIANGLE, TRIANGLE_LINES, right + (W - right) * 0.25, Math.max(185, H * 0.22), Math.min(30, (W - right) / 4), col, A)
   }
   if (want.includes('meteors')) meteors(ctx, dt, A, col)
 
@@ -199,7 +196,7 @@ export function drawSky(ctx, want, { W, H, t, dt, left, right, dark }) {
     // the full moon of Daeboreum and Chuseok is simply the moon being full; it is drawn larger
     const big = want.includes('moonbig')
     const r = big ? 21 : 13
-    moon(ctx, W - Math.min(110, (W - right) * 0.55), H * 0.13, r, phase, col, A)
+    moon(ctx, W - Math.min(110, (W - right) * 0.55), Math.max(170, H * 0.24), r, phase, col, A)
   }
   if (want.includes('sunrise')) { sunrise(ctx, left * 0.45, H, t, A); sunrise(ctx, right + (W - right) * 0.55, H, t, A) }
   ctx.globalAlpha = 1

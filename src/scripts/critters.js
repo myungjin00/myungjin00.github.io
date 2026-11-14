@@ -559,3 +559,28 @@ export function surf(ctx, t, W, floorY, dark) {
     ctx.stroke()
   }
 }
+
+// A carved pumpkin, lit from inside, for the last week of October
+export function pumpkin(ctx, t, rim) {
+  const skin = '#D9661E', dark = '#A84911', stalk = '#4E6B3C'
+  const flicker = 0.72 + Math.sin(t * 7) * 0.12 + Math.sin(t * 11.3) * 0.08
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+  ctx.globalAlpha = flicker * 0.5                         // the light it throws on the ground
+  const g = ctx.createRadialGradient(0, -11, 4, 0, -11, 54)
+  g.addColorStop(0, 'rgba(255,176,70,.85)'); g.addColorStop(1, 'rgba(255,150,50,0)')
+  ctx.fillStyle = g; P(ctx, () => ctx.arc(0, -11, 54, 0, Math.PI * 2)); ctx.fill()
+  ctx.globalAlpha = 1
+  ctx.strokeStyle = stalk; ctx.lineWidth = 2.6
+  P(ctx, () => { ctx.moveTo(0, -20); ctx.quadraticCurveTo(2, -26, -2, -29) }); ctx.stroke()
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.1
+  P(ctx, () => ell(ctx, 0, -11, 13, 10.5)); ctx.stroke(); fill(ctx, skin)
+  ctx.strokeStyle = dark; ctx.lineWidth = 1
+  for (const dx of [-6.5, 0, 6.5]) { P(ctx, () => ell(ctx, dx, -11, 3.4, 10.2)); ctx.stroke() }
+  ctx.globalAlpha = flicker                               // the face, burning
+  ctx.fillStyle = '#FFD27A'
+  P(ctx, () => { ctx.moveTo(-7, -15); ctx.lineTo(-3, -15); ctx.lineTo(-5, -11); ctx.closePath() }); ctx.fill()
+  P(ctx, () => { ctx.moveTo(7, -15); ctx.lineTo(3, -15); ctx.lineTo(5, -11); ctx.closePath() }); ctx.fill()
+  P(ctx, () => { ctx.moveTo(-7, -7); ctx.lineTo(-4, -4.4); ctx.lineTo(-1.4, -6.6); ctx.lineTo(1.4, -4.4)
+    ctx.lineTo(4, -6.6); ctx.lineTo(7, -4.4); ctx.lineTo(4.4, -2.6); ctx.lineTo(-4.4, -2.6); ctx.closePath() }); ctx.fill()
+  ctx.globalAlpha = 1
+}

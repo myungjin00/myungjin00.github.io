@@ -7,7 +7,7 @@ import { seoulNow, season as seoulSeason, asOf, setAsOf, asOfWeather, dateInSeas
 import { addRing, inMargin, burstInMargin, popAt } from './ripple.js'
 import { cat, squirrel, santa, penguin, pickCoat, present, nutcracker,
   skier, boarder, dog, duck, swallow, sparrow, whale, dolphin, geese,
-  snowman, hydrangea, persimmon, silverGrass, surf } from './critters.js'
+  snowman, hydrangea, persimmon, silverGrass, surf, pumpkin } from './critters.js'
 import { drawSky, meteorMaybe } from './sky.js'
 
 const KEY = 'season'
@@ -58,6 +58,29 @@ const MONTH = {
   11: { fall: [['dryleaf', ['--maple', '--ginkgo']], ['ginkgo', ['--ginkgo']]], sky: ['moon'], guest: 'dog', stand: 'persimmon' },
   12: { fall: [['snow', ['--snow']]],                                         sky: [], guest: 'santa' },
 }
+// Seollal and Chuseok move with the lunar calendar, so the few years that matter are written
+// out. Daeboreum is the fifteenth night of the first lunar month — the full moon after Seollal.
+const LUNAR = {
+  2026: { daeboreum: [3, 3], chuseok: [9, 25] },
+  2027: { daeboreum: [2, 20], chuseok: [9, 15] },
+  2028: { daeboreum: [2, 9], chuseok: [10, 3] },
+  2029: { daeboreum: [2, 27], chuseok: [9, 22] },
+  2030: { daeboreum: [2, 17], chuseok: [9, 12] },
+}
+// what today is, if today is one of the handful of days that are their own thing
+export function occasion(now = seoulNow()) {
+  const { year, month, day } = now
+  if (month === 1 && day === 1) return 'sunrise'
+  if (month === 10 && day === 9) return 'hangul'
+  if (month === 10 && day >= 25) return 'halloween'
+  const l = LUNAR[year]
+  if (l) {
+    for (const k of ['daeboreum', 'chuseok'])
+      if (month === l[k][0] && day === l[k][1]) return k
+  }
+  return null
+}
+
 const RAIN = [['drop', ['--rain']]]
 const FORMS = {
   spring: [['petal', ['--spring']]],
@@ -87,7 +110,12 @@ export function risesNow() {
 export function skyNow() {
   const m = monthNow()
   if (wetMonth(m) && raining) return []
-  return MONTH[m].sky.filter(s => s !== 'fireworks')
+  const want = MONTH[m].sky.filter(s => s !== 'fireworks')
+  // and once a year a day takes the sky for itself
+  const day = SEASONS.includes(chosen()) ? null : occasion()
+  if (day === 'sunrise') return ['sunrise', 'stars']
+  if (day === 'daeboreum' || day === 'chuseok') return [...new Set([...want, 'moon', 'moonbig'])]
+  return want
 }
 // a five-lobed maple leaf, unit size, point up
 const MAPLE = [[0,-1],[.18,-.55],[.5,-.75],[.42,-.3],[.95,-.35],[.62,.05],[.8,.3],[.3,.25],[.1,.55],[0,.45],[-.1,.55],[-.3,.25],[-.8,.3],[-.62,.05],[-.95,-.35],[-.42,-.3],[-.5,-.75],[-.18,-.55]]
@@ -189,7 +217,7 @@ function clearer(ctx, c, t, H, dpr, kind) {
   const who = monthPlan().guest
   if (who === 'santa') santa(ctx, t, rim)
   else if (who === 'penguin') penguin(ctx, t, rim, sliding(c))
-  else if (who === 'skier') (c.board ??= Math.random() < 0.5) ? boarder(ctx, t, rim) : skier(ctx, t, rim)
+  else if (who === 'skier') penguin(ctx, t, rim, sliding(c))   // the skiers are on the slope; the floor is still swept
   else if (who === 'squirrel') squirrel(ctx, t, rim, c.carry)
   else if (who === 'dog') dog(ctx, t, rim)
   else if (who === 'duck') duck(ctx, t, rim)
@@ -206,24 +234,27 @@ let gift = null
 export const snow = { up: false, bits: [0, 0], at: [0, 0] }
 const resetGift = () => { gift = null }
 function giftScene(ctx, t, dt, right, H, dpr, rim, dark) {
-  if (!gift) gift = { phase: 'wait', until: t + 8 + Math.random() * 12, x: 0, mx: 0, t0: 0 }
+  if (!gift) gift = { phase: 'wait', until: t + (seoulNow().day >= 25 ? 3 : 8) + Math.random() * (seoulNow().day >= 25 ? 5 : 12), x: 0, mx: 0, t0: 0, day: false }
   const g = gift
   const at = (x, y = 0) => ctx.setTransform(dpr, 0, 0, dpr, x * dpr, (H - 2 + y) * dpr)
   ctx.globalAlpha = 1
   if (g.phase === 'wait') {
     if (t < g.until || !dark) return        // the theme is settled when a visit starts, not mid-stride
+    g.day = seoulNow().day >= 25            // on the day itself there is more than one box
     g.x = right + 30 + Math.random() * 18
     g.phase = 'sit'; g.until = t + 2.4
   }
+  const extras = (lid) => { if (!g.day) return; at(g.x - 26); present(ctx, lid, rim); at(g.x + 25); present(ctx, lid, rim) }
   if (g.phase === 'sit') {
-    at(g.x); present(ctx, 0, rim)
+    extras(0); at(g.x); present(ctx, 0, rim)
     if (t >= g.until) { g.phase = 'open'; g.t0 = t }
   } else if (g.phase === 'open') {
     const p = Math.min(1, (t - g.t0) / 0.7)
-    at(g.x); present(ctx, p * p * 30, rim)
+    extras(0); at(g.x); present(ctx, p * p * 30, rim)
     if (p === 1) { g.phase = 'rise'; g.t0 = t }
   } else if (g.phase === 'rise') {
     const p = Math.min(1, (t - g.t0) / 0.9)
+    extras(0)
     at(g.x, 36 * (1 - p)); nutcracker(ctx, t, rim)     // he comes up from inside, so draw him first
     at(g.x); present(ctx, null, rim)                   // and the open box in front of his legs
     ctx.globalAlpha = 1 - p                            // the lid carries on up and out of sight
@@ -232,10 +263,84 @@ function giftScene(ctx, t, dt, right, H, dpr, rim, dark) {
     if (p === 1) { g.phase = 'march'; g.mx = g.x }
   } else if (g.phase === 'march') {
     g.mx += 46 * dt
-    at(g.x); present(ctx, null, rim)
+    extras(0); at(g.x); present(ctx, null, rim)
     at(g.mx); nutcracker(ctx, t, rim)
     if (g.mx > innerWidth + 40) gift = null
   }
+}
+
+// Hangul Day, the ninth of October: the letters drift up through the margins, and when two of
+// them pass close enough they lock into the syllable they would make and drift on as one.
+const JAMO = ['\u3131', '\u3134', '\u3137', '\u3139', '\u3141', '\u3142', '\u3145', '\u3147', '\u3148', '\u314A', '\u314F', '\u3153', '\u3157', '\u315C', '\u3163']
+const PAIRS = { '\u3131\u314F': '\uAC00', '\u3134\u314F': '\uB098', '\u3137\u314F': '\uB2E4', '\u3139\u314F': '\uB77C', '\u3141\u314F': '\uB9C8', '\u3142\u314F': '\uBC14', '\u3145\u314F': '\uC0AC', '\u3147\u314F': '\uC544',
+  '\u3131\u3157': '\uACE0', '\u3134\u3157': '\uB178', '\u3137\u3157': '\uB3C4', '\u3141\u3157': '\uBAA8', '\u3142\u3157': '\uBCF4', '\u3147\u3157': '\uC624', '\u3147\u3163': '\uC774', '\u3141\u3163': '\uBBF8' }
+let letters = []
+function jamo(ctx, t, dt, W, H, left, right, col) {
+  const want = Math.max(6, Math.round(W / 170))
+  // the first lot are already on their way up, or the margins stay empty for a minute
+  const fresh = letters.length === 0
+  while (letters.length < want) letters.push({
+    ch: JAMO[Math.floor(Math.random() * JAMO.length)],
+    x: Math.random() < 0.5 ? Math.random() * left : right + Math.random() * (W - right),
+    y: fresh ? Math.random() * H : H + 20 + Math.random() * 40,
+    vy: 11 + Math.random() * 10, ph: Math.random() * 6.28,
+    s: 15 + Math.random() * 10, made: 0,
+  })
+  for (const l of letters) {
+    l.y -= l.vy * dt; l.ph += dt * 0.7
+    if (l.made) l.made -= dt
+    if (l.y < -30) { l.y = H + 20 + Math.random() * 40; l.x = Math.random() < 0.5 ? Math.random() * left : right + Math.random() * (W - right); l.ch = JAMO[Math.floor(Math.random() * JAMO.length)]; l.made = 0 }
+  }
+  // two that pass close enough become the syllable they spell
+  for (let i = 0; i < letters.length; i++) for (let j = i + 1; j < letters.length; j++) {
+    const a = letters[i], b = letters[j]
+    if (a.made || b.made || a.ch.length > 1 || b.ch.length > 1) continue
+    if (Math.abs(a.x - b.x) > 26 || Math.abs(a.y - b.y) > 20) continue
+    const made = PAIRS[a.ch + b.ch] ?? PAIRS[b.ch + a.ch]
+    if (!made) continue
+    a.ch = made; a.made = 2.6; a.s = Math.max(a.s, b.s) * 1.25
+    b.y = H + 25; b.ch = JAMO[Math.floor(Math.random() * JAMO.length)]
+  }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+  for (const l of letters) {
+    const x = l.x + Math.sin(l.ph) * 9
+    ctx.globalAlpha = l.made > 0 ? 0.95 : 0.55
+    ctx.fillStyle = col
+    // canvas cannot read a CSS variable, so the stack is written out here
+    ctx.font = `${l.made > 0 ? 600 : 400} ${l.s}px "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif`
+    ctx.fillText(l.ch, x, l.y)
+  }
+  ctx.globalAlpha = 1
+}
+
+// February's margins are a slope, so the skier and the boarder come down them rather than
+// walking the floor like everyone else, carving as they go and leaving a track that fades.
+let glider = null
+function slope(ctx, t, dt, W, H, left, right, dpr, rim) {
+  if (!glider) {
+    if (Math.random() > dt * 0.06) return
+    const onLeft = Math.random() < 0.5
+    glider = { board: Math.random() < 0.5, mid: onLeft ? left * 0.5 : right + (W - right) * 0.5,
+      amp: Math.min(42, (onLeft ? left : W - right) * 0.3), y: -40, vy: 120 + Math.random() * 50,
+      ph: Math.random() * 6.28, trail: [] }
+  }
+  const g = glider
+  g.y += g.vy * dt; g.ph += dt * 1.5
+  const x = g.mid + Math.sin(g.ph) * g.amp
+  g.trail.push({ x, y: g.y }); if (g.trail.length > 26) g.trail.shift()
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  ctx.globalAlpha = 0.5; ctx.strokeStyle = css('--snow'); ctx.lineWidth = 1.6; ctx.lineCap = 'round'
+  ctx.beginPath()
+  g.trail.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)))
+  ctx.stroke()
+  ctx.globalAlpha = 1
+  // lean into the turn, and face the way the slope is taking them
+  const tilt = Math.cos(g.ph) * 0.5
+  ctx.setTransform((Math.cos(g.ph) < 0 ? -1 : 1) * dpr, 0, 0, dpr, x * dpr, g.y * dpr)
+  ctx.rotate(Math.abs(tilt) * 0.35)
+  ;(g.board ? boarder : skier)(ctx, t, rim)
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  if (g.y > H + 50) glider = null
 }
 
 // what has landed: a small drift along the bottom of each margin, shared with the click effects
@@ -315,7 +420,7 @@ export function seasonFall() {
     dpr = devicePixelRatio || 1; W = innerWidth; H = innerHeight
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr)
     pile = []; heights = new Map(); sweepers = []; flung = []; floorH = H; resetGift()   // a new size, a clean floor
-    snow.up = false; snow.bits = [0, 0]
+    snow.up = false; snow.bits = [0, 0]; glider = null
     const any = fallsNow().length + risesNow().length
     const n = any ? Math.round(Math.min(18, Math.max(8, (W * H) / 90000))) : 0
     while (bits.length < n) { const s = spawn(false); if (!s) break; bits.push(s) }
@@ -370,6 +475,21 @@ export function seasonFall() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     const plan = monthPlan(), floorY = H - 2
     if (plan.shore) { ctx.globalAlpha = 1; surf(ctx, now / 1000, W, floorY, darkTheme()) }
+    const today = SEASONS.includes(chosen()) ? null : occasion()
+    if (today === 'halloween' && darkTheme() && left > 80) {
+      ctx.globalAlpha = 1
+      for (const sx of [left * 0.62, right + (W - right) * 0.38]) {
+        ctx.setTransform(dpr, 0, 0, dpr, sx * dpr, floorY * dpr); pumpkin(ctx, now / 1000, rimNow())
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+    // Hangul Day: the letters themselves drift in the margins, and now and then two meet
+    if (today === 'hangul') {
+      ctx.globalAlpha = 1
+      jamo(ctx, now / 1000, dt, W, H, left, right, css('--green'))
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+    if (plan.guest === 'skier' && left > 80) slope(ctx, now / 1000, dt, W, H, left, right, dpr, rimNow())
     const standing = plan.stand || (darkTheme() && plan.standNight)
     if (standing && left > 80) {
       ctx.globalAlpha = 1
@@ -412,15 +532,15 @@ export function seasonFall() {
     // once enough has piled up, someone of the season comes out along each margin and kicks the drift off the page
     if (!plan.builds && pile.length >= PILE_CAP && !sweepers.length && left > 60)
       sweepers = [{ x: left - 4, dir: -1, seed: Math.random() * 4 }, { x: right + 4, dir: 1, seed: Math.random() * 4 }]
-    // a clear summer day: now and then the cat comes out for a stroll along one margin
-    if (kind === 'summer' && !plan.shore && summerMode() === 'sun' && !sweepers.length && left > 60 && now > nextStroll) {
-      if (nextStroll) sweepers = [Math.random() < 0.5 ? { x: left - 4, dir: -1 } : { x: right + 4, dir: 1 }]
-      nextStroll = now + 25000 + Math.random() * 15000
-    }
-    // a shoreline has no drift to clear, so what swims there comes and goes on its own
-    if (plan.shore && !sweepers.length && left > 60 && now > nextStroll) {
-      if (nextStroll) sweepers = [Math.random() < 0.5 ? { x: -30, dir: 1 } : { x: W + 30, dir: -1 }]
-      nextStroll = now + 9000 + Math.random() * 9000
+    // Some months leave nothing to sweep — the sea takes August's, January's snow stands up as a
+    // snowman, and June's bubbles go the other way — so their visitor comes on a timer instead of
+    // waiting for a drift that will never arrive.
+    const noDrift = plan.shore || plan.builds || !fallsNow().some(([f]) => f !== 'drop' && f !== 'bubble')
+    if (noDrift && !sweepers.length && left > 60 && now > nextStroll) {
+      if (nextStroll) sweepers = plan.shore
+        ? [Math.random() < 0.5 ? { x: -30, dir: 1 } : { x: W + 30, dir: -1 }]
+        : [Math.random() < 0.5 ? { x: left - 4, dir: -1 } : { x: right + 4, dir: 1 }]
+      nextStroll = now + (plan.shore ? 9000 : 18000) + Math.random() * 9000
     }
     for (let i = sweepers.length - 1; i >= 0; i--) {
       const sw = sweepers[i], from = sw.x
@@ -472,17 +592,63 @@ export function seasonFall() {
   loadWeather().then(r => { if (r && kind === 'summer') start() })   // a wet day turns summer to rain once Seoul answers
   // switching theme switches a summer between fireworks and the daytime sky, there and then
   new MutationObserver(() => { if (kind === 'summer') start() }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-  // the snowman is the one thing on the page you can dress: a scarf, a hat, a nose, then arms
-  addEventListener('pointerdown', e => {
-    if (!snow.up || !raf) return
-    const y = innerHeight - 2
-    for (let i = 0; i < 2; i++) {
-      if (Math.abs(e.clientX - snow.at[i]) < 22 && e.clientY > y - 46 && e.clientY < y + 4) {
-        if (snow.bits[i] < 4) snow.bits[i]++
-        else { addRing(snow.at[i], y - 22, 40, 0.3, 1); popAt(snow.at[i], y - 26) }
-        break
-      }
+  // A tap in a margin does whatever the month makes of it. Over the text it does nothing, so
+  // that reading is never interrupted by something jumping.
+  const scatter = (x, y, reach, up) => {
+    let hit = 0
+    for (const b of bits) {
+      const dx = b.x - x, dy = b.y - y, d = Math.hypot(dx, dy)
+      if (d > reach) continue
+      const k = (1 - d / reach) * 150
+      b.vy = (up ? -1 : 1) * (40 + k * 0.7) * (b.up ? -1 : 1)
+      b.sway = Math.min(60, b.sway + k * 0.25)
+      b.vr = (Math.random() - 0.5) * 6
+      hit++
     }
+    return hit
+  }
+  const sweepPile = (x, reach) => {
+    const keep = []
+    for (const p of pile) {
+      if (Math.abs(p.x - x) < reach) flung.push({ ...p, vx: (p.x - x) * 2.2, vy: -(60 + Math.random() * 90), vr: (Math.random() - 0.5) * 8, age: 0 })
+      else keep.push(p)
+    }
+    if (keep.length !== pile.length) { pile = keep; restack() }
+  }
+  addEventListener('pointerdown', e => {
+    if (!raf || chosen() === 'off') return
+    const x = e.clientX, y = e.clientY, H2 = innerHeight
+    if (!inMargin(x)) return
+    const m = monthNow(), dark = darkTheme(), floorY = H2 - 2
+    // the frame loop's own left/right are not in scope out here, so work them out again
+    const half = Math.min(W, 1060) / 2, edgeL = W / 2 - half, edgeR = W / 2 + half
+
+    // January: the snowman is the one thing here you can dress
+    if (snow.up) for (let i = 0; i < 2; i++)
+      if (Math.abs(x - snow.at[i]) < 22 && y > floorY - 46) {
+        if (snow.bits[i] < 4) { snow.bits[i]++; popAt(snow.at[i], floorY - 30); return }
+        addRing(snow.at[i], floorY - 22, 40, 0.3, 1); popAt(snow.at[i], floorY - 26); return
+      }
+    // December: the present opens the moment it is asked to
+    if (m === 12 && gift && (gift.phase === 'sit' || gift.phase === 'wait')) {
+      if (gift.phase === 'wait') gift.until = 0
+      else { gift.phase = 'open'; gift.t0 = performance.now() / 1000 }
+      addRing(x, y, 50, 0.3, 1); return
+    }
+    // whatever is drifting gets pushed out of the way, in the direction that month's things go
+    const up = m === 5 || m === 6 || m === 8
+    const moved = scatter(x, y, 150, up)
+    if (y > floorY - 70) sweepPile(x, 90)          // and a tap low down scuffs the drift
+
+    if (m === 6 || m === 8) {                      // bubbles burst rather than scatter
+      for (const b of bits) if (b.form === 'bubble' && Math.hypot(b.x - x, b.y - y) < 70) { popAt(b.x, b.y); respawn(b) }
+    }
+    if (m === 9) {                                 // September: the squirrel comes for what fell
+      if (!sweepers.length && edgeL > 60) sweepers = [{ x: x < W / 2 ? edgeL - 4 : edgeR + 4, dir: x < W / 2 ? -1 : 1, carry: true }]
+    }
+    if (dark && (m === 7 || m === 1 || m === 2)) meteorMaybe(W, H, 1)   // a clear night answers with one
+    if (dark && m === 8) burstInMargin()                                // August answers with a firework
+    addRing(x, y, moved ? 90 : 60, moved ? 0.34 : 0.22, 1.2)
   })
   addEventListener('resize', () => { if (raf) size() })
   document.addEventListener('visibilitychange', start)   // nothing runs in a background tab
