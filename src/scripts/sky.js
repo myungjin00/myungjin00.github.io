@@ -96,10 +96,10 @@ function milkyway(ctx, W, H, a, col) {
   ctx.restore()
 }
 
-// Sunrise on the first of January: a disc climbing out of the bottom of each margin
+// Sunrise on the first of January: one disc, climbing out of the margin and staying up
 function sunrise(ctx, x, H, t, a) {
-  const p = (Math.sin(t * 0.18) + 1) / 2              // it rises and settles, slowly
-  const y = H - 10 - p * 90, r = 26
+  const p = 1 - Math.exp(-t * 0.22)                   // it comes up once, and does not set again
+  const y = H - 10 - p * 120, r = 26
   const g = ctx.createRadialGradient(x, y, 2, x, y, r * 3.4)
   g.addColorStop(0, 'rgba(255,196,110,.85)')
   g.addColorStop(0.35, 'rgba(240,140,70,.35)')
@@ -168,11 +168,10 @@ export function drawSky(ctx, want, { W, H, t, dt, left, right, dark }) {
   }
   const col = css('--snow') || '#EEF2F5'
   const now = seoulNow()
-  const faint = () => { ctx.save(); ctx.beginPath(); ctx.rect(0, 0, left, H); ctx.rect(right, 0, W - right, H); ctx.clip() }
   const A = 1
 
   if (want.includes('aurora')) aurora(ctx, W, H, t, A)
-  if (want.includes('milkyway')) { faint(); milkyway(ctx, W, H, A * 0.9, col); ctx.restore() }
+  if (want.includes('milkyway')) milkyway(ctx, W, H, A * 0.55, col)
 
   if (want.some(w => w.startsWith('star')) || want.includes('aurora') || want.includes('meteors')) {
     const pts = stars(W, H, 110)
@@ -198,6 +197,6 @@ export function drawSky(ctx, want, { W, H, t, dt, left, right, dark }) {
     const r = big ? 21 : 13
     moon(ctx, W - Math.min(110, (W - right) * 0.55), Math.max(170, H * 0.24), r, phase, col, A)
   }
-  if (want.includes('sunrise')) { sunrise(ctx, left * 0.45, H, t, A); sunrise(ctx, right + (W - right) * 0.55, H, t, A) }
+  if (want.includes('sunrise')) sunrise(ctx, right + (W - right) * 0.5, H, t, A)
   ctx.globalAlpha = 1
 }

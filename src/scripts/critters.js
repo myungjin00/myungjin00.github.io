@@ -312,6 +312,7 @@ export function boarder(ctx, t, rim) {
 
 // A dog, nose down, ploughing through whatever has piled up
 export function dog(ctx, t, rim) {
+  ctx.scale(-1, 1)                      // drawn nose-left; everyone else faces +x, so turn him round
   const coat = '#C98A4B', dark = '#8C5A31', tongue = '#E8827E'
   const step = Math.sin(t * 10) * 2.4, bob = Math.abs(Math.sin(t * 10)) * 0.8
   ctx.translate(0, -bob); ctx.lineCap = 'round'; ctx.lineJoin = 'round'
@@ -334,6 +335,7 @@ export function dog(ctx, t, rim) {
 
 // A duck, with ducklings strung out behind her
 export function duck(ctx, t, rim) {
+  ctx.scale(-1, 1)                      // the ducklings trail to +x, so she has to lead at -x
   const body = '#8C7A5E', head = '#1E4A39', bill = '#E2B33C'
   const one = (x, k, wob) => {
     ctx.save(); ctx.translate(x, -wob)

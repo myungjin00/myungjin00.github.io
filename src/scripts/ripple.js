@@ -3,7 +3,7 @@
 // a blossom that lets its petals go, a fan of leaves that falls apart, a snowman that crumbles,
 // and in summer a ripple, a firework or a bubble, by Seoul's weather and hour. Dragging through
 // a margin leaves a trail of the same. Nothing runs until something is drawn.
-import { activeSeason, summerMode, shape, formsFor, floorAt, settle } from './season.js'
+import { activeSeason, summerMode, shape, formsFor, fallsNow, risesNow, monthPlan, floorAt, settle } from './season.js'
 
 const PILES = ['petal', 'petal-round', 'maple', 'ginkgo', 'snow']   // what lands and stays; sparks, bubbles and rain do not
 
@@ -72,41 +72,49 @@ function addPop(x, y) {
   }), 1.0)
 }
 
-// a handful of the season thrown out around a click; what can settle falls and joins the drift
-function spray(x, y, s) {
-  const n = 10 + Math.floor(Math.random() * 5), m = s === 'summer' ? summerMode() : null
-  if (m === 'night') return   // the click's own firework is the show
+// A handful of whatever this month is dropping, thrown out around a click; what can settle
+// falls and joins the drift. It reads the month rather than the season, so a tap in September
+// throws acorns and not the maple of a generic autumn.
+const SIZE = { snow: [4, 4], plum: [5, 3], forsythia: [5, 4], seed: [7, 4], acorn: [6, 4], bubble: [7, 8] }
+const RISES = new Set(['seed', 'bubble'])
+function spray(x, y) {
+  const pool = [...fallsNow(), ...risesNow()]
+  if (!pool.length) return
+  const n = 10 + Math.floor(Math.random() * 5)
+  let anyRise = false
   addBits(x, y, Array.from({ length: n }, () => {
-    const a = Math.random() * Math.PI * 2, v = 30 + Math.random() * 70, vx = Math.cos(a) * v, vy = Math.sin(a) * v - 40
-    if (s === 'winter') return bit('snow', '--snow', { vx, vy, g: 60, s: 4 + Math.random() * 4 })
-    if (s === 'spring') return bit('petal', '--spring', { vx, vy, g: 55, s: 8 + Math.random() * 5 })
-    if (s === 'autumn') { const [form, paints] = pick(formsFor('autumn')); return bit(form, pick(paints), { vx, vy, g: 60, s: 8 + Math.random() * 5 }) }
-    if (m === 'sun') return bit('bubble', '--rain', { vx: vx * 0.5, vy: -20 - Math.random() * 30, g: -10, s: 7 + Math.random() * 8, vr: 0 })
-    return bit('drop', '--rain', { vx: vx * 0.3, vy: 10 + Math.random() * 20, g: 260, s: 7 + Math.random() * 4, rot: 0, vr: 0 })   // rain
-  }), m === 'sun' ? 3.5 : m === 'rain' ? 1.6 : 6)
+    const [form, paints] = pick(pool)
+    const [base, span] = SIZE[form] ?? [8, 5]
+    const a = Math.random() * Math.PI * 2, v = 30 + Math.random() * 70
+    const vx = Math.cos(a) * v, vy = Math.sin(a) * v - 40
+    if (form === 'drop') return bit('drop', pick(paints), { vx: vx * 0.3, vy: 10 + Math.random() * 20, g: 260, s: base + Math.random() * span, rot: 0, vr: 0 })
+    if (RISES.has(form)) { anyRise = true
+      return bit(form, pick(paints), { vx: vx * 0.5, vy: -20 - Math.random() * 30, g: -10, s: base + Math.random() * span, vr: 0 }) }
+    return bit(form, pick(paints), { vx, vy, g: 60, s: base + Math.random() * span })
+  }), anyRise ? 3.5 : 6)
 }
 
-// what a click in the margin brings, by season
+// what a click in the margin brings, by month
 function clickAt(x, y) {
+  const plan = monthPlan()
+  spray(x, y)
+  if (plan.sky.includes('fireworks') && document.documentElement.dataset.theme === 'dark') return addFirework(x, y)
+  const rises = risesNow().length || fallsNow().some(([f]) => f === 'bubble')
+  if (rises) return addPop(x, y)
   const s = activeSeason()
-  spray(x, y, s)
   if (s === 'spring' || s === 'autumn') return addFan(x, y, s)
   if (s === 'winter') return addSnowman(x, y)
-  const m = summerMode()
-  if (m === 'night') addFirework(x, y)
-  else if (m === 'sun') addPop(x, y)
-  else addRing(x, y)
+  addRing(x, y)
 }
-// what a drag through the margin leaves along its path
+// what a drag through the margin leaves along its path — again, the month's own
 function trailAt(x, y) {
-  const s = activeSeason()
-  if (s === 'winter') return addBits(x, y, [0, 1].map(() => bit('snow', '--snow', { vx: (Math.random() - 0.5) * 20, vy: 10, g: 30, s: 4 + Math.random() * 3 })), 1.8)
-  if (s === 'spring') return addBits(x, y, [bit('petal', '--spring', { vx: (Math.random() - 0.5) * 24, vy: 8, g: 40, s: 9 + Math.random() * 4 })], 1.8)
-  if (s === 'autumn') { const [form, paints] = pick(formsFor('autumn')); return addBits(x, y, [bit(form, pick(paints), { vx: (Math.random() - 0.5) * 24, vy: 8, g: 50, s: 9 + Math.random() * 4 })], 1.8) }
-  const m = summerMode()
-  if (m === 'night') addSparkle(x, y)
-  else if (m === 'sun') addBits(x, y, [bit('bubble', '--rain', { vx: (Math.random() - 0.5) * 16, vy: -14, g: -12, s: 8 + Math.random() * 6, vr: 0 })], 2.2)
-  else addRing(x, y, 18, 0.32, 0.9)
+  const pool = [...fallsNow(), ...risesNow()]
+  if (!pool.length) return addRing(x, y, 18, 0.32, 0.9)
+  const [form, paints] = pick(pool)
+  const [base, span] = SIZE[form] ?? [9, 4]
+  if (form === 'drop') return addRing(x, y, 18, 0.32, 0.9)
+  if (RISES.has(form)) return addBits(x, y, [bit(form, pick(paints), { vx: (Math.random() - 0.5) * 16, vy: -14, g: -12, s: base + Math.random() * span, vr: 0 })], 2.2)
+  return addBits(x, y, [bit(form, pick(paints), { vx: (Math.random() - 0.5) * 24, vy: 8, g: 45, s: base + Math.random() * span })], 1.8)
 }
 
 const FDRAG = 1.3, FG = 60

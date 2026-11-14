@@ -574,7 +574,11 @@ export function seasonFall() {
       giftScene(ctx, now / 1000, dt, right, H, dpr, 'rgba(255,255,255,.32)', darkTheme())
     else if (gift) resetGift()
     // the summer night: a small firework now and then, up in a margin
-    if (kind === 'summer' && summerMode() === 'night' && now > nextBurst) { burstInMargin(); nextBurst = now + 3500 + Math.random() * 4000 }
+    // Fireworks belong to August, not to every summer night — June has its bubbles and the
+    // triangle, July its Milky Way. A rainy night gets none of it.
+    if (plan.sky.includes('fireworks') && darkTheme() && !(wetMonth(seoulNow().month) && raining) && now > nextBurst) {
+      burstInMargin(); nextBurst = now + 3500 + Math.random() * 4000
+    }
     raf = requestAnimationFrame(frame)
   }
   let nextBurst = 0, nextStroll = 0, wasWet = raining, flight = -160
