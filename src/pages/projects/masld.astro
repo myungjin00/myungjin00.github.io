@@ -22,8 +22,8 @@ const READING = [
     { k: 'alongside', v: `<a href="${u('projects/lipid/')}">Lipids and the SASP</a>` },
   ]}>
   <figure slot="plate" class="plate">
-    <img src={u('assets/fig/tms-liver-umap.png')} alt="Two UMAP projections of the same mouse liver cells from Tabula Muris Senis: one coloured by cell type, where hepatocytes, Kupffer cells, endothelial cells and lymphocytes form separate groups, and one coloured by age, where cells from the oldest mice sit apart within the hepatocyte group." width="1693" height="471">
-    <figcaption><span>Mouse liver, Tabula Muris Senis</span><span>droplet scRNA-seq · GSE149590 · by cell type and by age</span></figcaption>
+    <canvas id="scene" role="img" aria-label="Four beats: accessions arrive from GEO and SRA each writing its metadata differently; they are curated into one schema so the fields line up; differential expression spreads the genes into a volcano and a few cross the threshold; and the single bulk answer splits into cell types that move in different directions."></canvas>
+    <figcaption><span>What the analysis does</span><span>collect · curate · test · resolve — schematic, not results</span></figcaption>
   </figure>
 
   <h2>What is being built</h2>
@@ -51,6 +51,10 @@ const READING = [
     <figcaption><span>What the age-associated genes are for</span><span>GO enrichment · and the lipid-related terms among them</span></figcaption>
   </figure>
   <p>A liver is a mixture, though: hepatocytes do the metabolic work, Kupffer cells and lymphocytes the immune work, and endothelial and stellate cells line and support the tissue. Aging does not move them together, so the bulk result is an average over cell types that may be going in different directions. The single-cell arm is therefore scored per cell.</p>
+  <figure class="plate inline">
+    <img src={u('assets/fig/tms-liver-umap.png')} alt="Two UMAP projections of the same mouse liver cells from Tabula Muris Senis: one coloured by cell type, where hepatocytes, Kupffer cells, endothelial cells and lymphocytes form separate groups, and one coloured by age, where cells from the oldest mice sit apart within the hepatocyte group." width="1693" height="471" loading="lazy">
+    <figcaption><span>Mouse liver, Tabula Muris Senis</span><span>droplet scRNA-seq · GSE149590 · by cell type and by age</span></figcaption>
+  </figure>
   <p>It also rules out the shortcut. <i>Il6</i> — the cytokine a bulk measurement would be expected to pick up — is near zero in almost every cell, and the lipid-droplet genes do not simply rise with age either. No single marker survives single-cell depth. Senescence is therefore scored from gene sets, with three methods side by side: ssGSEA, AddModuleScore and AUCell.</p>
   <p class="note">The funded period ran from March 2025 to February 2026; the database and the manuscript are still in progress. The lipid processes that come out of the public data are the same ones a collaboration with the Mayo Clinic approaches from the cell side — <a href={u('projects/lipid/')}>Lipids and the SASP</a>.</p>
 
@@ -60,3 +64,8 @@ const READING = [
     {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}><span class="t">{r.t}</span><span class="d">{r.d}</span></a></li>)}
   </ul>
 </Project>
+<style>#scene { aspect-ratio: 16 / 7; min-height: 260px; }</style>
+<script>
+  import { masldFlow } from '../../scripts/scenes/masld-flow.js'
+  masldFlow(document.getElementById('scene') as HTMLCanvasElement)
+</script>
