@@ -33,11 +33,17 @@ export function masldDb(cv) {
              ['BMI · ALT · HOMA-IR', 0, 'measured alongside']],
     },
   ]
-  const REF = [
-    ['gene · protein', 'NCBI 3 · UniProt 1 · taxon 1', 'entrez_id'],
-    ['pathway', 'Reactome 2 · KEGG 8', 'ensembl_id'],
-    ['compound · drug', 'ChEMBL 8 · DrugBank 3 · PubChem 2', 'uniprot_id'],
+  // The reference side is a join graph with the gene at its centre: an Entrez ID reaches KEGG
+  // directly, an Ensembl ID reaches Reactome, a UniProt ID reaches both drug sources, and an
+  // InChI key ties PubChem to the compounds. These are the joins the queries actually use.
+  const HUB = { name: 'gene', src: 'ncbi_info · ncbi_ensembl · ncbi_synonyms · uniprot · taxon' }
+  const ARMS = [
+    { name: 'Reactome', what: 'pathways', via: 'ensembl_id', up: -1, side: 1 },
+    { name: 'KEGG', what: 'pathway graph', via: 'entrez_id', up: -1, side: -1 },
+    { name: 'DrugBank', what: 'approved drugs · actions', via: 'uniprot_id', up: 1, side: -1 },
+    { name: 'ChEMBL', what: 'compounds · pChEMBL · phase', via: 'uniprot_id', up: 1, side: 1 },
   ]
+  const TAIL = { name: 'PubChem', what: 'compound synonyms', via: 'inchi_key' }
 
   let W = 0, H = 0, dpr = 1, ready = false
   const resize = () => {
@@ -129,24 +135,41 @@ export function masldDb(cv) {
       })
     } else {
       rule(ATOM, 'REFERENCE DB · SQLite', 'database.db · 7 public databases · 42 GB')
-      const rowH = Math.min(44, H * 0.165)
-      REF.forEach((r, i) => {
-        const y = top + 22 + i * rowH
-        const show = Math.min(1, Math.max(0, k * 3 - i * 0.6))
+      text(pad, top + 6, 'the gene is the hub: ' + HUB.src, 10.5, MUTED)
+      // the gene sits in the middle because every query starts there
+      const cx = W * 0.5, cy = top + (H - 34 - top) * 0.48
+      const dx = Math.min(210, W * 0.23), dy = Math.min(52, H * 0.19)
+      ctx.strokeStyle = ATOM; ctx.lineWidth = 1.2
+      ARMS.forEach((arm, i) => {
+        const show = Math.min(1, Math.max(0, k * 4 - i * 0.5))
+        const ex = cx + arm.side * dx, ey = cy + arm.up * dy
+        ctx.globalAlpha = show * 0.55
+        ctx.beginPath()
+        ctx.moveTo(cx + arm.side * 34, cy + arm.up * 9)
+        ctx.bezierCurveTo(cx + arm.side * dx * 0.6, cy + arm.up * 9, ex - arm.side * 46, ey, ex - arm.side * 40, ey)
+        ctx.stroke()
         ctx.globalAlpha = show
-        ctx.fillStyle = ATOM
-        ctx.beginPath(); ctx.arc(pad + 5, y, 3, 0, Math.PI * 2); ctx.fill()
-        text(pad + 18, y - 8, r[0], 12.5, INK, 'left', 500)
-        text(pad + 18, y + 8, r[1], 11, MUTED)
-        text(W - pad, y - 8, r[2], 11.5, ATOM, 'right', 600)
-        text(W - pad, y + 8, 'joins on', 10, MUTED, 'right')
+        // what the join is on, written on the edge
+        text((cx + ex) / 2 + arm.side * 4, cy + arm.up * (dy * 0.62) - 7, arm.via, 10, ATOM, 'center', 600)
+        text(ex - arm.side * 34, ey - 8, arm.name, 12.5, INK, arm.side > 0 ? 'left' : 'right', 500)
+        text(ex - arm.side * 34, ey + 7, arm.what, 10.5, MUTED, arm.side > 0 ? 'left' : 'right')
         ctx.globalAlpha = 1
-        if (i < REF.length - 1) {
-          ctx.strokeStyle = ATOM; ctx.globalAlpha = 0.3 * show; ctx.setLineDash([2, 3])
-          ctx.beginPath(); ctx.moveTo(pad + 5, y + 10); ctx.lineTo(pad + 5, y + rowH - 10); ctx.stroke()
-          ctx.setLineDash([]); ctx.globalAlpha = 1
-        }
       })
+      // PubChem hangs off the compound side rather than off the gene
+      const px = cx + dx, py = cy + dy
+      const tshow = Math.min(1, Math.max(0, k * 4 - 2.4))
+      ctx.globalAlpha = tshow * 0.5; ctx.setLineDash([2, 3])
+      ctx.beginPath(); ctx.moveTo(px - 30, py + 14); ctx.lineTo(px - 30, py + 34); ctx.stroke()
+      ctx.setLineDash([]); ctx.globalAlpha = tshow
+      text(px - 34, py + 40, TAIL.via, 10, ATOM, 'left', 600)
+      text(px - 34 + 62, py + 40, `${TAIL.name} · ${TAIL.what}`, 10.5, MUTED, 'left')
+      ctx.globalAlpha = 1
+      // the hub itself
+      ctx.globalAlpha = Math.min(1, k * 3)
+      ctx.fillStyle = ATOM
+      ctx.beginPath(); ctx.roundRect(cx - 34, cy - 13, 68, 26, 5); ctx.fill()
+      text(cx, cy - 1, HUB.name, 13, v('--paper'), 'center', 600)
+      ctx.globalAlpha = 1
     }
 
     ctx.strokeStyle = LINE; ctx.globalAlpha = 0.6; ctx.lineWidth = 1
