@@ -61,7 +61,7 @@ const blocks = [
     key: 'challenges', label: 'challenges',
     rows: group('Competitions & Applied Projects').map(p => ({
       year: p.period.slice(-4), title: p.title, sub: p.org, desc: p.desc,
-      right: p.period, badge: p.status, links: p.links, tags: p.tags,
+      right: p.period, badge: p.status, href: page(p.title), links: p.links, tags: p.tags,
     })),
   },
 ]
