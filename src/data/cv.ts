@@ -245,6 +245,7 @@ export const projectGroups: ProjectGroup[] = [
         desc: 'Built a graph neural network to predict the olfactory similarity of molecular mixtures from their chemical structures, in an international benchmarking challenge.',
         tags: ['Molecular ML', 'GNN', 'Olfaction'],
         links: [
+          { label: 'Project', href: '/projects/olfactory/' },
           { label: 'Challenge', href: 'https://www.synapse.org/Synapse:syn53470621' },
           { label: 'GitHub', href: 'https://github.com/myungjin00/2024-DREAM-challenge' },
         ],

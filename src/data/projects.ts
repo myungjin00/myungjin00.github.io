@@ -48,7 +48,7 @@ export const projects: ProjectCard[] = [
     title: 'DREAM Olfactory Mixtures',
     line: 'How similar two odour mixtures smell, predicted from the molecules in them.',
     axis: 'mol',
-    period: 'Jun – Sep 2024',
+    period: 'Apr – Aug 2024',
     role: 'Led the team',
   },
   {

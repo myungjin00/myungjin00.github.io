@@ -1,41 +1,50 @@
-// Scene: what the MASLD database holds, and how the two halves are joined.
-// Three kinds of assay on the left, each drawn as the thing it actually is — a tube for bulk,
-// where everything is pooled into one measurement, scattered cells for single-cell, and tissue
-// under a grid for spatial. Three reference tables on the right. The scene walks the assays one
-// at a time, drawing the joins each one uses and counting out its accessions.
+// Scene: what the MASLD database holds, in three beats.
+//   1  mouse — what was collected, and the columns its samples are staged by
+//   2  human — the same, staged by what a biopsy is actually scored on
+//   3  the reference side: one SQLite file, grouped by where each table came from
+// Every count here is the one the schema map and the two metadata tables give.
 export function masldDb(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
   const box = cv.parentElement, ctx = cv.getContext('2d')
   const css = getComputedStyle(document.documentElement)
   const v = n => css.getPropertyValue(n).trim()
-  let INK, MUTED, LINE, GREEN, BLUE, ATOM, PAPER
+  let INK, MUTED, LINE, BLUE, ATOM
   const readTheme = () => {
     INK = v('--ink'); MUTED = v('--muted'); LINE = v('--line')
-    GREEN = v('--green'); BLUE = v('--blue'); ATOM = v('--atom'); PAPER = v('--paper')
+    BLUE = v('--blue'); ATOM = v('--atom')
   }
   readTheme()
 
-  // human and mouse accessions, and which reference tables each assay is joined against
-  const ASSAY = [
-    { key: 'bulk', name: 'bulk RNA-seq', human: 9, mouse: 17, joins: [0, 1] },
-    { key: 'sc', name: 'sc / snRNA-seq', human: 3, mouse: 1, joins: [0, 1] },
-    { key: 'spatial', name: 'spatial', human: 3, mouse: 1, joins: [0] },
+  const SIDE = [
+    {
+      who: 'Mus musculus', file: 'mouse_metadata.csv', gse: 30, gsm: 662,
+      assays: [['bulk RNA-seq', 13, 'bulk'], ['scRNA-seq', 14, 'cells'], ['snRNA-seq', 3, 'cells']],
+      // a mouse study is staged by its diet, how long it ran, and what the liver became
+      cols: [['STATUS', 53, 'chow · HFD · WD · low-fat'], ['DIET_PERIOD', 37, '0w · 6w · 12w · 18w'],
+             ['DISEASE_STATE', 20, 'healthy · NASH · HCC'], ['GENOTYPE', 14, 'LDLr-/- Leiden'],
+             ['CELL_TYPE', 12, 'hepatic immune, …']],
+    },
+    {
+      who: 'Homo sapiens', file: 'human_metadata.csv', gse: 18, gsm: 1057,
+      assays: [['bulk RNA-seq', 6, 'bulk'], ['scRNA-seq', 5, 'cells'], ['snRNA-seq', 4, 'cells']],
+      // a human one by what the biopsy is scored on
+      cols: [['DISEASE_PROGRESSION', 31, 'healthy · NAFLD · NASH'], ['FIBROSIS_STAGE', 13, 'F0 – F4'],
+             ['NAS_SCORE', 9, 'activity, 0 – 8'], ['STEATOSIS_GRADE', 4, '0 · 1 · 2 · 3'],
+             ['BMI · ALT · HOMA-IR', 0, 'measured alongside']],
+    },
   ]
-  // the reference side is one SQLite file of twenty-seven tables, grouped by where they came
-  // from; each group reaches the next through a single shared identifier
   const REF = [
-    { name: 'gene · protein', src: 'NCBI 3 · UniProt 1 · taxon 1', n: 5, key: 'entrez_id' },
-    { name: 'pathway', src: 'Reactome 2 · KEGG 8', n: 10, key: 'ensembl_id' },
-    { name: 'compound · drug', src: 'ChEMBL 8 · DrugBank 3 · PubChem 2', n: 13, key: 'uniprot_id' },
+    ['gene · protein', 'NCBI 3 · UniProt 1 · taxon 1', 'entrez_id'],
+    ['pathway', 'Reactome 2 · KEGG 8', 'ensembl_id'],
+    ['compound · drug', 'ChEMBL 8 · DrugBank 3 · PubChem 2', 'uniprot_id'],
   ]
-  const FIELDS = 'age · diet period · disease stage · fibrosis stage'
 
   let W = 0, H = 0, dpr = 1, ready = false
   const resize = () => {
     const r = box.getBoundingClientRect()
     dpr = devicePixelRatio || 1; W = r.width; H = r.height
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr)
-    if (reduce && ready) draw(0, 1)
+    if (reduce && ready) draw(0)
   }
   new ResizeObserver(resize).observe(box); resize()
 
@@ -45,142 +54,110 @@ export function masldDb(cv) {
     ctx.textAlign = anchor; ctx.textBaseline = 'middle'; ctx.fillStyle = col
     ctx.fillText(s, x, y)
   }
-
-  // ---- the four icons, each drawn in a box of side `s` centred on the origin ------------
-  function icon(kind, s, col, lit) {
-    ctx.save()
-    ctx.strokeStyle = col; ctx.fillStyle = col
-    ctx.lineWidth = 1.2; ctx.lineCap = 'round'; ctx.lineJoin = 'round'
-    const a = lit ? 1 : 0.45
+  // a tube where everything is pooled, or the cells that were counted one at a time
+  function icon(kind, s, col, a) {
+    ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1.2
     if (kind === 'bulk') {
-      // a tube: everything in the sample, pooled into one measurement
       ctx.globalAlpha = a * 0.5
-      ctx.beginPath(); ctx.roundRect(-s * 0.26, -s * 0.46, s * 0.52, s * 0.92, s * 0.2); ctx.stroke()
+      ctx.beginPath(); ctx.roundRect(-s * 0.25, -s * 0.45, s * 0.5, s * 0.9, s * 0.2); ctx.stroke()
       ctx.globalAlpha = a
-      ctx.beginPath(); ctx.roundRect(-s * 0.19, -s * 0.02, s * 0.38, s * 0.4, s * 0.14); ctx.fill()
-      ctx.globalAlpha = a * 0.55
-      for (const dy of [-0.22, -0.32]) { ctx.beginPath(); ctx.moveTo(-s * 0.1, s * dy); ctx.lineTo(s * 0.1, s * dy); ctx.stroke() }
-    } else if (kind === 'sc') {
-      // cells, measured one at a time
-      const P = [[-0.3, -0.26], [0.02, -0.36], [0.3, -0.2], [-0.34, 0.06], [-0.04, -0.02],
-                 [0.26, 0.1], [-0.22, 0.32], [0.1, 0.3], [0.36, 0.34]]
-      P.forEach(([px, py], i) => {
-        ctx.globalAlpha = a * (i % 3 === 0 ? 1 : 0.6)
-        ctx.beginPath(); ctx.arc(px * s, py * s, s * 0.085, 0, Math.PI * 2)
-        i % 3 === 0 ? ctx.fill() : ctx.stroke()
-      })
+      ctx.beginPath(); ctx.roundRect(-s * 0.18, -s * 0.02, s * 0.36, s * 0.38, s * 0.13); ctx.fill()
     } else {
-      // tissue, with the grid that keeps where each reading came from
-      ctx.globalAlpha = a * 0.75
-      ctx.beginPath()
-      ctx.moveTo(-s * 0.4, s * 0.1)
-      ctx.bezierCurveTo(-s * 0.45, -s * 0.34, -s * 0.05, -s * 0.48, s * 0.18, -s * 0.3)
-      ctx.bezierCurveTo(s * 0.46, -s * 0.12, s * 0.4, s * 0.34, s * 0.08, s * 0.4)
-      ctx.bezierCurveTo(-s * 0.18, s * 0.44, -s * 0.36, s * 0.34, -s * 0.4, s * 0.1)
-      ctx.closePath(); ctx.stroke()
-      ctx.globalAlpha = a * 0.35
-      for (let i = -2; i <= 2; i++) {
-        ctx.beginPath(); ctx.moveTo(i * s * 0.17, -s * 0.46); ctx.lineTo(i * s * 0.17, s * 0.44); ctx.stroke()
-        ctx.beginPath(); ctx.moveTo(-s * 0.46, i * s * 0.17); ctx.lineTo(s * 0.44, i * s * 0.17); ctx.stroke()
-      }
+      const P = [[-0.28, -0.24], [0.04, -0.34], [0.3, -0.16], [-0.3, 0.1], [0, 0.02], [0.26, 0.22], [-0.14, 0.32]]
+      P.forEach(([px, py], i) => {
+        ctx.globalAlpha = a * (i % 2 ? 0.55 : 1)
+        ctx.beginPath(); ctx.arc(px * s, py * s, s * 0.09, 0, Math.PI * 2)
+        i % 2 ? ctx.stroke() : ctx.fill()
+      })
     }
-    ctx.restore()
+    ctx.restore(); ctx.globalAlpha = 1
   }
 
-  const STEP = 2.6
-  const TOTAL = STEP * ASSAY.length
+  const STEP = 3.6
+  const TOTAL = STEP * 3
 
-  function draw(t, forceAll) {
+  function draw(t) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     ctx.clearRect(0, 0, W, H)
     if (!W || !H) return
-    const active = forceAll ? -1 : Math.floor(t / STEP) % ASSAY.length
-    const k = forceAll ? 1 : ease(Math.min(1, ((t % STEP) / STEP) * 2.4))
+    const beat = Math.floor(t / STEP) % 3
+    const k = ease(Math.min(1, ((t % STEP) / STEP) * 2.2))
+    const pad = Math.max(18, W * 0.04)
+    const top = H * 0.23
 
-    const pad = Math.max(16, W * 0.035)
-    const LW = Math.min(250, W * 0.34), RW = Math.min(290, W * 0.40)
-    const LX = pad, RX = W - pad - RW
-    const top = H * 0.21, span = H * 0.56, rowH = span / ASSAY.length
+    ;['mouse', 'human', 'reference DB'].forEach((n, i) => {
+      const x = pad + i * Math.min(104, W * 0.14)
+      ctx.globalAlpha = i === beat ? 1 : 0.3
+      text(x, 17, n, 11.5, i === beat ? INK : MUTED, 'left', i === beat ? 600 : 400)
+      ctx.globalAlpha = 1
+    })
 
-    text(LX, top - 24, 'EXPRESSION DATA · GEO', 11, BLUE, 'left', 600)
-    text(RX, top - 24, 'REFERENCE DB · SQLite', 11, ATOM, 'left', 600)
-    ctx.strokeStyle = BLUE; ctx.globalAlpha = 0.3; ctx.lineWidth = 1
-    ctx.beginPath(); ctx.moveTo(LX, top - 12); ctx.lineTo(LX + LW, top - 12); ctx.stroke()
-    ctx.strokeStyle = ATOM
-    ctx.beginPath(); ctx.moveTo(RX, top - 12); ctx.lineTo(RX + RW, top - 12); ctx.stroke()
-    ctx.globalAlpha = 1
-
-    const rowY = i => top + i * rowH + rowH / 2
-    const refY = i => top + i * (span / REF.length) + (span / REF.length) / 2
-
-    // the reference side is a chain of its own: a compound reaches a gene through a pathway,
-    // which is why the compound table is there at all
-    ctx.strokeStyle = ATOM; ctx.globalAlpha = 0.28; ctx.lineWidth = 1
-    ctx.setLineDash([2, 3])
-    for (let i = 0; i < REF.length - 1; i++) {
-      ctx.beginPath()
-      ctx.moveTo(RX - 9, refY(i) + 7); ctx.lineTo(RX - 9, refY(i + 1) - 7); ctx.stroke()
+    const rule = (col, label, sub) => {
+      text(pad, top - 22, label, 11, col, 'left', 600)
+      text(pad + Math.min(200, W * 0.22), top - 22, sub, 10.5, MUTED)
+      ctx.strokeStyle = col; ctx.globalAlpha = 0.3; ctx.lineWidth = 1
+      ctx.beginPath(); ctx.moveTo(pad, top - 11); ctx.lineTo(W - pad, top - 11); ctx.stroke()
+      ctx.globalAlpha = 1
     }
-    ctx.setLineDash([]); ctx.globalAlpha = 1
 
-    // the joins, drawn only for the assay being walked through
-    if (active >= 0) {
-      const a = ASSAY[active]
-      ctx.strokeStyle = LINE; ctx.lineWidth = 1.3
-      for (const j of a.joins) {
-        const x0 = LX + LW, y0 = rowY(active), x1 = RX, y1 = refY(j)
-        ctx.globalAlpha = 0.8 * k
-        ctx.beginPath()
-        ctx.moveTo(x0, y0)
-        ctx.bezierCurveTo(x0 + 40, y0, x1 - 40, y1, x1, y1)
-        ctx.stroke()
-        ctx.globalAlpha = k
+    if (beat < 2) {
+      const s = SIDE[beat], accent = beat ? ATOM : BLUE
+      rule(accent, s.who.toUpperCase(), `${s.file} · tissue: liver`)
+      const rowH = Math.min(36, H * 0.135)
+      s.assays.forEach((a, i) => {
+        const y = top + 16 + i * rowH
+        const show = Math.min(1, Math.max(0, k * 3 - i * 0.5))
+        ctx.save(); ctx.translate(pad + 13, y); icon(a[2], 25, accent, show); ctx.restore()
+        text(pad + 33, y - 7, a[0], 12.5, INK, 'left', 500)
+        text(pad + 33, y + 8, `${Math.round(a[1] * show)} datasets`, 11, MUTED)
+      })
+      text(pad, top + 16 + 3 * rowH, `${s.gse} GSE · ${s.gsm.toLocaleString()} samples`, 12, accent, 'left', 600)
+
+      // the columns the samples are staged by — the reason the curation exists
+      const RX = pad + Math.min(214, W * 0.28)
+      const NX = RX + Math.min(190, W * 0.2)
+      text(RX, top + 2, 'STAGED BY', 10.5, MUTED, 'left', 600)
+      text(NX, top + 2, 'distinct', 10, MUTED, 'right')
+      s.cols.forEach((c, i) => {
+        const y = top + 26 + i * Math.min(26, H * 0.097)
+        const show = Math.min(1, Math.max(0, k * 4 - i * 0.6))
+        ctx.globalAlpha = show
+        text(RX, y, c[0], 11.5, INK, 'left', 500)
+        if (c[1]) text(NX, y, String(c[1]), 12, accent, 'right', 600)
+        text(NX + 12, y, c[2], 10.5, MUTED)
+        ctx.globalAlpha = 1
+      })
+    } else {
+      rule(ATOM, 'REFERENCE DB · SQLite', 'database.db · 7 public databases · 42 GB')
+      const rowH = Math.min(44, H * 0.165)
+      REF.forEach((r, i) => {
+        const y = top + 22 + i * rowH
+        const show = Math.min(1, Math.max(0, k * 3 - i * 0.6))
+        ctx.globalAlpha = show
         ctx.fillStyle = ATOM
-        ctx.beginPath(); ctx.arc(x1, y1, 2.6, 0, Math.PI * 2); ctx.fill()
-      }
-      ctx.globalAlpha = 1
+        ctx.beginPath(); ctx.arc(pad + 5, y, 3, 0, Math.PI * 2); ctx.fill()
+        text(pad + 18, y - 8, r[0], 12.5, INK, 'left', 500)
+        text(pad + 18, y + 8, r[1], 11, MUTED)
+        text(W - pad, y - 8, r[2], 11.5, ATOM, 'right', 600)
+        text(W - pad, y + 8, 'joins on', 10, MUTED, 'right')
+        ctx.globalAlpha = 1
+        if (i < REF.length - 1) {
+          ctx.strokeStyle = ATOM; ctx.globalAlpha = 0.3 * show; ctx.setLineDash([2, 3])
+          ctx.beginPath(); ctx.moveTo(pad + 5, y + 10); ctx.lineTo(pad + 5, y + rowH - 10); ctx.stroke()
+          ctx.setLineDash([]); ctx.globalAlpha = 1
+        }
+      })
     }
 
-    // left: one row per assay
-    ASSAY.forEach((a, i) => {
-      const y = rowY(i), lit = forceAll || i === active
-      const s = Math.min(34, rowH * 0.7)
-      ctx.globalAlpha = lit ? 1 : 0.55
-      ctx.save(); ctx.translate(LX + s * 0.6, y); icon(a.key, s, BLUE, lit); ctx.restore()
-      text(LX + s * 1.3, y - 9, a.name, 13, lit ? INK : MUTED, 'left', lit ? 600 : 400)
-      // the counts, growing in as the row is reached
-      const n = lit ? k : 1
-      text(LX + s * 1.3, y + 7, `${Math.round(a.human * n)} human · ${Math.round(a.mouse * n)} mouse datasets`, 11, MUTED)
-      ctx.globalAlpha = 1
-    })
-
-    // right: the reference tables
-    REF.forEach((r, i) => {
-      const y = refY(i)
-      const used = active < 0 || ASSAY[active].joins.includes(i)
-      ctx.globalAlpha = used ? 1 : 0.4
-      ctx.fillStyle = ATOM
-      ctx.beginPath(); ctx.arc(RX - 9, y, 2.4, 0, Math.PI * 2); ctx.fill()
-      text(RX, y - 9, r.name, 13, used ? INK : MUTED, 'left', used ? 600 : 400)
-      text(RX, y + 7, r.src, 11, MUTED)
-      text(RX + RW, y - 9, `${r.n} tables`, 11, used ? ATOM : MUTED, 'right', used ? 600 : 400)
-      ctx.globalAlpha = 1
-    })
-
-    // the schema, which is the point of the whole thing
-    // what each side amounts to
     ctx.strokeStyle = LINE; ctx.globalAlpha = 0.6; ctx.lineWidth = 1
-    ctx.beginPath(); ctx.moveTo(LX, H - 38); ctx.lineTo(W - pad, H - 38); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(pad, H - 34); ctx.lineTo(W - pad, H - 34); ctx.stroke()
     ctx.globalAlpha = 1
-    text(LX, H - 19, 'one schema', 12, INK, 'left', 600)
-    text(LX, H - 5, FIELDS, 10.5, MUTED)
-    text(W - pad, H - 19, '27 tables · 7 public databases', 11, MUTED, 'right')
-    text(W - pad, H - 5, 'one SQLite file, 42 GB', 10.5, MUTED, 'right')
+    text(pad, H - 17, 'expression and reference meet on the gene name', 11, MUTED)
+    text(W - pad, H - 17, 'one schema, every accession', 11.5, INK, 'right', 600)
     ready = true
   }
 
-  if (reduce) { draw(0, 1); return }
-
+  if (reduce) { draw(0); return }
   let raf = 0, t0 = 0, running = false
   const frame = (now) => {
     if (!t0) t0 = now
