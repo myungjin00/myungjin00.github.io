@@ -135,47 +135,66 @@ export function masldDb(cv) {
       })
     } else {
       rule(ATOM, 'REFERENCE DB · SQLite', 'database.db · 7 public databases · 42 GB')
-      text(pad, top + 6, 'the gene is the hub: ' + HUB.src, 10.5, MUTED)
-      // the gene sits in the middle because every query starts there
-      const cx = W * 0.5, cy = top + (H - 34 - top) * 0.48
-      const dx = Math.min(210, W * 0.23), dy = Math.min(52, H * 0.19)
+      // Left to right, because that is the direction a question travels: a gene name out of an
+      // expression matrix, resolved to one Entrez ID, and from there to pathways and to drugs.
+      const EX = pad + Math.min(74, W * 0.085)
+      const cx = pad + Math.min(250, W * 0.3)
+      const AX = W - pad - Math.min(210, W * 0.24)
+      const cy = top + (H - 34 - top) * 0.48
+      const step = Math.min(34, (H - 34 - top) * 0.2)
+
+      // the expression side, and the join that gets it into the reference side at all
+      const e0 = Math.min(1, k * 3)
+      ctx.globalAlpha = e0
+      ctx.strokeStyle = BLUE; ctx.lineWidth = 1.2
+      ctx.beginPath(); ctx.roundRect(EX - 46, cy - 15, 92, 30, 5); ctx.stroke()
+      text(EX, cy - 4, 'expression', 11.5, INK, 'center', 500)
+      text(EX, cy + 8, 'h5ad · CSV', 10, MUTED, 'center')
+      ctx.strokeStyle = LINE; ctx.lineWidth = 1.4
+      ctx.beginPath(); ctx.moveTo(EX + 46, cy); ctx.lineTo(cx - 40, cy); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(cx - 46, cy - 4); ctx.lineTo(cx - 40, cy); ctx.lineTo(cx - 46, cy + 4); ctx.stroke()
+      text((EX + cx) / 2, cy - 13, 'gene_symbol', 10, BLUE, 'center', 600)
+      text((EX + cx) / 2, cy + 26, 'names differ per dataset; ncbi_synonyms resolves them', 9.5, MUTED, 'center')
+      ctx.globalAlpha = 1
+
+      // the hub every query starts from
+      ctx.globalAlpha = e0
+      ctx.fillStyle = ATOM
+      ctx.beginPath(); ctx.roundRect(cx - 38, cy - 15, 76, 30, 5); ctx.fill()
+      text(cx, cy - 4, 'gene', 12.5, v('--paper'), 'center', 600)
+      text(cx, cy + 8, 'entrez_id', 10, v('--paper'), 'center')
+      ctx.globalAlpha = 1
+
+      // and what it reaches, each on the identifier the query joins by
       ctx.strokeStyle = ATOM; ctx.lineWidth = 1.2
       ARMS.forEach((arm, i) => {
-        const show = Math.min(1, Math.max(0, k * 4 - i * 0.5))
-        const ex = cx + arm.side * dx, ey = cy + arm.up * dy
-        ctx.globalAlpha = show * 0.55
+        const show = Math.min(1, Math.max(0, k * 4 - 0.6 - i * 0.4))
+        const ey = cy + (i - 1.5) * step
+        ctx.globalAlpha = show * 0.6
         ctx.beginPath()
-        ctx.moveTo(cx + arm.side * 34, cy + arm.up * 9)
-        ctx.bezierCurveTo(cx + arm.side * dx * 0.6, cy + arm.up * 9, ex - arm.side * 46, ey, ex - arm.side * 40, ey)
+        ctx.moveTo(cx + 38, cy)
+        ctx.bezierCurveTo(cx + 90, cy, AX - 70, ey, AX - 8, ey)
         ctx.stroke()
         ctx.globalAlpha = show
-        // what the join is on, written on the edge
-        text((cx + ex) / 2 + arm.side * 4, cy + arm.up * (dy * 0.62) - 7, arm.via, 10, ATOM, 'center', 600)
-        text(ex - arm.side * 34, ey - 8, arm.name, 12.5, INK, arm.side > 0 ? 'left' : 'right', 500)
-        text(ex - arm.side * 34, ey + 7, arm.what, 10.5, MUTED, arm.side > 0 ? 'left' : 'right')
+        text((cx + AX) / 2 + 6, ey + (ey < cy ? -8 : 10), arm.via, 9.5, ATOM, 'center', 600)
+        text(AX, ey - 7, arm.name, 12, INK, 'left', 500)
+        text(AX, ey + 7, arm.what, 10, MUTED, 'left')
         ctx.globalAlpha = 1
       })
-      // PubChem hangs off the compound side rather than off the gene
-      const px = cx + dx, py = cy + dy
+      // PubChem hangs off ChEMBL rather than off the gene
+      const py = cy + 1.5 * step
       const tshow = Math.min(1, Math.max(0, k * 4 - 2.4))
-      ctx.globalAlpha = tshow * 0.5; ctx.setLineDash([2, 3])
-      ctx.beginPath(); ctx.moveTo(px - 30, py + 14); ctx.lineTo(px - 30, py + 34); ctx.stroke()
+      ctx.globalAlpha = tshow * 0.5; ctx.setLineDash([2, 3]); ctx.strokeStyle = ATOM
+      ctx.beginPath(); ctx.moveTo(AX + 4, py + 14); ctx.lineTo(AX + 4, py + 28); ctx.stroke()
       ctx.setLineDash([]); ctx.globalAlpha = tshow
-      text(px - 34, py + 40, TAIL.via, 10, ATOM, 'left', 600)
-      text(px - 34 + 62, py + 40, `${TAIL.name} · ${TAIL.what}`, 10.5, MUTED, 'left')
-      ctx.globalAlpha = 1
-      // the hub itself
-      ctx.globalAlpha = Math.min(1, k * 3)
-      ctx.fillStyle = ATOM
-      ctx.beginPath(); ctx.roundRect(cx - 34, cy - 13, 68, 26, 5); ctx.fill()
-      text(cx, cy - 1, HUB.name, 13, v('--paper'), 'center', 600)
+      text(AX, py + 34, `${TAIL.via} → ${TAIL.name}`, 10, ATOM, 'left', 600)
       ctx.globalAlpha = 1
     }
 
     ctx.strokeStyle = LINE; ctx.globalAlpha = 0.6; ctx.lineWidth = 1
     ctx.beginPath(); ctx.moveTo(pad, H - 34); ctx.lineTo(W - pad, H - 34); ctx.stroke()
     ctx.globalAlpha = 1
-    text(pad, H - 17, 'expression and reference meet on the gene name', 11, MUTED)
+    text(pad, H - 17, 'a gene name out of a matrix is one Entrez ID, and from there a pathway or a drug', 11, MUTED)
     text(W - pad, H - 17, 'one schema, every accession', 11.5, INK, 'right', 600)
     ready = true
   }
