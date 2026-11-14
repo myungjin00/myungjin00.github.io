@@ -71,6 +71,17 @@ export function shell(el, D) {
     n.textContent = s + '\n'
     out.append(n)
   }
+  // a label and the names under it, in two tones on one line — green is what you can type
+  const sayPair = (a, b, ca = 'm', cb = 'g') => {
+    const n = document.createElement('span')
+    for (const [s, c] of [[a, ca], [b + '\n', cb]]) {
+      const e = document.createElement('span')
+      if (c) e.className = c
+      e.textContent = s
+      n.append(e)
+    }
+    out.append(n)
+  }
   // the window never scrolls: once it is full, the oldest lines fall off the top
   const fit = () => {
     let guard = 400
@@ -95,8 +106,9 @@ export function shell(el, D) {
       if (a) {
         const d = DETAIL[ALIAS[a] ?? a]
         if (!d) return say(`help: ${a}: no such command`, 'w')
-        say(d[0], 'h')
-        for (const l of d.slice(1)) say(l)
+        say(d[0], 'g')
+        // an indented line in a card is an example you can type, so it takes the same green
+        for (const l of d.slice(1)) say(l, l.startsWith('  ') ? 'g' : '')
         return
       }
       for (const [group, names] of [
@@ -105,7 +117,7 @@ export function shell(el, D) {
         ['the calendar', 'date · calendar'],
         ['for fun', 'tetris · scores'],
         ['this window', 'clear · exit'],
-      ]) say('  ' + group.padEnd(14) + names, group === 'the calendar' ? 'g' : '')
+      ]) sayPair('  ' + group.padEnd(14), names)
       say()
       say('`help <name>` says what one of them does.', 'm')
       say('tab completes · ↑ ↓ walk history', 'm')
@@ -180,7 +192,7 @@ export function shell(el, D) {
       for (let i = 0; i < 6; i++)
         say('  ' + (L[i][0] + '  ' + L[i][1]).padEnd(29) + R[i][0] + '  ' + R[i][1])
       say()
-      say('christmas · newyear · halloween · hangul — days you can ask for by name', 'm')
+      sayPair('christmas · newyear · halloween · hangul', '  — days you can ask for by name', 'g', 'm')
       say('`date 3-15` to stand in a month · `date auto` to come back', 'm')
     },
     vitae() { for (const l of D.vitae) say(l); say('→ ' + D.base + 'vitae/', 'm') },

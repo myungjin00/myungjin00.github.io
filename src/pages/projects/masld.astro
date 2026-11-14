@@ -29,8 +29,8 @@ const READING = [
   <h2>What is being built</h2>
   <p>MASLD, metabolic dysfunction-associated steatotic liver disease, is read here from public liver transcriptomes. Those exist in quantity, but the metadata that decides a comparison — age, diet period, disease stage, fibrosis stage — is written differently in every accession, and the assay types do not line up. Collection comes first: the datasets are curated into one schema, with a reference side carrying genes, pathways, compounds and their cross-references. A question then becomes one query instead of a week of re-parsing.</p>
   <figure class="plate inline">
-    <img src={u('assets/fig/masld-db.svg')} alt="The MASLD collection: four kinds of public omics dataset — bulk RNA-seq, microarray, single-cell and spatial — with the number of human and mouse accessions of each, joined by cross-references to reference tables of genes, pathways and compounds." width="1180" height="474" loading="lazy">
-    <figcaption><span>What the database holds</span><span>public omics datasets · and a reference side of genes, pathways and compounds</span></figcaption>
+    <canvas id="db" role="img" aria-label="The collection, walked one assay at a time: bulk RNA-seq with nine human and seventeen mouse accessions, microarray with six and thirteen, single-cell with three and one, and spatial with three and one. Each is joined by cross-references to reference tables of genes, pathways and compounds, and all of them are written into one schema carrying age, diet period, disease stage and fibrosis stage."></canvas>
+    <figcaption><span>What the database holds</span><span>four assay types · joined to gene, pathway and compound tables · one schema</span></figcaption>
   </figure>
   <p>Three aging-liver sets carry the analysis so far: bulk mouse liver from SRA, the <i>Tabula Muris Senis</i> bulk series and the matching single-cell atlas. Differential expression runs with PyDESeq2 on the bulk arms and MAST on the single-cell one; enrichment runs against GO, KEGG, Reactome and Hallmark.</p>
   <p><span class="role">My role</span> the data collection and the analysis — curating the accessions into the schema, and the differential expression, enrichment and single-cell scoring on top of it.</p>
@@ -64,8 +64,13 @@ const READING = [
     {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}><span class="t">{r.t}</span><span class="d">{r.d}</span></a></li>)}
   </ul>
 </Project>
-<style>#scene { aspect-ratio: 16 / 7; min-height: 260px; }</style>
+<style>
+  #scene { aspect-ratio: 16 / 7; min-height: 260px; }
+  #db { aspect-ratio: 16 / 7; min-height: 250px; }
+</style>
 <script>
   import { masldFlow } from '../../scripts/scenes/masld-flow.js'
+  import { masldDb } from '../../scripts/scenes/masld-db.js'
   masldFlow(document.getElementById('scene') as HTMLCanvasElement)
+  masldDb(document.getElementById('db') as HTMLCanvasElement)
 </script>
