@@ -53,9 +53,9 @@ const MONTH = {
   6:  { fall: [['bubble', ['--rain']]],                                       sky: ['summerstars'], guest: 'duck', stand: 'hydrangea' },
   7:  { fall: [],                                                             sky: ['sun', 'milkyway'], guest: 'cat' },
   8:  { fall: [['bubble', ['--rain']]],                                       sky: ['fireworks'], guest: 'whale', shore: true },
-  9:  { fall: [['acorn', ['--maple']]],                                       sky: ['moon', 'moonbig'], guest: 'squirrel' },
+  9:  { fall: [['acorn', ['--bark', '--maple']]],                                       sky: ['moon', 'moonbig'], guest: 'squirrel' },
   10: { fall: [['maple', ['--maple', '--leaf', '--ginkgo']]],                 sky: ['moon'], guest: 'squirrel', standNight: 'grass' },
-  11: { fall: [['dryleaf', ['--maple', '--ginkgo']], ['ginkgo', ['--ginkgo']]], sky: ['moon'], guest: 'dog', stand: 'persimmon' },
+  11: { fall: [['dryleaf', ['--bark', '--maple']], ['ginkgo', ['--ginkgo']]], sky: ['moon'], guest: 'dog', stand: 'persimmon' },
   12: { fall: [['snow', ['--snow']]],                                         sky: [], guest: 'santa' },
 }
 // Seollal and Chuseok move with the lunar calendar, so the few years that matter are written
@@ -122,10 +122,35 @@ const MAPLE = [[0,-1],[.18,-.55],[.5,-.75],[.42,-.3],[.95,-.35],[.62,.05],[.8,.3
 
 export const formsFor = kind => FORMS[kind === 'summer' ? summerMode() : kind]
 
+// a snowflake and a dandelion seed are线 — strokes, not areas — so whoever draws them has to
+// know which of the two they are. Everything goes through here rather than guessing.
+const STROKED = new Set(['snow', 'seed'])
+export function paint(ctx, form, s, colour) {
+  ctx.beginPath()
+  shape(ctx, form, s)
+  if (STROKED.has(form)) {
+    ctx.strokeStyle = colour
+    ctx.lineWidth = Math.max(0.7, s * (form === 'snow' ? 0.11 : 0.07))
+    ctx.lineCap = 'round'
+    ctx.stroke()
+  } else { ctx.fillStyle = colour; ctx.fill() }
+}
+
 export function shape(ctx, form, s) {
   ctx.beginPath()
   if (form === 'spark' || form === 'bubble') { ctx.arc(0, 0, s * 0.5, 0, Math.PI * 2); return }
-  if (form === 'snow') { ctx.arc(0, 0, s * 0.45, 0, Math.PI * 2); return }
+  if (form === 'snow') {             // six arms, each with a pair of barbs — at this size, a hint
+    for (let i = 0; i < 3; i++) {
+      const a = i * Math.PI / 3, dx = Math.cos(a) * s * 0.52, dy = Math.sin(a) * s * 0.52
+      ctx.moveTo(-dx, -dy); ctx.lineTo(dx, dy)
+      for (const k of [0.55, -0.55]) {
+        const bx = dx * 0.52, by = dy * 0.52
+        ctx.moveTo(bx, by); ctx.lineTo(bx + Math.cos(a + k * 2) * s * 0.22, by + Math.sin(a + k * 2) * s * 0.22)
+        ctx.moveTo(-bx, -by); ctx.lineTo(-bx - Math.cos(a + k * 2) * s * 0.22, -by - Math.sin(a + k * 2) * s * 0.22)
+      }
+    }
+    return
+  }
   if (form === 'maple') {
     MAPLE.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * s, y * s))
     ctx.closePath(); ctx.rect(-s * 0.03, s * 0.45, s * 0.06, s * 0.4); return   // and a short stem
@@ -148,10 +173,11 @@ export function shape(ctx, form, s) {
     }
     return
   }
-  if (form === 'rose') {             // a rose petal: wide, cupped, with a rolled edge
-    ctx.moveTo(0, s * 0.62)
-    ctx.bezierCurveTo(-s * 0.85, s * 0.3, -s * 0.72, -s * 0.62, 0, -s * 0.52)
-    ctx.bezierCurveTo(s * 0.72, -s * 0.62, s * 0.85, s * 0.3, 0, s * 0.62)
+  if (form === 'rose') {             // broad and cupped, the outer edge turned back in one sweep
+    ctx.moveTo(0, s * 0.7)
+    ctx.bezierCurveTo(-s * 0.82, s * 0.42, -s * 0.9, -s * 0.34, -s * 0.34, -s * 0.6)
+    ctx.quadraticCurveTo(0, -s * 0.74, s * 0.34, -s * 0.6)
+    ctx.bezierCurveTo(s * 0.9, -s * 0.34, s * 0.82, s * 0.42, 0, s * 0.7)
     return
   }
   if (form === 'seed') {             // a dandelion seed: a tuft of filaments over a small husk
@@ -163,31 +189,43 @@ export function shape(ctx, form, s) {
     ctx.moveTo(0, s * 0.2); ctx.lineTo(0, s * 0.62)
     return
   }
-  if (form === 'acorn') {            // an acorn: a nut under a textured cap
-    ctx.moveTo(-s * 0.3, -s * 0.1)
-    ctx.quadraticCurveTo(-s * 0.36, s * 0.55, 0, s * 0.6)
-    ctx.quadraticCurveTo(s * 0.36, s * 0.55, s * 0.3, -s * 0.1)
+  if (form === 'acorn') {            // an acorn: the nut, and a cap pulled down over its shoulders
+    ctx.moveTo(-s * 0.32, -s * 0.12)
+    ctx.quadraticCurveTo(-s * 0.36, s * 0.56, 0, s * 0.62)
+    ctx.quadraticCurveTo(s * 0.36, s * 0.56, s * 0.32, -s * 0.12)
     ctx.closePath()
-    ctx.moveTo(-s * 0.38, -s * 0.12)
-    ctx.quadraticCurveTo(0, -s * 0.62, s * 0.38, -s * 0.12)
+    ctx.moveTo(-s * 0.4, -s * 0.1)                                     // the cap, a shallow dome
+    ctx.quadraticCurveTo(-s * 0.42, -s * 0.5, 0, -s * 0.54)
+    ctx.quadraticCurveTo(s * 0.42, -s * 0.5, s * 0.4, -s * 0.1)
+    ctx.quadraticCurveTo(0, -s * 0.02, -s * 0.4, -s * 0.1)
     ctx.closePath()
-    ctx.rect(-s * 0.05, -s * 0.72, s * 0.1, s * 0.16)
+    ctx.moveTo(-s * 0.055, -s * 0.52)                                  // and a short stalk
+    ctx.lineTo(s * 0.055, -s * 0.52); ctx.lineTo(s * 0.04, -s * 0.78)
+    ctx.lineTo(-s * 0.04, -s * 0.78); ctx.closePath()
     return
   }
-  if (form === 'dryleaf') {          // a curled, dried leaf — an oak, past its colour
-    ctx.moveTo(0, -s * 0.6)
-    for (const [dx, dy] of [[0.3, -0.34], [0.2, -0.1], [0.42, 0.06], [0.22, 0.26], [0.36, 0.44], [0.1, 0.52], [0, 0.66]])
-      ctx.lineTo(dx * s, dy * s)
-    for (const [dx, dy] of [[-0.1, 0.52], [-0.36, 0.44], [-0.22, 0.26], [-0.42, 0.06], [-0.2, -0.1], [-0.3, -0.34]])
-      ctx.lineTo(dx * s, dy * s)
+  if (form === 'dryleaf') {          // a plain leaf gone brown: pointed oval, midrib, short stalk.
+    // At the size these fall, lobes read as noise; a leaf silhouette reads as a leaf.
+    ctx.moveTo(0, -s * 0.88)
+    ctx.bezierCurveTo(s * 0.46, -s * 0.46, s * 0.46, s * 0.18, 0, s * 0.6)
+    ctx.bezierCurveTo(-s * 0.46, s * 0.18, -s * 0.46, -s * 0.46, 0, -s * 0.88)
     ctx.closePath()
+    ctx.rect(-s * 0.035, s * 0.5, s * 0.07, s * 0.38)        // stalk
+    for (const k of [-0.46, -0.16, 0.16]) {                  // a few veins, cut out of the blade
+      ctx.moveTo(0, k * s)
+      ctx.lineTo(s * 0.3, (k + 0.3) * s); ctx.lineTo(0, (k + 0.05) * s); ctx.closePath()
+      ctx.moveTo(0, k * s)
+      ctx.lineTo(-s * 0.3, (k + 0.3) * s); ctx.lineTo(0, (k + 0.05) * s); ctx.closePath()
+    }
     return
   }
-  if (form === 'petal') {            // a petal with a small notch at its tip
-    ctx.moveTo(0, s * 0.7)
-    ctx.bezierCurveTo(-s * 0.9, s * 0.2, -s * 0.6, -s * 0.8, -s * 0.12, -s * 0.7)
-    ctx.lineTo(0, -s * 0.5); ctx.lineTo(s * 0.12, -s * 0.7)
-    ctx.bezierCurveTo(s * 0.6, -s * 0.8, s * 0.9, s * 0.2, 0, s * 0.7); return
+  if (form === 'petal') {            // cherry: narrow at the stem, flaring out, notched at the tip
+    ctx.moveTo(0, s * 0.8)
+    ctx.bezierCurveTo(-s * 0.34, s * 0.5, -s * 0.56, -s * 0.16, -s * 0.4, -s * 0.66)
+    ctx.quadraticCurveTo(-s * 0.3, -s * 0.84, -s * 0.13, -s * 0.72)
+    ctx.lineTo(0, -s * 0.48); ctx.lineTo(s * 0.13, -s * 0.72)
+    ctx.quadraticCurveTo(s * 0.3, -s * 0.84, s * 0.4, -s * 0.66)
+    ctx.bezierCurveTo(s * 0.56, -s * 0.16, s * 0.34, s * 0.5, 0, s * 0.8); return
   }
   if (form === 'drop') {              // a raindrop, point up
     const r = s * 0.42
@@ -460,14 +498,15 @@ export function seasonFall() {
       ctx.setTransform(dpr, 0, 0, dpr, x * dpr, b.y * dpr)
       ctx.rotate(['snow', 'drop', 'bubble'].includes(b.form) ? 0 : b.rot)   // snow, rain and bubbles keep upright
       const c = cols[b.paint] ??= css(b.paint)
-      shape(ctx, b.form, b.s)
-      if (b.form === 'bubble') {                                        // a clearer rim, a faint fill, and a glint
+      if (b.form !== 'bubble') paint(ctx, b.form, b.s, c)
+      else {
+        shape(ctx, b.form, b.s)                                        // a clearer rim, a faint fill, and a glint
         const a = ctx.globalAlpha
         ctx.globalAlpha = Math.min(1, a * 1.8); ctx.strokeStyle = c; ctx.lineWidth = 1.3; ctx.stroke()
         ctx.globalAlpha = a * 0.3; ctx.fillStyle = c; ctx.fill()
         ctx.globalAlpha = Math.min(1, a * 2); ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 1.2
         ctx.beginPath(); ctx.arc(0, 0, b.s * 0.32, Math.PI * 1.1, Math.PI * 1.45); ctx.stroke()
-      } else { ctx.fillStyle = c; ctx.fill() }
+      }
     }
 
     // what stands in the margins all month: a bush, a branch, grass after dark, a shoreline.
@@ -513,8 +552,7 @@ export function seasonFall() {
     for (const p of pile) {
       ctx.setTransform(dpr, 0, 0, dpr, p.x * dpr, p.y * dpr)
       ctx.rotate(p.form === 'snow' ? 0 : p.rot)
-      ctx.fillStyle = cols[p.paint] ??= css(p.paint)
-      shape(ctx, p.form, p.s); ctx.fill()
+      paint(ctx, p.form, p.s, cols[p.paint] ??= css(p.paint))
     }
     // January keeps what falls: once enough snow is down it stands up as a snowman, and stays
     if (plan.builds === 'snowman') {
@@ -565,8 +603,8 @@ export function seasonFall() {
       if (f.age > 0.9) { flung.splice(i, 1); continue }
       f.x += f.vx * dt; f.vy += 320 * dt; f.y += f.vy * dt; f.rot += f.vr * dt
       ctx.setTransform(dpr, 0, 0, dpr, f.x * dpr, f.y * dpr); ctx.rotate(f.rot)
-      ctx.globalAlpha = full * (1 - f.age / 0.9); ctx.fillStyle = cols[f.paint] ??= css(f.paint)
-      shape(ctx, f.form, f.s); ctx.fill()
+      ctx.globalAlpha = full * (1 - f.age / 0.9)
+      paint(ctx, f.form, f.s, cols[f.paint] ??= css(f.paint))
     }
     // December's own, on the dark theme as the tree is: a present in the right margin, and the
     // nutcracker who marches out of it

@@ -51,10 +51,6 @@ const READING = [
     <figcaption><span>What the age-associated genes are for</span><span>GO enrichment · and the lipid-related terms among them</span></figcaption>
   </figure>
   <p>A liver is a mixture, though: hepatocytes do the metabolic work, Kupffer cells and lymphocytes the immune work, and endothelial and stellate cells line and support the tissue. Aging does not move them together, so the bulk result is an average over cell types that may be going in different directions. The single-cell arm is therefore scored per cell.</p>
-  <figure class="plate inline">
-    <img src={u('assets/fig/tms-lipid-genes.png')} alt="Violin plots of Cd36, Plin2 and Il6 expression in eight liver cell types at four ages: 1, 18, 21 and 24 months. The lipid-droplet genes vary by cell type and age, while Il6 is near zero almost everywhere." width="1877" height="1308" loading="lazy">
-    <figcaption><span>Two lipid-droplet genes and one cytokine, by cell type and age</span><span>droplet scRNA-seq · GSE149590</span></figcaption>
-  </figure>
   <p>It also rules out the shortcut. <i>Il6</i> — the cytokine a bulk measurement would be expected to pick up — is near zero in almost every cell, and the lipid-droplet genes do not simply rise with age either. No single marker survives single-cell depth. Senescence is therefore scored from gene sets, with three methods side by side: ssGSEA, AddModuleScore and AUCell.</p>
   <p class="note">The funded period ran from March 2025 to February 2026; the database and the manuscript are still in progress. The lipid processes that come out of the public data are the same ones a collaboration with the Mayo Clinic approaches from the cell side — <a href={u('projects/lipid/')}>Lipids and the SASP</a>.</p>
 

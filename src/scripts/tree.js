@@ -4,21 +4,49 @@
 import { seoulNow } from './seoul.js'
 import { chosen, activeSeason, MARGIN_FOR_DECOR } from './season.js'
 
-// '@' marks an ornament, everything else is drawn as written
-const ART = [
-  '       *       ',
-  '      /@\\      ',
-  '     /.@.\\     ',
-  '    /@...@\\    ',
-  '   /..@....\\   ',
-  '  /@...@..@.\\  ',
-  ' /...@...@...\\ ',
-  '      |||      ',
-  '     =====     ',
+// '@' marks an ornament; everything else is drawn as written. A tree is generated rather than
+// written out, so a margin can hold a stand of them at whatever sizes it has room for.
+function treeRows(tiers) {
+  const w = tiers * 2 + 1
+  // every row is padded to the same width, or the stand comes out ragged
+  const centre = (s) => {
+    const left = Math.floor((w - s.length) / 2)
+    return ' '.repeat(left) + s + ' '.repeat(w - s.length - left)
+  }
+  const rows = [centre('*')]
+  for (let i = 1; i <= tiers; i++) {
+    let body = ''
+    for (let k = 0; k < i * 2 - 1; k++) body += ((i * 7 + k * 5) % 11) < 4 ? '@' : '.'
+    rows.push(centre('/' + body + '\\'))
+  }
+  const trunk = Math.max(1, (tiers - 3) | 1)          // odd, so it sits centred
+  rows.push(centre('|'.repeat(trunk)))
+  rows.push(centre('='.repeat(trunk + 2)))
+  return rows
+}
+
+// stamp several trees onto one grid; a tree set further back stands a little higher and smaller
+function grove(plan) {
+  const width = Math.max(...plan.map(t => t.x + t.tiers * 2 + 1))
+  const height = Math.max(...plan.map(t => t.lift + treeRows(t.tiers).length))
+  const grid = Array.from({ length: height }, () => Array(width).fill(' '))
+  // the furthest back is drawn first, so the nearest overlaps it
+  for (const t of [...plan].sort((a, b) => b.lift - a.lift)) {
+    const rows = treeRows(t.tiers), top = height - t.lift - rows.length
+    rows.forEach((row, r) => [...row].forEach((ch, c) => {
+      if (ch !== ' ') grid[top + r][t.x + c] = ch
+    }))
+  }
+  return grid.map(r => r.join(''))
+}
+// the stands a margin might hold, widest first; the first that fits is the one that grows there
+const STANDS = [
+  [{ tiers: 4, x: 0, lift: 1 }, { tiers: 7, x: 8, lift: 0 }, { tiers: 3, x: 22, lift: 1 }],
+  [{ tiers: 3, x: 0, lift: 1 }, { tiers: 7, x: 5, lift: 0 }],
+  [{ tiers: 6, x: 0, lift: 0 }],
 ]
 const BAUBLE = ['o', 'o', '*', '+', 'O']
 const PAINT = ['--ginkgo', '--maple', '--spring', '--rain']
-const COLS = 15
 const LINE_H = 1.15
 
 export function decemberTree() {
@@ -44,6 +72,7 @@ export function decemberTree() {
     ? '<i style="color:var(--muted);opacity:.5">.</i>'
     : `<i style="color:var(${PAINT[Math.floor(Math.random() * PAINT.length)]})">${BAUBLE[Math.floor(Math.random() * BAUBLE.length)]}</i>`
 
+  let ART = STANDS[2], COLS = 0
   const paint = () => {
     const share = litShare()
     el.innerHTML = ART.map((row, i) =>
@@ -58,13 +87,19 @@ export function decemberTree() {
     ).join('\n')
   }
 
-  // the left margin has to be wide enough that the tree never reaches the text
+  // the margin takes the whole stand if it can, one tree if it cannot, and nothing if it is narrow
+  const CH = 7.26
   const fits = () => {
     const margin = (innerWidth - Math.min(innerWidth, 1060)) / 2
-    const w = COLS * 7.3
     if (margin < MARGIN_FOR_DECOR) return false       // the same rule the present in the other margin uses
-    el.style.left = `${Math.round((margin - w) / 2)}px`
-    return true
+    for (const plan of STANDS) {
+      const rows = grove(plan), w = rows[0].length * CH
+      if (w + 16 > margin) continue
+      ART = rows; COLS = rows[0].length
+      el.style.left = `${Math.round((margin - w) / 2)}px`
+      return true
+    }
+    return false
   }
 
   const dark = () => document.documentElement.dataset.theme === 'dark'

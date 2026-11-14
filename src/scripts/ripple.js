@@ -3,11 +3,16 @@
 // a blossom that lets its petals go, a fan of leaves that falls apart, a snowman that crumbles,
 // and in summer a ripple, a firework or a bubble, by Seoul's weather and hour. Dragging through
 // a margin leaves a trail of the same. Nothing runs until something is drawn.
-import { activeSeason, summerMode, shape, formsFor, fallsNow, risesNow, monthPlan, floorAt, settle } from './season.js'
+import { activeSeason, summerMode, shape, paint as paintShape, formsFor, fallsNow, risesNow, monthPlan, floorAt, settle } from './season.js'
 
 const PILES = ['petal', 'petal-round', 'maple', 'ginkgo', 'snow']   // what lands and stays; sparks, bubbles and rain do not
 
 const RING = { spring: '--spring', summer: '--rain', autumn: '--atom', winter: '--blue' }
+// the colour of the month: whatever it is dropping, or the season's ring when it drops nothing
+function monthPaint() {
+  const pool = [...fallsNow(), ...risesNow()]
+  return pool.length ? pool[0][1][0] : RING[activeSeason()]
+}
 const SPARKS = ['--maple', '--ginkgo', '--spring', '--rain']
 const LAGS = [0, 0.22, 0.44]
 const out = t => 1 - Math.pow(1 - t, 3)   // fast at first, settling as it spreads
@@ -34,14 +39,16 @@ function addBits(x, y, bits, life = 1.6) {
 const bit = (form, paint, o = {}) => ({ form, paint, vx: 0, vy: 0, g: 120, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 4, s: 8, ...o })
 
 // five petals (spring) or leaves (autumn) open from the centre, hold, then let go one by one
-function addFan(x, y, season) {
+function addFan(x, y, flower) {
+  const pool = fallsNow()
+  if (!pool.length) return
   const spin = Math.random() * 6.28
   const petals = Array.from({ length: 5 }, (_, k) => {
-    const [form, paints] = season === 'spring' ? ['petal-round', ['--spring']] : pick(formsFor('autumn'))
+    const [form, paints] = pick(pool)
     return { form, paint: pick(paints), a: spin + k * Math.PI * 2 / 5, delay: 0.12 * k + Math.random() * 0.1,
       vx: (Math.random() - 0.5) * 30, vr: (Math.random() - 0.5) * 5 }
   })
-  push({ type: 'fan', x, y, t: performance.now(), life: 5.5, s: season === 'spring' ? 13 + Math.random() * 5 : 10 + Math.random() * 4, petals, centre: season === 'spring' })
+  push({ type: 'fan', x, y, t: performance.now(), life: 5.5, s: flower ? 13 + Math.random() * 5 : 10 + Math.random() * 4, petals, centre: flower })
 }
 function addSnowman(x, y) { push({ type: 'snowman', x, y, t: performance.now(), life: STAND + MELT + 0.1, shed: 0 }) }
 // a few sparks, for a drag through a summer night
@@ -101,9 +108,11 @@ function clickAt(x, y) {
   if (plan.sky.includes('fireworks') && document.documentElement.dataset.theme === 'dark') return addFirework(x, y)
   const rises = risesNow().length || fallsNow().some(([f]) => f === 'bubble')
   if (rises) return addPop(x, y)
-  const s = activeSeason()
-  if (s === 'spring' || s === 'autumn') return addFan(x, y, s)
-  if (s === 'winter') return addSnowman(x, y)
+  const FLOWERS = new Set(['petal', 'rose', 'plum', 'forsythia'])
+  const first = fallsNow()[0]?.[0]
+  if (first && (FLOWERS.has(first) || first === 'maple' || first === 'ginkgo' || first === 'dryleaf' || first === 'acorn'))
+    return addFan(x, y, FLOWERS.has(first))
+  if (first === 'snow') return addSnowman(x, y)
   addRing(x, y)
 }
 // what a drag through the margin leaves along its path — again, the month's own
@@ -172,13 +181,12 @@ function bits(f, age) {
     ctx.restore()
   }
 }
-// bubbles are outlines with a glint; everything else is filled
+// bubbles are an outline with a glint; everything else is filled or drawn in line by its shape
 function paint(b, color) {
-  shape(ctx, b.form, b.s)
-  if (b.form === 'bubble') {
-    ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke()
-    ctx.globalAlpha *= 0.18; ctx.fillStyle = color; ctx.fill()
-  } else { ctx.fillStyle = color; ctx.fill() }
+  if (b.form !== 'bubble') return paintShape(ctx, b.form, b.s, color)
+  ctx.beginPath(); shape(ctx, b.form, b.s)
+  ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke()
+  ctx.globalAlpha *= 0.18; ctx.fillStyle = color; ctx.fill()
 }
 const OPEN = 0.6, HOLD = 1.4
 function fan(f, age) {
@@ -195,7 +203,7 @@ function fan(f, age) {
     ctx.rotate(p.a + p.vr * t)
     ctx.globalAlpha = 0.65 * fade; ctx.fillStyle = css(p.paint)
     if (p.form === 'petal-round') { ctx.beginPath(); ctx.ellipse(0, 0, s * 0.32 * open + 0.1, s * 0.55 * open + 0.1, 0, 0, Math.PI * 2) }
-    else shape(ctx, p.form, s * open + 0.1)
+    else { paintShape(ctx, p.form, s * open + 0.1, ctx.fillStyle); ctx.restore(); continue }
     ctx.fill(); ctx.restore()
   }
   if (!f.centre) return
@@ -235,7 +243,7 @@ function snowman(f, age) {
 
 function frame(now) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H)
-  const color = css(RING[activeSeason()])   // read each frame, so a theme switch keeps the right shade
+  const color = css(monthPaint())   // read each frame, so a theme switch keeps the right shade
   for (let i = fx.length - 1; i >= 0; i--) {
     const f = fx[i], age = (now - f.t) / 1000
     if (age > f.life + (f.type === 'ring' ? LAGS[LAGS.length - 1] : 0)) { fx.splice(i, 1); continue }
