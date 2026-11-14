@@ -1,9 +1,11 @@
 // Scene: how two odour mixtures are compared, in four beats.
-//   1  a mixture is a set of molecules, not one molecule
-//   2  each molecule is read three ways — MACCS, ECFP4 and a PubChem key
-//   3  the mixture becomes a graph: molecules are nodes, similar ones joined
-//   4  two mixtures, their union, and one number out: how alike they smell
-// Schematic, not results.
+//   1  a mixture is a set of compounds, not one compound
+//   2  every compound is read three ways at once — MACCS, ECFP4, a PubChem key
+//   3  the mixture becomes a graph: compounds are nodes, the alike ones joined
+//   4  two mixtures and their union, weighed by attention, give one number
+// The compounds are the same worked structures the other molecular scenes use.
+import { molecule, caseCount } from './molecule.js'
+
 export function olfactoryFlow(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
   const box = cv.parentElement, ctx = cv.getContext('2d')
@@ -25,32 +27,56 @@ export function olfactoryFlow(cv) {
   }
   new ResizeObserver(resize).observe(box); resize()
 
-  let seed = 23
+  let seed = 29
   const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646 }
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
   const lerp = (a, b, t) => a + (b - a) * t
 
-  // two mixtures, each a handful of molecules placed on a small circle
-  const mix = (n) => Array.from({ length: n }, (_, i) => {
-    const a = -Math.PI / 2 + i * (Math.PI * 2 / n) + rnd() * 0.3
-    return { a, r: 0.62 + rnd() * 0.3, fp: [rnd(), rnd(), rnd()] }
-  })
-  const A = mix(5), B = mix(4)
-  // which pairs are similar enough to be joined — the code's threshold is 0.3
+  // Draw one of the worked structures, scaled into a box of side `s` at (x, y).
+  // The structures live in normalised 0–1 coordinates, so they centre and scale cleanly.
+  const MOLS = Array.from({ length: caseCount }, (_, i) => molecule(i))
+  function drawMol(m, x, y, s, col, a = 1, lw = 1.3) {
+    // molecule() hands back atoms as {x, y} in normalised coordinates
+    const xs = m.atoms.map(p => p.x), ys = m.atoms.map(p => p.y)
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys)
+    const k = s / Math.max(x1 - x0, y1 - y0, 1e-6)
+    const ox = x - (x0 + x1) / 2 * k, oy = y - (y0 + y1) / 2 * k
+    const at = i => [m.atoms[i].x * k + ox, m.atoms[i].y * k + oy]
+    ctx.globalAlpha = a
+    ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round'
+    ctx.beginPath()
+    for (const [i, j] of m.bonds) { const p = at(i), q = at(j); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]) }
+    ctx.stroke()
+    ctx.fillStyle = col
+    for (let i = 0; i < m.atoms.length; i++) {
+      const p = at(i)
+      ctx.beginPath(); ctx.arc(p[0], p[1], lw * 1.1, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.globalAlpha = 1
+  }
+
+  // Two mixtures: which structure each compound uses, and where it sits on its ring
+  const place = (n, start) => Array.from({ length: n }, (_, i) => ({
+    mol: MOLS[(start + i) % MOLS.length],
+    a: -Math.PI / 2 + i * (Math.PI * 2 / n) + (rnd() - 0.5) * 0.25,
+    r: 0.74 + rnd() * 0.22,
+    fp: rnd(),
+  }))
+  const A = place(5, 0), B = place(4, 1)
   const edges = (m) => {
     const out = []
     for (let i = 0; i < m.length; i++) for (let j = i + 1; j < m.length; j++)
-      if (Math.abs(m[i].fp[0] - m[j].fp[0]) < 0.42) out.push([i, j])
-    return out
+      if (Math.abs(m[i].fp - m[j].fp) < 0.44) out.push([i, j])
+    return out.length ? out : [[0, 1]]
   }
   const EA = edges(A), EB = edges(B)
   const FP = [
-    { name: 'MACCS', bits: 167, col: () => GREEN },
-    { name: 'ECFP4', bits: 1024, col: () => BLUE },
-    { name: 'PubChem', bits: 881, col: () => ATOM },
+    { name: 'MACCS', bits: 167, note: '167 structural questions', col: () => GREEN },
+    { name: 'ECFP4', bits: 1024, note: 'circular neighbourhoods', col: () => BLUE },
+    { name: 'PubChem', bits: 881, note: 'a fixed catalogue', col: () => ATOM },
   ]
 
-  const DUR = [2.4, 2.8, 2.6, 3.2]
+  const DUR = [2.8, 3.2, 3.0, 3.6]
   const TOTAL = DUR.reduce((a, b) => a + b, 0)
   const beatOf = (t) => {
     let s = 0
@@ -62,30 +88,14 @@ export function olfactoryFlow(cv) {
     ctx.textAlign = anchor; ctx.textBaseline = 'middle'; ctx.fillStyle = col
     ctx.fillText(s, x, y)
   }
-  // a molecule: a small ring with two stubs, enough to read as a compound
-  const molecule = (x, y, s, col, a = 1) => {
-    ctx.globalAlpha = a
-    ctx.strokeStyle = col; ctx.lineWidth = 1.4; ctx.lineCap = 'round'
-    ctx.beginPath()
-    for (let i = 0; i < 6; i++) {
-      const b = i * Math.PI / 3
-      ctx[i ? 'lineTo' : 'moveTo'](x + Math.cos(b) * s, y + Math.sin(b) * s)
-    }
-    ctx.closePath(); ctx.stroke()
-    ctx.beginPath()
-    ctx.moveTo(x + s, y); ctx.lineTo(x + s * 1.8, y - s * 0.5)
-    ctx.moveTo(x - s, y); ctx.lineTo(x - s * 1.8, y + s * 0.5)
-    ctx.stroke()
-    ctx.globalAlpha = 1
-  }
-  // a fingerprint: a short run of bits
-  const bits = (x, y, w, h, n, col, seedN, a = 1) => {
-    ctx.globalAlpha = a
+  // a fingerprint as a run of bits, deterministic per compound and per scheme
+  const bitrow = (x, y, w, h, n, col, s, a = 1) => {
+    const bw = w / n
     for (let i = 0; i < n; i++) {
-      const on = ((i * 7 + seedN * 13) % 11) < 4
-      ctx.fillStyle = on ? col : LINE
-      ctx.globalAlpha = a * (on ? 1 : 0.4)
-      ctx.fillRect(x + i * (w / n), y, (w / n) - 1.4, h)
+      const on = ((i * 7 + s * 13 + (i % 3) * 5) % 11) < 4
+      ctx.globalAlpha = a * (on ? 1 : 0.22)
+      ctx.fillStyle = on ? col : MUTED
+      ctx.fillRect(x + i * bw, y, bw - Math.min(1.6, bw * 0.3), h)
     }
     ctx.globalAlpha = 1
   }
@@ -95,113 +105,130 @@ export function olfactoryFlow(cv) {
     ctx.clearRect(0, 0, W, H)
     if (!W || !H) return
     const [beat, k] = beatOf(t)
-    const e = ease(Math.min(1, k * 1.25))
-    const pad = Math.max(16, W * 0.04)
-    const R = Math.min(H * 0.26, W * 0.15)
+    const e = ease(Math.min(1, k * 1.3))
+    const pad = Math.max(18, W * 0.045)
+    const cy = H * 0.52
 
-    // ---- beat one: a mixture is a set of molecules ------------------------------------
+    // ---- 1 · a mixture is a set of compounds ------------------------------------------
     if (beat === 0) {
-      const cx = W * 0.5, cy = H * 0.5
-      A.forEach((m, i) => {
-        const show = Math.min(1, Math.max(0, e * A.length - i))
-        const x = cx + Math.cos(m.a) * R * m.r, y = cy + Math.sin(m.a) * R * m.r
-        molecule(x, y, Math.min(11, R * 0.2), GREEN, show)
-      })
-      ctx.globalAlpha = e
-      ctx.strokeStyle = LINE; ctx.setLineDash([3, 4]); ctx.lineWidth = 1
-      ctx.beginPath(); ctx.arc(cx, cy, R * 1.12, 0, Math.PI * 2); ctx.stroke()
+      const cx = W * 0.5, R = Math.min(H * 0.26, W * 0.15)
+      ctx.globalAlpha = Math.min(1, e * 1.6) * 0.6
+      ctx.strokeStyle = LINE; ctx.setLineDash([4, 5]); ctx.lineWidth = 1.2
+      ctx.beginPath(); ctx.arc(cx, cy, R * 1.42, 0, Math.PI * 2); ctx.stroke()
       ctx.setLineDash([]); ctx.globalAlpha = 1
-      text(cx, cy + R * 1.12 + 20, 'one mixture · five compounds', 12, MUTED, 'center')
-    }
-
-    // ---- beat two: three fingerprints per molecule --------------------------------------
-    if (beat === 1) {
-      const cx = W * 0.3, cy = H * 0.5
-      molecule(cx, cy, Math.min(15, R * 0.3), GREEN)
-      const bx = W * 0.5, bw = Math.min(260, W * 0.36)
-      FP.forEach((f, i) => {
-        const y = cy + (i - 1) * Math.min(34, H * 0.16)
-        const show = Math.min(1, Math.max(0, e * 3 - i))
-        ctx.globalAlpha = show * 0.5
-        ctx.strokeStyle = LINE; ctx.lineWidth = 1
-        ctx.beginPath(); ctx.moveTo(cx + 26, cy); ctx.lineTo(bx - 8, y); ctx.stroke()
-        ctx.globalAlpha = 1
-        bits(bx, y - 5, bw, 10, 26, f.col(), i, show)
-        text(bx + bw + 10, y, `${f.name} ${f.bits}`, 11.5, MUTED, 'left')
+      A.forEach((c, i) => {
+        const show = Math.min(1, Math.max(0, e * (A.length + 1) - i))
+        const x = cx + Math.cos(c.a) * R * c.r, y = cy + Math.sin(c.a) * R * c.r
+        drawMol(c.mol, x, y, Math.min(46, R * 0.78), GREEN, show)
       })
-      text(pad, H - 18, 'every compound read three ways', 12, MUTED)
+      text(cx, H - 40, `one mixture · ${A.length} compounds`, 12, MUTED, 'center')
+      text(pad, H - 18, 'the challenge gives which compounds are in each mixture', 11.5, MUTED)
     }
 
-    // ---- beat three: the mixture becomes a graph -----------------------------------------
+    // ---- 2 · three fingerprints per compound --------------------------------------------
+    if (beat === 1) {
+      const mx = pad + Math.min(110, W * 0.13)
+      drawMol(MOLS[0], mx, cy, Math.min(92, W * 0.13), GREEN, 1, 1.6)
+      const bx = W * 0.40, bw = Math.min(300, W * 0.33)
+      FP.forEach((f, i) => {
+        const y = cy + (i - 1) * Math.min(46, H * 0.18)
+        const show = Math.min(1, Math.max(0, e * 3.4 - i * 0.7))
+        ctx.globalAlpha = show * 0.45
+        ctx.strokeStyle = LINE; ctx.lineWidth = 1.2
+        ctx.beginPath()
+        ctx.moveTo(mx + Math.min(56, W * 0.08), cy)
+        ctx.bezierCurveTo(bx - 56, cy, bx - 40, y, bx - 10, y)
+        ctx.stroke()
+        ctx.globalAlpha = 1
+        bitrow(bx, y - 7, bw, 14, 34, f.col(), i, show)
+        ctx.globalAlpha = show
+        text(bx + bw + 14, y - 6, `${f.name}`, 12.5, INK, 'left', 600)
+        text(bx + bw + 14, y + 8, `${f.bits} bits · ${f.note}`, 10.5, MUTED)
+        ctx.globalAlpha = 1
+      })
+      text(pad, H - 18, 'the three disagree by design, so the model is given all of them', 11.5, MUTED)
+    }
+
+    // ---- 3 · the mixture becomes a graph -------------------------------------------------
     if (beat === 2) {
-      const cx = W * 0.5, cy = H * 0.48
-      const pos = A.map(m => ({ x: cx + Math.cos(m.a) * R * m.r, y: cy + Math.sin(m.a) * R * m.r }))
-      ctx.strokeStyle = GREEN; ctx.lineWidth = 1.6
+      const cx = W * 0.5, R = Math.min(H * 0.26, W * 0.15)
+      const pos = A.map(c => ({ x: cx + Math.cos(c.a) * R * c.r, y: cy + Math.sin(c.a) * R * c.r }))
+      ctx.strokeStyle = GREEN
       EA.forEach(([i, j], n) => {
-        const show = Math.min(1, Math.max(0, e * EA.length - n))
-        ctx.globalAlpha = show * 0.55
+        const show = Math.min(1, Math.max(0, e * (EA.length + 1) - n))
+        ctx.globalAlpha = show * 0.5
+        ctx.lineWidth = 1 + show * 2.4            // the edge carries the similarity as its weight
         ctx.beginPath(); ctx.moveTo(pos[i].x, pos[i].y); ctx.lineTo(pos[j].x, pos[j].y); ctx.stroke()
       })
       ctx.globalAlpha = 1
-      pos.forEach(p => { ctx.fillStyle = PAPER; ctx.beginPath(); ctx.arc(p.x, p.y, 9, 0, Math.PI * 2); ctx.fill()
-        molecule(p.x, p.y, 7, GREEN) })
-      text(cx, cy + R + 26, 'joined where two compounds are alike', 12, MUTED, 'center')
-      text(pad, H - 18, 'a mixture is a graph · edge if similarity > 0.3', 12, MUTED)
+      pos.forEach((p, i) => {
+        ctx.fillStyle = PAPER
+        ctx.beginPath(); ctx.arc(p.x, p.y, Math.min(26, R * 0.44), 0, Math.PI * 2); ctx.fill()
+        drawMol(A[i].mol, p.x, p.y, Math.min(34, R * 0.58), GREEN, 1, 1.1)
+      })
+      text(cx, H - 40, 'an edge where two compounds are alike', 12, MUTED, 'center')
+      text(pad, H - 18, 'similarity over 0.3 joins them, and is the edge weight', 11.5, MUTED)
     }
 
-    // ---- beat four: two mixtures, their union, one number --------------------------------
+    // ---- 4 · two mixtures, their union, one number ----------------------------------------
     if (beat === 3) {
-      const cy = H * 0.44, rr = Math.min(R * 0.78, W * 0.1)
-      const ax = W * 0.21, bx = W * 0.46
-      const blob = (cxx, m, edg, col, a) => {
-        const pos = m.map(p => ({ x: cxx + Math.cos(p.a) * rr * p.r, y: cy + Math.sin(p.a) * rr * p.r }))
-        ctx.globalAlpha = a * 0.5; ctx.strokeStyle = col; ctx.lineWidth = 1.4
+      const rr = Math.min(H * 0.2, W * 0.085)
+      const ax = pad + rr + Math.min(36, W * 0.04), bx = ax + rr * 2.7
+      const gy = cy - H * 0.04
+      const blob = (cxx, m, edg, col) => {
+        const pos = m.map(p => ({ x: cxx + Math.cos(p.a) * rr * p.r, y: gy + Math.sin(p.a) * rr * p.r }))
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.45; ctx.lineWidth = 1.6
         edg.forEach(([i, j]) => { ctx.beginPath(); ctx.moveTo(pos[i].x, pos[i].y); ctx.lineTo(pos[j].x, pos[j].y); ctx.stroke() })
-        ctx.globalAlpha = a
-        pos.forEach(p => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(p.x, p.y, 4.4, 0, Math.PI * 2); ctx.fill() })
         ctx.globalAlpha = 1
-        return pos
+        pos.forEach((p, i) => { ctx.fillStyle = PAPER
+          ctx.beginPath(); ctx.arc(p.x, p.y, 11, 0, Math.PI * 2); ctx.fill()
+          drawMol(m[i].mol, p.x, p.y, 15, col, 1, 0.9) })
       }
-      blob(ax, A, EA, GREEN, 1)
-      blob(bx, B, EB, BLUE, 1)
-      text(ax, cy + rr + 22, 'mixture A', 12, MUTED, 'center')
-      text(bx, cy + rr + 22, 'mixture B', 12, MUTED, 'center')
-      // the union of the two, which the second loss term holds the pair against
-      const ux = W * 0.355
-      ctx.globalAlpha = e * 0.35
-      ctx.strokeStyle = MUTED; ctx.setLineDash([3, 4]); ctx.lineWidth = 1
-      ctx.beginPath(); ctx.ellipse(ux, cy, (bx - ax) / 2 + rr + 10, rr + 14, 0, 0, Math.PI * 2); ctx.stroke()
-      ctx.setLineDash([]); ctx.globalAlpha = 1
-      ctx.globalAlpha = e
-      text(ux, cy - rr - 26, 'A ∪ B', 11.5, MUTED, 'center')
+      blob(ax, A, EA, GREEN); blob(bx, B, EB, BLUE)
+      text(ax, gy + rr + 20, 'A', 12, GREEN, 'center', 600)
+      text(bx, gy + rr + 20, 'B', 12, BLUE, 'center', 600)
+      // the union the second loss term holds the pair against
+      ctx.globalAlpha = e * 0.4
+      ctx.strokeStyle = MUTED; ctx.setLineDash([3, 4]); ctx.lineWidth = 1.2
+      ctx.beginPath(); ctx.ellipse((ax + bx) / 2, gy, (bx - ax) / 2 + rr + 14, rr + 16, 0, 0, Math.PI * 2); ctx.stroke()
+      ctx.setLineDash([]); ctx.globalAlpha = e
+      text((ax + bx) / 2, gy - rr - 28, 'A ∪ B', 11.5, MUTED, 'center', 600)
       ctx.globalAlpha = 1
-      // attention over the three fingerprint views, then one number
-      const px = W * 0.68
+      // three encoders, one per fingerprint, then attention over them
+      const ex = bx + rr + Math.min(74, W * 0.08)
+      const bwid = Math.min(96, W * 0.1)
+      const WGT = [0.52, 0.31, 0.17]
       FP.forEach((f, i) => {
-        const y = cy + (i - 1) * 20
-        const wgt = [0.52, 0.3, 0.18][i]
-        ctx.globalAlpha = e
+        const y = gy + (i - 1) * 26
+        const show = Math.min(1, Math.max(0, e * 3 - i * 0.4))
+        ctx.globalAlpha = show * 0.4
+        ctx.strokeStyle = LINE; ctx.lineWidth = 1
+        ctx.beginPath(); ctx.moveTo(bx + rr + 16, gy); ctx.lineTo(ex - 8, y); ctx.stroke()
+        ctx.globalAlpha = show
         ctx.fillStyle = f.col()
-        ctx.beginPath(); ctx.roundRect(px, y - 5, Math.min(70, W * 0.08) * wgt * 2.4, 10, 2); ctx.fill()
-        text(px - 8, y, f.name, 11, MUTED, 'right')
+        ctx.beginPath(); ctx.roundRect(ex, y - 6, bwid * WGT[i] / 0.52, 12, 3); ctx.fill()
+        text(ex + bwid + 8, y, f.name, 10.5, MUTED, 'left')
         ctx.globalAlpha = 1
       })
-      text(px, cy - 42, 'attention over the three views', 11.5, MUTED, 'left')
-      const sx = W * 0.9
+      text(ex, gy - 46, 'attention weighs the three', 11, MUTED, 'left')
+      // and the one number that comes out
+      const sx = W - pad - Math.min(52, W * 0.055)
       ctx.globalAlpha = e
       ctx.strokeStyle = LINE; ctx.lineWidth = 1
-      ctx.beginPath(); ctx.moveTo(px + 86, cy); ctx.lineTo(sx - 30, cy); ctx.stroke()
-      text(sx, cy - 8, '0.62', 20, INK, 'center', 600)
-      text(sx, cy + 14, 'similarity', 11, MUTED, 'center')
+      ctx.beginPath(); ctx.moveTo(ex + bwid + 56, gy); ctx.lineTo(sx - 42, gy); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(sx - 48, gy - 4); ctx.lineTo(sx - 42, gy); ctx.lineTo(sx - 48, gy + 4); ctx.stroke()
+      text(sx, gy - 10, '0.62', 22, INK, 'center', 600)
+      text(sx, gy + 14, 'how alike', 10.5, MUTED, 'center')
+      text(sx, gy + 28, 'they smell', 10.5, MUTED, 'center')
       ctx.globalAlpha = 1
-      text(pad, H - 18, 'one number: how alike the two smell', 12, MUTED)
+      text(pad, H - 18, 'trained against what people actually reported', 11.5, MUTED)
     }
 
     const NAMES = ['mixture', 'fingerprints', 'graph', 'compare']
     NAMES.forEach((n, i) => {
-      const x = pad + i * Math.min(92, W * 0.13)
-      ctx.globalAlpha = i === beat ? 1 : 0.32
-      text(x, 17, n, 11.5, i === beat ? INK : MUTED, 'left', i === beat ? 600 : 400)
+      const x = pad + i * Math.min(98, W * 0.135)
+      ctx.globalAlpha = i === beat ? 1 : 0.3
+      text(x, 18, n, 11.5, i === beat ? INK : MUTED, 'left', i === beat ? 600 : 400)
       ctx.globalAlpha = 1
     })
     ready = true
