@@ -39,16 +39,58 @@ function constellation(ctx, pts, lines, x, y, k, col, a) {
 }
 
 // The moon in its real phase, drawn from the same path the bar icon uses so the two cannot
-// disagree about what tonight looks like.
+// disagree about what tonight looks like. What stops it reading as a badge is the edge: no rim
+// stroke, a glow that falls off rather than a flat disc of colour, and the maria, which are the
+// thing that makes a circle read as the moon at all.
+// irregular, and few: round blobs of equal size read as a pattern rather than as a surface
+const MARIA = [
+  [-0.26, -0.30, 0.34, 0.20, -0.5], [0.16, -0.12, 0.26, 0.34, 0.3],
+  [-0.20, 0.26, 0.30, 0.17, 0.8], [0.30, 0.34, 0.17, 0.12, -0.2],
+]
 function moon(ctx, x, y, r, phase, col, a) {
-  ctx.globalAlpha = a * 0.16; ctx.fillStyle = col
-  ctx.beginPath(); ctx.arc(x, y, r * 2.1, 0, Math.PI * 2); ctx.fill()        // a soft halo
-  ctx.globalAlpha = a * 0.22
-  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()              // the dark disc, faintly
-  ctx.globalAlpha = a * 0.4; ctx.strokeStyle = col; ctx.lineWidth = Math.max(0.8, r / 7)
-  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke()            // a rim, so a sliver still reads
-  ctx.globalAlpha = a
-  ctx.fill(new Path2D(moonPath(phase, r, x, y)))
+  // the glow: a gradient, so there is no edge where the halo stops. It has to stay well under
+  // the disc or the moon becomes a dot inside a cloud.
+  const G = r * 1.85
+  const g = ctx.createRadialGradient(x, y, r * 0.95, x, y, G)
+  g.addColorStop(0, 'rgba(226,236,246,.10)')
+  g.addColorStop(0.5, 'rgba(226,236,246,.028)')
+  g.addColorStop(1, 'rgba(226,236,246,0)')
+  ctx.globalAlpha = a; ctx.fillStyle = g
+  ctx.beginPath(); ctx.arc(x, y, G, 0, Math.PI * 2); ctx.fill()
+
+  // Earthshine: the unlit face is not black, which keeps a thin crescent legible without a ring
+  // drawn round it. It falls off towards the limb, or a new moon is a flat stamped disc — which
+  // is the thing that made this look like a button in the first place.
+  const es = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, 0, x, y, r)
+  es.addColorStop(0, 'rgba(226,236,246,.085)')
+  es.addColorStop(0.72, 'rgba(226,236,246,.05)')
+  es.addColorStop(1, 'rgba(226,236,246,.012)')
+  ctx.globalAlpha = a; ctx.fillStyle = es
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
+
+  // the lit part, with the seas on it
+  const lit = new Path2D(moonPath(phase, r, x, y))
+  ctx.save()
+  ctx.clip(lit)
+  const face = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r * 1.15)
+  face.addColorStop(0, col)
+  face.addColorStop(0.65, col)
+  face.addColorStop(1, '#C3CDD8')
+  ctx.globalAlpha = a; ctx.fillStyle = face
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
+  ctx.globalAlpha = a * 0.09; ctx.fillStyle = '#7C8894'
+  for (const [mx, my, rx, ry, rot] of MARIA) {
+    ctx.beginPath(); ctx.ellipse(x + mx * r, y + my * r, rx * r, ry * r, rot, 0, Math.PI * 2); ctx.fill()
+  }
+  // and a little shading towards the terminator, so the disc is not perfectly flat
+  const sh = ctx.createLinearGradient(x - r, y, x + r, y)
+  const waxing = phase < 0.5
+  sh.addColorStop(0, waxing ? 'rgba(90,104,118,.22)' : 'rgba(90,104,118,0)')
+  sh.addColorStop(1, waxing ? 'rgba(90,104,118,0)' : 'rgba(90,104,118,.22)')
+  ctx.globalAlpha = a; ctx.fillStyle = sh
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
+  ctx.restore()
+  ctx.globalAlpha = 1
 }
 
 // Aurora: thin ribbons that slide and breathe, green through to teal with violet only at the
@@ -194,7 +236,7 @@ export function drawSky(ctx, want, { W, H, t, dt, left, right, dark }) {
     const phase = moonPhase()
     // the full moon of Daeboreum and Chuseok is simply the moon being full; it is drawn larger
     const big = want.includes('moonbig')
-    const r = big ? 21 : 13
+    const r = big ? 30 : 19
     moon(ctx, W - Math.min(110, (W - right) * 0.55), Math.max(170, H * 0.24), r, phase, col, A)
   }
   if (want.includes('sunrise')) sunrise(ctx, right + (W - right) * 0.5, H, t, A)
