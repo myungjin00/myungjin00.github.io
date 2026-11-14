@@ -44,6 +44,14 @@ export const projects: ProjectCard[] = [
     role: 'Analysis',
   },
   {
+    slug: 'olfactory',
+    title: 'DREAM Olfactory Mixtures',
+    line: 'How similar two odour mixtures smell, predicted from the molecules in them.',
+    axis: 'mol',
+    period: 'Jun – Sep 2024',
+    role: 'Led the team',
+  },
+  {
     slug: 'repurposing',
     title: 'Drug repurposing benchmark & KBDI',
     line: 'A knowledge-graph benchmark over 3,379 drugs and 935 diseases, deployed on KBDI.',

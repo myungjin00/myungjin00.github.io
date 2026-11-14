@@ -1,8 +1,8 @@
 // Scene: what the MASLD database holds, and how the two halves are joined.
-// Four kinds of assay on the left, each drawn as the thing it actually is — one pooled bar for
-// bulk, a printed grid for a microarray, scattered cells for single-cell, a tissue under a grid
-// for spatial. Three reference tables on the right. The scene walks the assays one at a time,
-// drawing the joins each one uses and counting out its accessions.
+// Three kinds of assay on the left, each drawn as the thing it actually is — a tube for bulk,
+// where everything is pooled into one measurement, scattered cells for single-cell, and tissue
+// under a grid for spatial. Three reference tables on the right. The scene walks the assays one
+// at a time, drawing the joins each one uses and counting out its accessions.
 export function masldDb(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
   const box = cv.parentElement, ctx = cv.getContext('2d')
@@ -18,14 +18,15 @@ export function masldDb(cv) {
   // human and mouse accessions, and which reference tables each assay is joined against
   const ASSAY = [
     { key: 'bulk', name: 'bulk RNA-seq', human: 9, mouse: 17, joins: [0, 1] },
-    { key: 'array', name: 'microarray', human: 6, mouse: 13, joins: [0, 1] },
     { key: 'sc', name: 'sc / snRNA-seq', human: 3, mouse: 1, joins: [0, 1] },
     { key: 'spatial', name: 'spatial', human: 3, mouse: 1, joins: [0] },
   ]
+  // the reference side is one SQLite file of twenty-seven tables, grouped by where they came
+  // from; each group reaches the next through a single shared identifier
   const REF = [
-    { name: 'gene', src: 'NCBI · UniProt' },
-    { name: 'pathway', src: 'GO · KEGG · Reactome · MSigDB' },
-    { name: 'compound', src: 'ChEMBL · DrugBank · PubChem' },
+    { name: 'gene · protein', src: 'NCBI 3 · UniProt 1 · taxon 1', n: 5, key: 'entrez_id' },
+    { name: 'pathway', src: 'Reactome 2 · KEGG 8', n: 10, key: 'ensembl_id' },
+    { name: 'compound · drug', src: 'ChEMBL 8 · DrugBank 3 · PubChem 2', n: 13, key: 'uniprot_id' },
   ]
   const FIELDS = 'age · diet period · disease stage · fibrosis stage'
 
@@ -59,14 +60,6 @@ export function masldDb(cv) {
       ctx.beginPath(); ctx.roundRect(-s * 0.19, -s * 0.02, s * 0.38, s * 0.4, s * 0.14); ctx.fill()
       ctx.globalAlpha = a * 0.55
       for (const dy of [-0.22, -0.32]) { ctx.beginPath(); ctx.moveTo(-s * 0.1, s * dy); ctx.lineTo(s * 0.1, s * dy); ctx.stroke() }
-    } else if (kind === 'array') {
-      // a printed grid: fixed probes, each spot one gene
-      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
-        ctx.globalAlpha = a * (0.3 + ((r * 5 + c * 3) % 7) / 9)
-        ctx.beginPath()
-        ctx.arc(-s * 0.3 + c * s * 0.2, -s * 0.3 + r * s * 0.2, s * 0.065, 0, Math.PI * 2)
-        ctx.fill()
-      }
     } else if (kind === 'sc') {
       // cells, measured one at a time
       const P = [[-0.3, -0.26], [0.02, -0.36], [0.3, -0.2], [-0.34, 0.06], [-0.04, -0.02],
@@ -105,12 +98,12 @@ export function masldDb(cv) {
     const k = forceAll ? 1 : ease(Math.min(1, ((t % STEP) / STEP) * 2.4))
 
     const pad = Math.max(16, W * 0.035)
-    const LW = Math.min(250, W * 0.36), RW = Math.min(250, W * 0.34)
+    const LW = Math.min(250, W * 0.34), RW = Math.min(290, W * 0.40)
     const LX = pad, RX = W - pad - RW
     const top = H * 0.21, span = H * 0.56, rowH = span / ASSAY.length
 
-    text(LX, top - 22, 'PUBLIC OMICS DATASETS', 10, BLUE, 'left', 600)
-    text(RX, top - 22, 'REFERENCE TABLES', 10, ATOM, 'left', 600)
+    text(LX, top - 24, 'EXPRESSION DATA · GEO', 11, BLUE, 'left', 600)
+    text(RX, top - 24, 'REFERENCE DB · SQLite', 11, ATOM, 'left', 600)
     ctx.strokeStyle = BLUE; ctx.globalAlpha = 0.3; ctx.lineWidth = 1
     ctx.beginPath(); ctx.moveTo(LX, top - 12); ctx.lineTo(LX + LW, top - 12); ctx.stroke()
     ctx.strokeStyle = ATOM
@@ -154,10 +147,10 @@ export function masldDb(cv) {
       const s = Math.min(34, rowH * 0.7)
       ctx.globalAlpha = lit ? 1 : 0.55
       ctx.save(); ctx.translate(LX + s * 0.6, y); icon(a.key, s, BLUE, lit); ctx.restore()
-      text(LX + s * 1.3, y - 7, a.name, 11.5, lit ? INK : MUTED, 'left', lit ? 600 : 400)
+      text(LX + s * 1.3, y - 9, a.name, 13, lit ? INK : MUTED, 'left', lit ? 600 : 400)
       // the counts, growing in as the row is reached
       const n = lit ? k : 1
-      text(LX + s * 1.3, y + 8, `${Math.round(a.human * n)} human · ${Math.round(a.mouse * n)} mouse`, 10, MUTED)
+      text(LX + s * 1.3, y + 7, `${Math.round(a.human * n)} human · ${Math.round(a.mouse * n)} mouse datasets`, 11, MUTED)
       ctx.globalAlpha = 1
     })
 
@@ -168,20 +161,21 @@ export function masldDb(cv) {
       ctx.globalAlpha = used ? 1 : 0.4
       ctx.fillStyle = ATOM
       ctx.beginPath(); ctx.arc(RX - 9, y, 2.4, 0, Math.PI * 2); ctx.fill()
-      text(RX, y - 7, r.name, 11.5, used ? INK : MUTED, 'left', used ? 600 : 400)
-      text(RX, y + 8, r.src, 9.5, MUTED)
+      text(RX, y - 9, r.name, 13, used ? INK : MUTED, 'left', used ? 600 : 400)
+      text(RX, y + 7, r.src, 11, MUTED)
+      text(RX + RW, y - 9, `${r.n} tables`, 11, used ? ATOM : MUTED, 'right', used ? 600 : 400)
       ctx.globalAlpha = 1
     })
 
     // the schema, which is the point of the whole thing
-    // the totals, and the schema that makes them one table
-    const th = ASSAY.reduce((s, a) => s + a.human, 0), tm = ASSAY.reduce((s, a) => s + a.mouse, 0)
+    // what each side amounts to
     ctx.strokeStyle = LINE; ctx.globalAlpha = 0.6; ctx.lineWidth = 1
-    ctx.beginPath(); ctx.moveTo(LX, H - 34); ctx.lineTo(W - pad, H - 34); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(LX, H - 38); ctx.lineTo(W - pad, H - 38); ctx.stroke()
     ctx.globalAlpha = 1
-    text(LX, H - 16, 'one schema', 10.5, INK, 'left', 600)
-    text(LX + 72, H - 16, FIELDS, 10, MUTED)
-    text(W - pad, H - 16, `${th} human · ${tm} mouse accessions`, 10, MUTED, 'right')
+    text(LX, H - 19, 'one schema', 12, INK, 'left', 600)
+    text(LX, H - 5, FIELDS, 10.5, MUTED)
+    text(W - pad, H - 19, '27 tables · 7 public databases', 11, MUTED, 'right')
+    text(W - pad, H - 5, 'one SQLite file, 42 GB', 10.5, MUTED, 'right')
     ready = true
   }
 

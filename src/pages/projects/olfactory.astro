@@ -1,0 +1,49 @@
+---
+import Project from '../../layouts/Project.astro'
+import { u } from '../../lib'
+// the notes that carry the background for this page
+const READING = [
+  { id: 'olfactory-metamers', t: 'Why two different mixtures can smell the same', d: 'what a metamer is, and why mixture perception is not the sum of its parts' },
+  { id: 'descriptors-fingerprints', t: 'Descriptors and fingerprints', d: 'what MACCS, ECFP4 and a PubChem key actually encode' },
+  { id: 'gnn', t: 'Graph neural networks', d: 'message passing, and what pooling a graph to one vector throws away' },
+  { id: 'attention', t: 'Attention', d: 'how a model learns which of several views to weight' },
+]
+---
+<Project slug="olfactory"
+  lede="A mixture of odorants does not smell like the sum of its molecules, and two mixtures that share nothing can smell alike. The DREAM challenge asks for the perceived distance between two mixtures from their composition alone."
+  facts={[
+    { k: 'challenge', v: 'DREAM Olfactory Mixtures Prediction, 2024' },
+    { k: 'my role', v: 'led the team — model, experiments and submission' },
+    { k: 'advisor', v: 'Dr. Sangsoo Lim' },
+    { k: 'code', v: '<a href="https://github.com/myungjin00/2024-DREAM-challenge">myungjin00/2024-DREAM-challenge</a>' },
+    { k: 'software', v: 'registration filed, Sep 2024' },
+    { k: 'data', v: 'public — challenge training set' },
+  ]}>
+  <figure slot="plate" class="plate">
+    <canvas id="scene" role="img" aria-label="Four beats: a mixture is a set of compounds rather than one molecule; each compound is read three ways as a MACCS, ECFP4 and PubChem fingerprint; the mixture becomes a graph whose nodes are compounds and whose edges join the ones that are alike; and two mixtures, together with their union, are weighed by attention over the three views to give one similarity."></canvas>
+    <figcaption><span>How two mixtures are compared</span><span>mixture · fingerprints · graph · compare — schematic, not results</span></figcaption>
+  </figure>
+
+  <h2>The problem</h2>
+  <p>Single-molecule odour prediction has a shape a model can learn: one structure in, a set of descriptors out. A mixture does not. Perception is not additive — a compound can be masked by another, two mixtures sharing no molecule can smell the same, and the same molecule can read differently depending on what it arrives with.</p>
+  <p>The challenge therefore asks for a relation rather than a label: given two mixtures, how far apart do people place them? The target is a perceptual distance measured in panel experiments, and the input is only which compounds are in each mixture.</p>
+
+  <h2>The approach</h2>
+  <p>A mixture is treated as a graph rather than a bag. Each compound is a node; two compounds are joined when their fingerprints are similar enough, with the similarity itself as the edge weight. What the graph carries is therefore not only what is in the mixture but how alike its parts are — which is the thing a bag of molecules throws away.</p>
+  <p>Each compound is read three ways at once: a <b>MACCS</b> key of 167 structural questions, a 1024-bit <b>ECFP4</b> circular fingerprint, and an 881-bit <b>PubChem</b> key. The three disagree by design — one asks about substructures, one about neighbourhoods, one about a fixed catalogue of features — and the model is given all three rather than a choice between them.</p>
+  <p>Three graph encoders run in parallel, one per fingerprint, and an attention layer weighs their embeddings before the comparison. The pair is also held against the embedding of the union of the two graphs, so that the model has to place a mixture consistently whether it is seen alone or inside a larger one.</p>
+
+  <h2>What was built</h2>
+  <p>A pipeline that goes from the challenge's mixture definitions to a prediction: resolve each CID to a structure, compute the three fingerprints, build and cache the graphs, train with early stopping on validation loss, and score with Pearson correlation against the held-out pairs. Training keeps the best checkpoint by validation loss rather than the last, and writes a per-epoch record so a run can be read afterwards.</p>
+  <p><span class="role">My role</span> I led the team — the formulation as a graph problem, the three-fingerprint design, the implementation, the experiments and the submission — under Dr. Sangsoo Lim's supervision.</p>
+
+  <h2>Reading</h2>
+  <ul class="reading">
+    {READING.map(r => <li><a href={u(`blog/${r.id}-en/`)}>{r.t}</a><span>{r.d}</span></li>)}
+  </ul>
+</Project>
+<style>#scene { aspect-ratio: 16 / 7; min-height: 260px; }</style>
+<script>
+  import { olfactoryFlow } from '../../scripts/scenes/olfactory-flow.js'
+  olfactoryFlow(document.getElementById('scene') as HTMLCanvasElement)
+</script>
