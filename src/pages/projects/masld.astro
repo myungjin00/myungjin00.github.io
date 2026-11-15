@@ -35,6 +35,13 @@ const READING = [
   <p>Three aging-liver sets carry the analysis so far: bulk mouse liver from SRA, the <i>Tabula Muris Senis</i> bulk series and the matching single-cell atlas. Differential expression runs with PyDESeq2 on the bulk arms and MAST on the single-cell one; enrichment runs against GO, KEGG, Reactome and Hallmark.</p>
   <p><span class="role">My role</span> the data collection and the analysis — curating the accessions into the schema, and the differential expression, enrichment and single-cell scoring on top of it.</p>
 
+  <h2>Staged, not one scale</h2>
+  <p>MASLD is not a single axis a sample sits further along. A liver can be fatty without being inflamed, inflamed without being scarred, and scarred without being cirrhotic — so a difference between two groups only means something once the pair of stages is stated. The contrasts are laid out against the disease rather than pooled, and both species are read on the same ladder.</p>
+  <figure class="plate inline">
+    <canvas id="stage" role="img" aria-label="The six stages, left to right: healthy, steatosis, MASH, fibrosis F1 to F2, cirrhosis F3 to F4, and HCC or end-stage liver disease. Arcs above the ladder mark the contrasts that are run — healthy against steatosis, MASH, cirrhosis and HCC, and then steatosis against MASH and MASH against cirrhosis."></canvas>
+    <figcaption><span>Which pairs of stages are compared</span><span>the design, not the findings</span></figcaption>
+  </figure>
+
   <h2>A lipid vocabulary of its own</h2>
   <p>To ask a transcriptome about lipid metabolism you first need a list of which pathways count as lipid metabolism, and none of the standard databases publishes one. So lipid-related terms are pulled out of GO, KEGG, Reactome and Hallmark by keyword and sorted by hand into five groups: anabolism; catabolism; mixed metabolism; transport and localisation; and droplet and storage. A short list of lysophospholipid-related genes sits alongside them. That catalogue is what every enrichment on this project is tested against, and it is what makes results from different datasets comparable.</p>
 
@@ -67,10 +74,13 @@ const READING = [
 <style>
   #scene { aspect-ratio: 16 / 7; min-height: 260px; }
   #db { aspect-ratio: 16 / 7; min-height: 250px; }
+  #stage { aspect-ratio: 16 / 6; min-height: 210px; }
 </style>
 <script>
   import { masldFlow } from '../../scripts/scenes/masld-flow.js'
   import { masldDb } from '../../scripts/scenes/masld-db.js'
+  import { masldStage } from '../../scripts/scenes/masld-stage.js'
   masldFlow(document.getElementById('scene') as HTMLCanvasElement)
   masldDb(document.getElementById('db') as HTMLCanvasElement)
+  masldStage(document.getElementById('stage') as HTMLCanvasElement)
 </script>
