@@ -71,7 +71,7 @@ export function olfactoryFlow(cv) {
   }
   const EA = edges(A), EB = edges(B)
   const FP = [
-    { name: 'MACCS', bits: 167, note: '167 structural questions', col: () => GREEN },
+    { name: 'MACCS', bits: 167, note: '166 structural questions', col: () => GREEN },
     { name: 'ECFP4', bits: 1024, note: 'circular neighbourhoods', col: () => BLUE },
     { name: 'PubChem', bits: 881, note: 'a fixed catalogue', col: () => ATOM },
   ]

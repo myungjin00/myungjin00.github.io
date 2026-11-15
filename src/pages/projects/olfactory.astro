@@ -31,7 +31,7 @@ const READING = [
 
   <h2>The approach</h2>
   <p>A mixture is treated as a graph rather than a bag. Each compound is a node; two compounds are joined when their fingerprints are similar enough, with the similarity itself as the edge weight. What the graph carries is therefore not only what is in the mixture but how alike its parts are — which is the thing a bag of molecules throws away.</p>
-  <p>Each compound is read three ways at once: a <b>MACCS</b> key of 167 structural questions, a 1024-bit <b>ECFP4</b> circular fingerprint, and an 881-bit <b>PubChem</b> key. The three disagree by design — one asks about substructures, one about neighbourhoods, one about a fixed catalogue of features — and the model is given all three rather than a choice between them.</p>
+  <p>Each compound is read three ways at once: a <b>MACCS</b> key of 166 structural questions, a 1024-bit <b>ECFP4</b> circular fingerprint, and an 881-bit <b>PubChem</b> key. The three disagree by design — one asks about substructures, one about neighbourhoods, one about a fixed catalogue of features — and the model is given all three rather than a choice between them.</p>
   <p>Three graph encoders run in parallel, one per fingerprint, and an attention layer weighs their embeddings before the comparison. The pair is also held against the embedding of the union of the two graphs, so that the model has to place a mixture consistently whether it is seen alone or inside a larger one.</p>
 
   <h2>What was built</h2>
