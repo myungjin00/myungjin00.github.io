@@ -93,6 +93,20 @@ img { max-width: 100%; height: auto; }   /* keep the aspect when the width shrin
 img, canvas { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; user-drag: none;
   -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
 
+/* Shiki writes both themes: the light colours as the value and the dark ones as a variable.
+   On the dark theme the variable wins, or the syntax stays dark on a dark background. */
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* GitHub Dark's comment grey lands at 3:1 on its own background, and in these notes the
+   comments carry the explanation. Lift just that one colour. */
+:root[data-theme="dark"] .astro-code span[style*="#6A737D"] { color: #9BA6B2 !important; }
+/* and GitHub Light's orange sits at 3.5:1 on white, so it gets the same treatment */
+:root:not([data-theme="dark"]) .astro-code span[style*="#E36209"] { color: #9C4A06 !important; }
+
 /* dragging over text should look like the rest of the page, not like the browser's default blue */
 ::selection { background: color-mix(in srgb, var(--green) 26%, transparent); color: var(--ink); }
 ::-moz-selection { background: color-mix(in srgb, var(--green) 26%, transparent); color: var(--ink); }

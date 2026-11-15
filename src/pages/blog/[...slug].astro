@@ -156,8 +156,10 @@ const sibling = siblings[0]
      a low-resolution paper figure stops at its own size instead of being stretched soft */
   .prose :global(figure img) { display: block; width: auto; max-width: 100%; height: auto; margin-inline: auto;
                                border: 1px solid var(--line); border-radius: 6px; background: var(--plate); }
-  /* the plots are drawn in dark ink on nothing; on a dark page they need their own light ground */
-  :global(:root[data-theme="dark"]) .prose :global(figure img) { background: #F2F2EC; filter: brightness(.94); }
+  /* the plots and the inline diagrams are drawn in dark ink on nothing; on a dark page they
+     need their own light ground, or the ink lands on a ground the same value as itself */
+  :global(:root[data-theme="dark"]) .prose :global(figure img),
+  :global(:root[data-theme="dark"]) .prose :global(figure svg) { background: #F2F2EC; filter: brightness(.94); }
   /* min() so the narrow cap never beats the column on a phone */
   .prose :global(figure.narrow img) { max-width: min(560px, 100%); margin-inline: auto; }
   .prose :global(p > img) { display: block; margin: 24px auto; border: 1px solid var(--line); border-radius: 4px; background: var(--plate); }

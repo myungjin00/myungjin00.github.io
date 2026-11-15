@@ -33,6 +33,8 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath, remarkBase],
     rehypePlugins: [rehypeKatex, rehypeBase],
-    shikiConfig: { theme: 'github-light' },
+    // two themes, emitted as CSS variables rather than baked colours, because a single light
+    // theme put dark syntax on a dark background the moment the page went dark
+    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
   },
 })
