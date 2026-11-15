@@ -255,3 +255,10 @@ tr.pg-off { display: none !important; }
 .shelf-pager button:hover:not(:disabled) { color: var(--green); border-color: var(--green); }
 .shelf-pager button[aria-current="page"] { background: var(--green); border-color: var(--green); color: var(--paper); }
 .shelf-pager button:disabled { opacity: .3; cursor: default; }
+
+/* the scene figures are drawn for a wide canvas; on a phone they scroll sideways rather than
+   compress into labels that sit on top of each other */
+@media (max-width: 720px) {
+  .plate:has(> canvas) { overflow-x: auto; overflow-y: hidden; }
+  .plate > canvas { min-width: 620px; }
+}

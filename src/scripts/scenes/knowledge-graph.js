@@ -5,7 +5,7 @@
 // Hover (or tap) a disease to run the three beats for that disease. Schematic, not data.
 export function knowledgeGraph(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const box = cv.parentElement, ctx = cv.getContext('2d')
+  const box = cv, ctx = cv.getContext('2d')
   const css = getComputedStyle(document.documentElement)
   const v = n => css.getPropertyValue(n).trim()
   let INK, SOFT, MUTED, LINE, GREEN, BLUE, ATOM, BIO, REF, PAPER
@@ -113,8 +113,11 @@ export function knowledgeGraph(cv) {
     if (fill) { ctx.fillStyle = col; ctx.fill() } else { ctx.strokeStyle = col; ctx.lineWidth = 1.4; ctx.stroke() }
   }
 
+  // labels are sized against the canvas rather than in fixed pixels: at a fixed size they
+  // read as fine print once the drawing has room to grow
+  const fs = () => Math.min(1.3, Math.max(0.8, W / 700))
   const label = (s, x, y, col, size = 10.5, align = 'left') => {
-    ctx.font = `${size}px ${v('--mono') || 'ui-monospace, monospace'}`
+    ctx.font = `${size * fs()}px ${v('--mono') || 'ui-monospace, monospace'}`
     ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = col
     ctx.fillText(s, x, y)
   }

@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+import sitemap from '@astrojs/sitemap'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import { visit } from 'unist-util-visit'
@@ -28,6 +29,8 @@ function remarkBase() {
 
 export default defineConfig({
   site: 'https://myungjin00.github.io',
+  // only the deployed site gets a sitemap; the local base is a scratch copy
+  integrations: BASE ? [] : [sitemap()],
   base: (process.env.ASTRO_BASE ?? '/'),
   trailingSlash: 'always',
   markdown: {

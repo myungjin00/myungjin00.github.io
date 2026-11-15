@@ -4,7 +4,7 @@
 // which pair was asked, not what came back.
 export function masldStage(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const box = cv.parentElement, ctx = cv.getContext('2d')
+  const box = cv, ctx = cv.getContext('2d')
   const css = getComputedStyle(document.documentElement)
   const v = n => css.getPropertyValue(n).trim()
   let INK, MUTED, LINE, GREEN, BLUE, ATOM, PAPER
@@ -38,8 +38,11 @@ export function masldStage(cv) {
   new ResizeObserver(resize).observe(box); resize()
 
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  // labels are sized against the canvas rather than in fixed pixels: at a fixed size they
+  // read as fine print once the drawing has room to grow
+  const fs = () => Math.min(1.3, Math.max(0.8, W / 700))
   const text = (x, y, s, size, col, anchor = 'left', weight = 400) => {
-    ctx.font = `${weight} ${size}px var(--mono), ui-monospace, monospace`
+    ctx.font = `${weight} ${size * fs()}px ${v('--mono') || 'ui-monospace, monospace'}`
     ctx.textAlign = anchor; ctx.textBaseline = 'middle'; ctx.fillStyle = col
     ctx.fillText(s, x, y)
   }

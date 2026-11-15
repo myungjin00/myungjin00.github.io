@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro'
+import { u } from '../lib'
+
+// the four places almost every mistyped URL was meant to reach
+const GO = [
+  { href: u(''), t: 'Home', d: 'the short version of what I work on' },
+  { href: u('research/'), t: 'Research', d: 'projects, manuscripts and challenges' },
+  { href: u('blog/'), t: 'Notes', d: 'the background reading, written up' },
+  { href: u('vitae/'), t: 'Vitae', d: 'the full record' },
+]
+---
+<Base title="Not found" description="That page is not here.">
+  <section class="wrap page">
+    <p class="code mono">404</p>
+    <h1>That page is not here</h1>
+    <p class="lede">The address may have changed, or it may never have existed. These are the places most of it lives.</p>
+    <ul class="go">
+      {GO.map(g => <li><a href={g.href}><span class="t">{g.t}</span><span class="d">{g.d}</span></a></li>)}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .page { padding-block: 56px 48px; max-width: 640px; }
+  .code { font-size: calc(13px * var(--fs)); letter-spacing: .14em; color: var(--green); margin: 0 0 14px; }
+  h1 { font-weight: 600; font-size: calc(clamp(30px, 4.2vw, 42px) * var(--fs)); line-height: 1.1;
+       letter-spacing: -.02em; margin: 0 0 14px; }
+  .lede { color: var(--soft); font-size: calc(16px * var(--fs)); line-height: 1.65; margin: 0 0 30px; }
+  .go { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--line);
+        border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .go a { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 14px 16px;
+          background: var(--paper); text-decoration: none; }
+  .go a:hover { background: var(--plate); }
+  .go .t { color: var(--ink); font-weight: 600; font-size: calc(15px * var(--fs)); }
+  .go .d { color: var(--muted); font-size: calc(13.5px * var(--fs)); }
+</style>

@@ -5,7 +5,7 @@
 // Every count here is the one the schema map and the two metadata tables give.
 export function masldDb(cv) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const box = cv.parentElement, ctx = cv.getContext('2d')
+  const box = cv, ctx = cv.getContext('2d')
   const css = getComputedStyle(document.documentElement)
   const v = n => css.getPropertyValue(n).trim()
   let INK, MUTED, LINE, BLUE, ATOM
@@ -55,8 +55,19 @@ export function masldDb(cv) {
   new ResizeObserver(resize).observe(box); resize()
 
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-  const text = (x, y, s, size, col, anchor = 'left', weight = 400) => {
-    ctx.font = `${weight} ${size}px var(--mono), ui-monospace, monospace`
+  // labels are sized against the canvas rather than in fixed pixels: at a fixed size they
+  // read as fine print once the drawing has room to grow
+  const fs = () => Math.min(1.3, Math.max(0.8, W / 700))
+  const text = (x, y, s, size, col, anchor = 'left', weight = 400, max = 0) => {
+    const mono = v('--mono') || 'ui-monospace, monospace'
+    let px = size * fs()
+    ctx.font = `${weight} ${px}px ${mono}`
+    // a label given a width stays inside it: the columns here are narrow on a phone, and
+    // mono is wide enough that a heading will otherwise run into the one beside it
+    if (max > 0) {
+      const w = ctx.measureText(s).width
+      if (w > max) ctx.font = `${weight} ${Math.max(7, px * max / w)}px ${mono}`
+    }
     ctx.textAlign = anchor; ctx.textBaseline = 'middle'; ctx.fillStyle = col
     ctx.fillText(s, x, y)
   }
@@ -100,7 +111,8 @@ export function masldDb(cv) {
 
     const rule = (col, label, sub) => {
       text(pad, top - 22, label, 11, col, 'left', 600)
-      text(pad + Math.min(200, W * 0.22), top - 22, sub, 10.5, MUTED)
+      text(pad + Math.min(200, W * 0.22), top - 22, sub, 10.5, MUTED, 'left', 400,
+        W - pad - (pad + Math.min(200, W * 0.22)))
       ctx.strokeStyle = col; ctx.globalAlpha = 0.3; ctx.lineWidth = 1
       ctx.beginPath(); ctx.moveTo(pad, top - 11); ctx.lineTo(W - pad, top - 11); ctx.stroke()
       ctx.globalAlpha = 1
@@ -122,15 +134,15 @@ export function masldDb(cv) {
       // the columns the samples are staged by — the reason the curation exists
       const RX = pad + Math.min(214, W * 0.28)
       const NX = RX + Math.min(190, W * 0.2)
-      text(RX, top + 2, 'STAGED BY', 10.5, MUTED, 'left', 600)
+      text(RX, top + 2, 'STAGED BY', 10.5, MUTED, 'left', 600, NX - RX - 34)
       text(NX, top + 2, 'distinct', 10, MUTED, 'right')
       s.cols.forEach((c, i) => {
         const y = top + 26 + i * Math.min(26, H * 0.097)
         const show = Math.min(1, Math.max(0, k * 4 - i * 0.6))
         ctx.globalAlpha = show
-        text(RX, y, c[0], 11.5, INK, 'left', 500)
+        text(RX, y, c[0], 11.5, INK, 'left', 500, NX - RX - 30)
         if (c[1]) text(NX, y, String(c[1]), 12, accent, 'right', 600)
-        text(NX + 12, y, c[2], 10.5, MUTED)
+        text(NX + 12, y, c[2], 10.5, MUTED, 'left', 400, W - pad - NX - 12)
         ctx.globalAlpha = 1
       })
     } else {
@@ -194,7 +206,11 @@ export function masldDb(cv) {
     ctx.strokeStyle = LINE; ctx.globalAlpha = 0.6; ctx.lineWidth = 1
     ctx.beginPath(); ctx.moveTo(pad, H - 34); ctx.lineTo(W - pad, H - 34); ctx.stroke()
     ctx.globalAlpha = 1
-    text(pad, H - 17, 'a gene name out of a matrix is one Entrez ID, and from there a pathway or a drug', 11, MUTED)
+    // the right-hand label is the fixed one; the sentence on the left takes whatever is left
+    ctx.font = `600 ${11.5 * fs()}px ${v('--mono') || 'ui-monospace, monospace'}`
+    const footR = ctx.measureText('one schema, every accession').width
+    text(pad, H - 17, 'a gene name out of a matrix is one Entrez ID, and from there a pathway or a drug',
+      11, MUTED, 'left', 400, W - 2 * pad - footR - 20)
     text(W - pad, H - 17, 'one schema, every accession', 11.5, INK, 'right', 600)
     ready = true
   }
